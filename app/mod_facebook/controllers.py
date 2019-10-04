@@ -6,9 +6,6 @@ import os
 
 from app import app
 
-# Instance specific configurations
-app.config.from_pyfile('config.py')
-
 mod_facebook = Blueprint('facebook', __name__, url_prefix='/facebook')
 
 @mod_facebook.route('/info')

@@ -4,9 +4,6 @@ import soundcloud
 
 from app import app
 
-# Instance specific configurations
-app.config.from_pyfile('config.py')
-
 #SOUNDCLOUD_CLIENT_ID = "2t9loNQH90kzJcsFCODdigxfp325aq4z" #TODO: update client_id 
 
 mod_soundcloud = Blueprint('soundcloud', __name__, url_prefix='/soundcloud')

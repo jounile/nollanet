@@ -3,9 +3,6 @@ from apiclient.discovery import build
 
 from app import app
 
-# Instance specific configurations
-app.config.from_pyfile('config.py')
-
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
