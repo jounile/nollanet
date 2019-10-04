@@ -44,9 +44,22 @@ GOOGLE_API_KEY = ""
 ```
 
 ## Facebook
-Add this in the /instance/config.py file
+Add this in the /app/mod_facebook/facebook.json file
 ```bash
-PAGES_ACCESS_TOKEN = ""
+{
+    "app": {
+        "secret": "", 
+        "id": ""
+    }, 
+    "user": {
+        "long_token": "", 
+        "short_token": ""
+    }, 
+    "page": {
+        "token": "", 
+        "id": ""
+    }
+}
 ```
 
 ## Database usage
@@ -82,32 +95,9 @@ is reverse proxied to
 
 http://nolla.net/mediagalleria/tn/6134_50.jpg
 
-
-## Flask in Docker
-```bash
-$ docker build -t myflask -f Dockerfile-flask .
-$ docker run --name myflask -p 8080:8080 -d myflask
-$ docker exec -it myflask /bin/bash
-$ docker logs myflask
-```
-
-## MySQL in Docker
-```bash
-$ docker build -t mymysql -f Dockerfile-mysql .
-$ docker run -d -p 3306:3306 --name mymysql -e MYSQL_ROOT_PASSWORD=root mymysql
-$ docker exec -it mymysql bash
-```
-See database usage section.
-
-## Docker-compose
-```bash
-docker-compose build
-docker-compose up -d
-```
-
 ## Run locally
 ```bash
-$ python flask_introduction/run.py
+$ python app.py
 ```
 
 ## Store new packages in requirements.txt
@@ -123,7 +113,7 @@ $ deactivate
 
 ## Flask CLI
 ```bash
-$ export FLASK_APP=flask_introduction/app/cli.py
+$ export FLASK_APP=app/cli.py
 ```
 ```bash
 $ flask alter_database
