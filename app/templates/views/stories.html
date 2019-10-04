@@ -1,0 +1,39 @@
+<!-- stories.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-3">
+        Interviews
+        <div class="interviews-list">
+            <ul>
+                {% for item in interviews %}
+                    <li><a href="/story/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        News
+        <div class="news-list">
+            <ul>
+                {% for item in news %}
+                    <li><a href="/story/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        Reviews
+        <div class="reviews-list">
+            <ul>
+                {% for item in reviews %}
+                    <li><a href="/story/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

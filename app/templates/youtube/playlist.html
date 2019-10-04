@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="">
+    <h2>{{ playlist_title }}</h2>
+
+    <div class="playlist-items">
+    {% for playlistItem in playlistItems %}
+        <div class="playlist-item">
+            <a href="https://www.youtube.com/watch?v={{ playlistItem.id}}">{{ playlistItem.title}}</a><br>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ playlistItem.id}}" frameborder="0" allowfullscreen></iframe>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

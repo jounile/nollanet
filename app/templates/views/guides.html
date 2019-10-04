@@ -1,0 +1,20 @@
+<!-- guides.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row guides-list">
+    <ul>
+        {% for item in guides %}
+            <li>
+                <a href="/guide/{{ item.page_id }}">{{ item.header }}</a>
+                {% if session['logged_in'] and session['user_level'] == 1 %}
+                    <a href="/guide/update/{{ item.page_id }}">Edit</a>
+                    <a href="/guide/delete/{{ item.page_id }}">Delete</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

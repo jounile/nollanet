@@ -1,0 +1,209 @@
+html {
+    background-color: #eee;
+}
+
+.flash-messages {
+    background-color: orange;
+}
+.news-bar {
+    height: 40px;
+    padding: 8px 0;
+}
+
+.social-links {
+    text-align: center;
+    float: right;
+}
+
+.clearfix {
+    display: block;
+}
+
+.social-links ul li {
+    display: inline;
+}
+
+.social-links i.fa {
+    color: #495057;
+    transition: color 0.35s;
+    font-size: 16px;
+    padding: 0 6px;
+}
+
+.social-links i.fa {
+    font-size: 23px;
+    padding: 0 10px;
+}
+
+.fa {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.header-bg {
+    background-color: #231F20;
+    /*background-color: #FF6600;*/
+}
+
+.nollanet-logo {
+    width: 100px;
+    height: 100px;
+}
+
+#page-background {
+    background-color: #eee;
+}
+
+#page {
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #eee;
+}
+
+#main {
+    background-color: #fff;
+}
+
+.page-footer {
+    background-color: #fff;
+}
+
+.facebook-like-box {
+    text-align: right;
+    padding-right: 15px;
+    padding-top: 10px;
+}
+
+.fb-like {
+    padding-top: 20px;
+}
+
+.soundcloud, 
+.hangup,
+.rullalautaliitto {
+    width: 200px;
+}
+
+.slot {
+    border: solid 1px orange;
+    background-color:#eee; 
+    height: 200px;
+}
+
+.module-title-wrap {
+
+}
+
+.module-title {
+    border-bottom: 1px solid orange;
+}
+
+.module-title span {
+    background-color: orange;
+    color: #fff;
+}
+
+.module-title span {
+    padding: 7px 12px;
+    display: inline-block;
+}
+
+footer {
+    width: 100%;
+}
+
+.inner-main {
+    padding: 15px;
+}
+
+.footer-copyright {
+    color: #ffffff;
+    background-color: #231F20;
+    margin-bottom: 20px;
+}
+
+.comments {
+
+}
+
+.comment-time {
+    background: #ccc;
+}
+
+.comment {
+    background: #eee;
+    margin: 2px;
+}
+
+.pagination-page-info {
+    padding: .6em;
+    padding-left: 0;
+    width: 40em;
+    margin: .5em;
+    margin-left: 0;
+    font-size: 12px;
+}
+.pagination-page-info b {
+    color: black;
+    background: #6aa6ed;
+    padding-left: 2px;
+    padding: .1em .25em;
+    font-size: 150%;
+}
+
+.navbar {
+    margin: 0px!important;
+    padding: 0px;
+}
+
+.navbar-collapse {
+    padding: 0px!important;
+}
+
+.navbar-nav li {
+
+}
+
+.navbar-nav li a {
+    line-height: 26px;
+    color: #fff;
+    display: block;
+    float: none;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 20px!important;
+    text-transform: uppercase;
+}
+
+.navbar-nav li.active>a
+{
+    background-color: #eee;
+}
+
+.latest-news {
+
+}
+
+.news-item {
+    margin-bottom: 10px;
+}
+
+.news-thumb {
+    padding-left:15px;
+}
+.news-details {
+    padding-left:10px;
+}
+
+.news-desc {
+
+}
+
+.news-date {
+    color: #ccc;
+    margin-top: 10px;
+}

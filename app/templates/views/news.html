@@ -1,0 +1,23 @@
+<!-- news.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="news-list">
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Created</th>
+            <th>Publisher</th>
+        </tr>
+        {% for item in news %}
+            <tr>
+                <td><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></td>
+                <td>{{ item.create_time }}</td>
+                <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+            
+{% endblock %}

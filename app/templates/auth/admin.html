@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="col">
+
+    <h2>Administrators</h2>
+
+    <div class="pages-list">
+        <ul>
+            <li><a href="{{ url_for('pages') }}">Pages</a></li>
+            <li><a href="{{ url_for('insert_media_without_file') }}">Insert media</a></li>
+            
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}

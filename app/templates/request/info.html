@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>Request Information</title>
+    </head>
+    <body>
+        <h1>Request Info</h1>
+        <ul>
+          <li><strong>IP Address:</strong> {{ request.remote_addr }}</li>
+          <li><strong>Location:</strong>{{ client_location.city }} - {{ client_location.region_name }} - {{ client_location.country_name }}</li>
+          <li><strong>Path:</strong> {{ request.path }}</li>
+          <li><strong>Query Params:</strong> {{ request.args }}</li>
+          <li><strong>HTTP Method:</strong> {{ request.method }}</li>
+        </ul>
+        <div>
+          <h2>Headers</h2>
+          {% for header, value in request.headers %}
+            <p><strong>{{header}}:</strong> {{value}}</p>
+          {% endfor %}
+        </div>
+    </body>
+</html>

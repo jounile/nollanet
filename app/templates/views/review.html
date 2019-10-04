@@ -1,0 +1,15 @@
+<!-- reviews.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="reviews-title">
+{% for item in reviews_item %}
+    <h1>{{ item.media_topic }}</h1>
+    <div>{{ item.create_time }}</div>
+    <div>{{ item.media_text|safe }}</div>
+    <div>{{ item.media_desc|safe }}</div>
+{% endfor %}
+</div>
+
+{% endblock %}

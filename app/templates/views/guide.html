@@ -1,0 +1,14 @@
+<!-- guide.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="guide-title">
+{% for item in guide %}
+    <h1>{{ item.header }}</h1>
+    <div>{{ item.text|safe }}</div>
+    <div>{{ item.info|safe }}</div>
+{% endfor %}
+</div>
+
+{% endblock %}

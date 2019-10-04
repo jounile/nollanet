@@ -1,0 +1,152 @@
+<!-- index.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col latest-news">
+        <div class="module-title-wrap"><h4 class="module-title"><span>Latest news</span></h4></div>
+        <div class="row news-item">
+            <div class="news-thumb">
+                <img width="130" height="90" src="https://demo.themegrill.com/colormag-business-magazine/wp-content/uploads/sites/153/2017/12/man-130x90.jpg">
+            </div>
+            <div class="news-details">
+                <div class="news-title">
+                    <b>News 1</b>
+                </div>
+                <div class="news-desc">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                </div>
+                <div class="news-date">
+                    December 12, 2017 Published by: asdf
+                </div>
+            </div>
+        </div>
+        <div class="row news-item">
+            <div class="news-thumb">
+                <img width="130" height="90" src="https://demo.themegrill.com/colormag-business-magazine/wp-content/uploads/sites/153/2017/12/dollar-130x90.jpg">
+            </div>
+            <div class="news-details">
+                <div class="news-title">
+                    <b>News 2</b>
+                </div>
+                <div class="news-desc">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                </div>
+                <div class="news-date">
+                    December 12, 2017 Published by: asdf
+                </div>
+            </div>
+        </div>
+        <div class="row news-item">
+            <div class="news-thumb">
+                <img width="130" height="90" src="https://demo.themegrill.com/colormag-business-magazine/wp-content/uploads/sites/153/2017/12/business-130x90.jpg">
+            </div>
+            <div class="news-details">
+                <div class="news-title">
+                    <b>News 3</b>
+                </div>
+                <div class="news-desc">
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                </div>
+                <div class="news-date">
+                    December 12, 2017 Published by: asdf
+                </div>
+            </div>
+        </div>  
+    </div>
+    <div class="col facebook-like-box">
+        {% include 'facebook-like-box.html' %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        {% include 'facebook-like.html' %}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="skateboarding-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Skateboarding</span></h4></div>
+            <ul>
+                {% for item in photos_skateboarding %}
+                    <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="snowboarding-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Snowboarding</span></h4></div>
+            <ul>
+                {% for item in photos_snowboarding %}
+                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="nollagang-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Nollagang</span></h4></div>
+            <ul>
+                {% for item in photos_nollagang %}
+                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="snowskate-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Snowskate</span></h4></div>
+            <ul>
+                {% for item in photos_snowskate %}
+                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="interviews-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Interviews</span></h4></div>
+            <ul>
+                {% for item in interviews %}
+                    <li><a href="/interview/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+        <div class="news-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>News</span></h4></div>
+            <ul>
+                {% for item in news %}
+                    <li><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="reviews-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Reviews</span></h4></div>
+            <ul>
+                {% for item in reviews %}
+                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        {% include 'facebook-comments.html' %}
+    </div>
+</div>
+
+{% endblock %}
+

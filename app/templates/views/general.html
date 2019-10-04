@@ -1,0 +1,14 @@
+<!-- general.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row general-list">
+    <ul>
+        {% for item in general %}
+            <li><a href="/general/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}

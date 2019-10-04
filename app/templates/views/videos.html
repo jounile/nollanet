@@ -1,0 +1,28 @@
+<!-- videos.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="videos-list">
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <table>
+        <tr>
+            <th>Thumbnail</th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Publisher</th>
+        </tr>
+        {% for item in videos %}
+            <tr>
+                <td><a href="/video/{{ item.media_id }}"><img src="/static/tn/{{ item.media_id }}_50.jpg" /></a></td>
+                <td><a href="/video/{{ item.media_id }}">{{ item.media_topic }}</a></td>
+                <td>{{ item.create_time }}</td>
+                <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
+            </tr>
+        {% endfor %}
+        </table>
+    {{ pagination.links }}
+</div>
+
+{% endblock %}

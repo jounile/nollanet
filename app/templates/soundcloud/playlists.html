@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="col">
+
+<h2>Skeittauksesta podcasts</h2>
+
+{% for pod in pods %}
+
+    <a href="/soundcloud/{{ pod.id }}">{{ pod.title }}</a><br>
+    
+{% endfor %}
+</div>
+
+{% endblock %}

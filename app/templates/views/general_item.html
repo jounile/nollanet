@@ -1,0 +1,15 @@
+<!-- general.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="general-title">
+{% for item in general_item %}
+    <h1>{{ item.media_topic }}</h1>
+    <div>{{ item.create_time }}</div>
+    <div>{{ item.media_text|safe }}</div>
+    <div>{{ item.media_desc|safe }}</div>
+{% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="col">
+
+<h2>Facebook Nolla.net</h2>
+
+<p><a href="https://www.facebook.com/Nolla.net">{{ infos.name }}</a></p>
+<p>{{ infos.about }}</p>
+<p>{{ infos.description }}</p>
+
+{% for post in infos.posts.data %}
+    {% if(post.is_published) %}
+        <div class="" style="padding: 10px; border: solid 1px #eee; margin-bottom:10px;">
+            <div style="float:left; margin-right: 10px; width: 130px;">
+                <a href="{{ post.permalink_url }}" target="_blank">
+                    <img src="{{ post.picture }}" alt="{{ post.id }}" />
+                </a>
+            </div>
+            <div>
+                <div>{{ post.created_time }}</div>
+                <div>{{ post.message }}</div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    {% endif %}
+{% endfor %}
+</div>
+
+{% endblock %}

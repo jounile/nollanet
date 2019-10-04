@@ -1,0 +1,21 @@
+
+<div class="flash-messages" background="yellow">
+	{% for message in get_flashed_messages() %}
+		<div class="flash">{{ message }}</div>
+	{% endfor %}
+</div>
+
+<div class="news-bar">
+	<div class="social-links clearfix">
+		<ul>
+			<li><a href="https://www.facebook.com/Nolla.net/" target="_blank"><i class="fa fa-facebook"></i></a></li>
+			<li><a href="https://www.twitter.com/nollanet" target="_blank"><i class="fa fa-twitter"></i></a></li>
+			<li><a href="https://www.instagram.com/nollanettv/" target="_blank"><i class="fa fa-instagram"></i></a></li>
+			<li><a href="https://www.youtube.com/user/n0llanet" target="_blank"><i class="fa fa-youtube"></i></a></li>
+		</ul>
+	</div>
+</div>
+
+<div class="header-bg">
+	<img src="/static/gfx/nollanet_logo.jpeg" class="nollanet-logo" />
+</div>

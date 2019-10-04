@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="">
+Channel name: n0llanet<br>
+Channel ID: {{ channelId }}<br>
+
+<h2>Youtube playlists</h2>
+
+{% for playlist in playlists %}
+
+    <a href="/youtube/playlist/{{ playlist.id }}">{{ playlist.title }}</a><br>
+    <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list={{ playlist.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe><br><br>-->
+
+{% endfor %}
+</div>
+
+{% endblock %}

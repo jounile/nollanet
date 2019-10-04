@@ -1,0 +1,16 @@
+<!-- other.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="col">
+    <div class="other-list">
+        <ul>
+            {% for item in other %}
+                <li><a href="/other/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+{% endblock %}

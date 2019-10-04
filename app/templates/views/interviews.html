@@ -1,0 +1,19 @@
+<!-- interviews.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Interviews</h1>
+<div class="interviews-list">
+    <table>
+        {% for item in interviews %}
+            <tr>
+                <td><a href="/interview/{{ item.media_id }}">{{ item.media_topic }}</a></td>
+                <td>{{ item.create_time }}</td>
+                <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}

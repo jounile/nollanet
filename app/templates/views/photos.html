@@ -1,0 +1,49 @@
+<!-- photos.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="photos-list">
+    {{ pagination.info }}
+    {{ pagination.links }}
+    <table>  
+        <tr>
+            <td>ID</td>
+            <td>Photo</td>
+            <td>Description</td>
+            <td>Created</td>
+            <td>Published</td>
+            {% if session['logged_in'] %}
+            <td>Actions</td>
+            {% endif %}
+        </tr>
+        {% for photo in photos %}
+        <tr>
+            <td>{{ loop.index + pagination.skip }}</td>
+            <td>
+                <a href="/photo/{{ photo.media_id }}">
+                    <img src="/static/tn/{{ photo.media_id }}_50.jpg" />
+                </a>
+            </td>
+            <td>
+                <a href="/photo/{{ photo.media_id }}">
+                    {{ photo.media_topic }}
+                </a>
+            </td>
+            <td>{{ photo.create_time }}</td>
+            <td>[<a href="/user/{{ photo.owner }}">{{ photo.owner }}</a>]</td>
+            {% if session['logged_in'] %}
+            <td>
+                {% if session['user_level'] == 1 %}
+                <a href="/media/update/{{ photo.media_id }}">Edit</a>
+                <a href="/api/media/delete/{{ photo.media_id }}">Delete</a>
+                {% endif %}
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </table>
+    {{ pagination.links }}
+</div>
+
+{% endblock %}

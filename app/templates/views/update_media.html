@@ -1,0 +1,18 @@
+<!-- update_media.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="col">
+<form action = "/media/update/{{ result[0] }}" method = "POST">
+    <p>media_type <input type="number" name="media_type" value="{{ result[1] }}" /></p>
+    <p>media_genre <input type="number" name="media_genre" value="{{ result[2] }}" /></p>
+    <p>story_type <input type="number" name="story_type" value="{{ result[3] }}" /></p>
+    <p>media_topic <input type="text" name="media_topic" value="{{ result[4] }}" /></p>
+    <p>media_text <input type="text" name="media_text" value="{{ result[5] }}" /></p>
+    <p>media_desc <input type="text" name="media_desc" value="{{ result[6] }}" /></p>
+    <p><input type = "submit" value = "submit" /></p>
+ </form>
+</div>
+
+ {% endblock %}

@@ -1,0 +1,17 @@
+<!-- story.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="page-title">
+{% for item in story %}
+    <div>media_id: {{ item.media_id }}</div>
+    <div>owner: <a href="/user/{{ item.owner }}">{{ item.owner }}</a></div>
+    <div>create_time: {{ item.create_time }}</div>
+    <div>{{ item.media_topic }}</div>
+    <div>{{ item.media_text|safe }}</div>
+    <div>{{ item.owner }}</div>
+{% endfor %}
+</div>
+
+{% endblock %}

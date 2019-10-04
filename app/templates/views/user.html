@@ -1,0 +1,135 @@
+<!-- users.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="col">
+    <table class="table">
+        <tr>
+            <th scope="col">property</th>
+            <th scope="col">value</th>
+        </tr>
+        {% if user[0].username %}
+        <tr>
+            <th scope="row">username</th>
+            <td scope="row">{{ user[0].username }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].name %}
+        <tr>
+            <th scope="row">name</th>
+            <td scope="row">{{ user[0].name }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].bornyear %}
+        <tr>
+            <th scope="row">bornyear</th>
+            <td scope="row">{{ user[0].bornyear }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].email %}
+        <tr>
+            <th scope="row">email</th>
+            <td scope="row">{{ user[0].email }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].email2 %}
+        <tr>
+            <th scope="row">email2</th>
+            <td scope="row">{{ user[0].email2 }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].homepage %}
+        <tr>
+            <th scope="row">homepage</th>
+            <td scope="row">{{ user[0].homepage }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].info %}
+        <tr>
+            <th scope="row">info</th>
+            <td scope="row">{{ user[0].info }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].hobbies %}
+        <tr>
+            <th scope="row">hobbies</th>
+            <td scope="row">{{ user[0].hobbies }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].sukupuoli %}
+        <tr>
+            <th scope="row">sukupuoli</th>
+            <td scope="row">{{ user[0].sukupuoli }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].icq %}
+        <tr>
+            <th scope="row">icq</th>
+            <td scope="row">{{ user[0].icq }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].last_login %}
+        <tr>
+            <th scope="row">last_login</th>
+            <td scope="row">{{ user[0].last_login }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].chat %}
+        <tr>
+            <th scope="row">chat</th>
+            <td scope="row">{{ user[0].chat }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].blogs %}
+        <tr>
+            <th scope="row">blogs</th>
+            <td scope="row">{{ user[0].blogs }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].messenger %}
+        <tr>
+            <th scope="row">messenger</th>
+            <td scope="row">{{ user[0].messenger }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].myspace %}
+        <tr>
+            <th scope="row">myspace</th>
+            <td scope="row">{{ user[0].myspace }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].rss %}
+        <tr>
+            <th scope="row">rss</th>
+            <td scope="row">{{ user[0].rss }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].youtube %}
+        <tr>
+            <th scope="row">youtube</th>
+            <td scope="row">{{ user[0].youtube }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].ircgalleria %}
+        <tr>
+            <th scope="row">ircgalleria</th>
+            <td scope="row">{{ user[0].ircgalleria }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].avatar %}
+        <tr>
+            <th scope="row">avatar</th>
+            <td scope="row">{{ user[0].avatar }}</td>
+        </tr>
+        {% endif %}
+        {% if user[0].flickr_username %}
+        <tr>
+            <th scope="row">flickr_username</th>
+            <td scope="row">{{ user[0].flickr_username }}</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+
+{% endblock %}

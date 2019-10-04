@@ -1,0 +1,30 @@
+<!-- photo.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col">
+        <div class="photo">
+            <img src="/static/tn/{{ photo.media_id }}_400.jpg" />
+        </div>
+    </div>
+    <div class="col">
+        ID: {{ photo.media_id }}<br>
+        Owner: <a href="/user/{{ photo.owner }}">{{ photo.owner }}</a><br>
+        Topic: {{ photo.media_topic }}<br>
+        Text: {{ photo.media_text }}<br>
+        Description: {{ photo.media_desc }}<br>
+        Created: {{ photo.create_time }}<br>
+        <div class="comments">
+            {% for comment in comments %}
+                <div class="comment">
+                    <div class="comment-time">{{ comment.timestamp }} {{ comment.username }}</div>
+                    <div class="comment-text">{{ comment.comment }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,19 @@
+<!-- reviews.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Reviews</h1>
+<div class="reviews-list">
+    <table>
+        {% for item in reviews %}
+            <tr>
+                <td><a href="/reviews/{{ item.media_id }}">{{ item.media_topic }}</a></td>
+                <td>{{ item.create_time }}</td>
+                <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
+            </tr>
+        {% endfor %}
+        </table>
+</div>
+
+{% endblock %}
