@@ -211,6 +211,7 @@ footer {
 .nollagang-list,
 .snowskate-list,
 .interviews-list,
-.reviews-list {
-    min-width: 180px;
+.reviews-list,
+.facebook-like-box {
+    min-width: 300px;
 }
