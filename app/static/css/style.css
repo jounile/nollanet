@@ -184,10 +184,6 @@ footer {
     background-color: #eee;
 }
 
-.latest-news {
-
-}
-
 .news-item {
     margin-bottom: 10px;
 }
@@ -205,4 +201,16 @@ footer {
 
 .news-date {
     color: #ccc;
+}
+
+
+/* adjusting column width for mobile phones */
+.latest-news,
+.skateboarding-list,
+.snowboarding-list,
+.nollagang-list,
+.snowskate-list,
+.interviews-list,
+.reviews-list {
+    min-width: 180px;
 }
