@@ -9,15 +9,14 @@
         {% for item in news[:3] %}
             <div class="row news-item">
                 <div class="news-thumb">
-                    <!--<img width="130" height="90" src="https://demo.themegrill.com/colormag-business-magazine/wp-content/uploads/sites/153/2017/12/man-130x90.jpg">-->
-                    <img width="130" height="90" src="">
+                    <img width="130" height="100" src="">
                 </div>
                 <div class="news-details">
                     <div class="news-title">
                         <b><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></b>
                     </div>
-                    <div class="news-desc">
-                        {{ item.media_desc[:60] }}
+                    <div class="news-desc" style="max-width: 430px;">
+                        {{ item.media_desc }}
                     </div>
                     <div class="news-date">
                         {{ item.create_time }} Published by: {{ item.owner }}
