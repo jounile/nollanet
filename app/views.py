@@ -49,8 +49,6 @@ def home():
     interviews = requests.get(url=request.url_root + "api/stories/interviews?newest=10").json()
     news = requests.get(url=request.url_root + "api/stories/news?newest=10").json()
     reviews = requests.get(url=request.url_root + "api/stories/reviews?newest=10").json()
-    general = requests.get(url=request.url_root + "api/stories/general?newest=10").json()
-    other = requests.get(url=request.url_root + "api/stories/other?newest=10").json()
     photos_skateboarding = requests.get(url=request.url_root + "api/photos/skateboarding").json()
     photos_snowboarding = requests.get(url=request.url_root + "api/photos/snowboarding").json()
     photos_nollagang = requests.get(url=request.url_root + "api/photos/nollagang").json()
@@ -59,8 +57,6 @@ def home():
         interviews=interviews, 
         news=news, 
         reviews=reviews,
-        general=general,
-        other=other,
         photos_skateboarding=photos_skateboarding,
         photos_snowboarding=photos_snowboarding,
         photos_nollagang=photos_nollagang,
@@ -119,8 +115,6 @@ def view_other_item(other_id):
 def view_videos():
     videos = requests.get(url=request.url_root + "api/videos").json()
     return render_template('views/videos.html', videos=videos)
-
-
 
 @app.route('/video/<string:media_id>')
 def view_video(media_id):
