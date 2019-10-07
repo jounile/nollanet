@@ -74,3 +74,5 @@ app/static/tn/*
 # db_dumps
 db_dumps/*
 
+# environment vars
+env.sh

@@ -47,7 +47,7 @@ SECRET_KEY = ""
 
 ## Images and videos
 ```bash
-AZURE_BLOB_STORAGE = ""
+AZURE_BLOB = ""
 ```
 
 ## Facebook
