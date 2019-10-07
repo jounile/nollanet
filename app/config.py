@@ -37,3 +37,6 @@ class DefaultConfig(object):
 
     # Youtube
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+
+    # Azure Blob Storage
+    AZURE_BLOB = os.getenv('AZURE_BLOB')

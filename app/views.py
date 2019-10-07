@@ -179,6 +179,8 @@ def view_photo(media_id):
         'media_text': item['media_text'],
         'media_desc': item['media_desc'],
         'owner': item['owner'],
+        'tn': app.config.get("AZURE_BLOB") + '/thumbs/' + str(media_id) + '_50.jpg',
+        'img': app.config.get("AZURE_BLOB") + '/thumbs/' + str(media_id) + '_400.jpg',
         'create_time': utils.convertDateTime(item['create_time'])
     }
 

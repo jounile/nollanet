@@ -16,9 +16,9 @@ $ sudo apt-get install python3-dev
 $ pip install -r requirements.txt
 ```
 
-## Database connection params
+Add to environment vars
 
-Add this in the /instance/config.py file
+## Database connection params
 ```text
 MYSQL_HOST = '127.0.0.1'
 MYSQL_USER = ''
@@ -28,8 +28,6 @@ MYSQL_PORT = 3306
 ```
 
 ## ReCaptcha
-
-Add this in the /instance/config.py file
 ```bash
 RECAPTCHA_USE_SSL = False
 RECAPTCHA_PUBLIC_KEY = ''
@@ -38,9 +36,18 @@ RECAPTCHA_OPTIONS = {'theme':'black'}
 ```
 
 ## Youtube
-Add this in the /instance/config.py file
 ```bash
 GOOGLE_API_KEY = ""
+```
+
+## Session handling
+```bash
+SECRET_KEY = ""
+```
+
+## Images and videos
+```bash
+AZURE_BLOB_STORAGE = ""
 ```
 
 ## Facebook

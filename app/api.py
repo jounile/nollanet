@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
 
@@ -130,11 +131,7 @@ def get_photos_by_genre(genre):
     photos = []
 
     for item in result:
-        media_id = item[0]
-        media_topic = item[1]
-        create_time = item[2]
-        owner = item[3]
-        photoJson = utils.create_photo_json(media_id, media_topic, create_time, owner)
+        photoJson = utils.create_photo_json(item[0], item[1], item[2], item[3])
         photos.append(photoJson)
     return jsonify(photos)
 
@@ -157,6 +154,8 @@ def get_videos_by_genre(genre):
         media_topic = item[1].encode('utf-8')
         create_time = item[2]
         owner = item[3]
+        tn = app.config.get("AZURE_BLOB") + '/thumbs/' + str(item[0]) + '_50.jpg'
+        video = app.config.get("AZURE_BLOB") + '/flv/' + str(item[0]) + '.flv'
         videoJson = utils.create_video_json(media_id, media_topic, create_time, owner)
         videos.append(videoJson)
     return jsonify(videos)

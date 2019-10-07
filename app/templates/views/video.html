@@ -11,7 +11,7 @@
         <div>{{ item.media_desc }}</div>
         
         <div class="videoplayer">
-            <embed src="/static/flash_flv_player/flvplayer.swf" width="450" height="350" allowfullscreen="true" flashvars="&file=/static/flv/{{ item.media_id }}.flv&height=350&image=/static/flv/{{ item.media_id }}.png&width=450&location=/static/flash_flv_player/flvplayer.swf" />
+            <embed src="/static/flash_flv_player/flvplayer.swf" width="450" height="350" allowfullscreen="true" flashvars="&file={{ item.video }}&height=350&image={{ item.media_id }}.png&width=450&location=/static/flash_flv_player/flvplayer.swf" />
             <p class="getflash"><a href="http://www.macromedia.com/go/getflashplayer">Download Flash Player</a></p>
         </div>
 

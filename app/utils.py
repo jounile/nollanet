@@ -75,7 +75,9 @@ def create_photo_json(media_id, media_topic, create_time, owner):
         'media_id': media_id,
         'media_topic': media_topic,
         'create_time': create_time.strftime('%d/%m/%Y %H:%M'),
-        'owner': owner
+        'owner': owner,
+        'tn': app.config.get("AZURE_BLOB") + '/thumbs/' + str(media_id) + '_50.jpg',
+        'img': app.config.get("AZURE_BLOB") + '/thumbs/' + str(media_id) + '_400.jpg',
         }
     return photoJson
 
@@ -85,7 +87,8 @@ def create_video_json(media_id, media_topic, create_time, owner):
         'media_topic': media_topic,
         'create_time': create_time.strftime('%d/%m/%Y %H:%M'),
         'owner': owner,
-        'image': "/static/flv/" + str(media_id) + ".flv" 
+        'tn': app.config.get("AZURE_BLOB") + '/thumbs/' + str(media_id) + '_50.jpg',
+        'video': app.config.get("AZURE_BLOB") + '/flv/' + str(media_id) + '.flv'
         }
     return videoJson
 
