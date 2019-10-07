@@ -1,8 +1,17 @@
 import os
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
+from urlparse import urljoin
 
 from . import app, db, utils, auto
+
+@app.endpoint('static')
+def static(filename):
+    static_url = app.config.get('AZURE_BLOB')
+    if static_url:
+        #print('redirect: ', urljoin(static_url, filename))
+        return redirect(urljoin(static_url, filename))
+    return app.send_static_file(filename)
 
 @app.route("/api/data")
 @auto.doc()
@@ -154,8 +163,8 @@ def get_videos_by_genre(genre):
         media_topic = item[1].encode('utf-8')
         create_time = item[2]
         owner = item[3]
-        tn = app.config.get("AZURE_BLOB") + '/thumbs/' + str(item[0]) + '_50.jpg'
-        video = app.config.get("AZURE_BLOB") + '/flv/' + str(item[0]) + '.flv'
+        tn = '/thumbs/' + str(item[0]) + '_50.jpg'
+        video = '/flv/' + str(item[0]) + '.flv'
         videoJson = utils.create_video_json(media_id, media_topic, create_time, owner)
         videos.append(videoJson)
     return jsonify(videos)
