@@ -15,7 +15,11 @@
         </tr>
         {% for item in videos %}
             <tr>
-                <td><a href="/video/{{ item.media_id }}"><img src="{{ url_for('static', filename='thumbs/' + item['tn']) }}" /></a></td>
+                <td>
+                    <a href="/video/{{ item.media_id }}">
+                        <img src="{{ url_for('cdn', filename='thumbs/' + item['tn']) }}" />
+                    </a>
+                </td>
                 <td><a href="/video/{{ item.media_id }}">{{ item.media_topic }}</a></td>
                 <td>{{ item.create_time }}</td>
                 <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>

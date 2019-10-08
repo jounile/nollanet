@@ -5,11 +5,11 @@ from urlparse import urljoin
 
 from . import app, db, utils, auto
 
-@app.endpoint('static')
-def static(filename):
+@app.route('/cdn/<path:filename>')
+def cdn(filename):
     static_url = app.config.get('AZURE_BLOB')
     if static_url:
-        #print('redirect: ', urljoin(static_url, filename))
+        print('redirect: ', urljoin(static_url, filename))
         return redirect(urljoin(static_url, filename))
     return app.send_static_file(filename)
 

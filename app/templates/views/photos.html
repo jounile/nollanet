@@ -22,7 +22,7 @@
             <td>{{ loop.index + pagination.skip }}</td>
             <td>
                 <a href="/photo/{{ photo.media_id }}">
-                    <img src="{{ url_for('static', filename='thumbs/' + photo['tn']) }}" />
+                    <img src="{{ url_for('cdn', filename='thumbs/' + photo['tn']) }}" />
                 </a>
             </td>
             <td>
