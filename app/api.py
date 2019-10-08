@@ -1,8 +1,8 @@
 import os
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
-from urllib.parse import urljoin
-#from urlparse import urljoin # Python 2.7
+#from urllib.parse import urljoin
+from urlparse import urljoin # Python 2.7
 
 from . import app, db, utils, auto
 
