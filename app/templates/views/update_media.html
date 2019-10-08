@@ -3,16 +3,29 @@
 
 {% block content %}
 
-<div class="col">
 <form action = "/media/update/{{ result[0] }}" method = "POST">
-    <p>media_type <input type="number" name="media_type" value="{{ result[1] }}" /></p>
-    <p>media_genre <input type="number" name="media_genre" value="{{ result[2] }}" /></p>
-    <p>story_type <input type="number" name="story_type" value="{{ result[3] }}" /></p>
-    <p>media_topic <input type="text" name="media_topic" value="{{ result[4] }}" /></p>
-    <p>media_text <input type="text" name="media_text" value="{{ result[5] }}" /></p>
-    <p>media_desc <input type="text" name="media_desc" value="{{ result[6] }}" /></p>
-    <p><input type = "submit" value = "submit" /></p>
+
+    <input type="hidden" name="media_id" value="{{ result[0] }}" />
+    <input type="hidden" name="media_type" value="{{ result[1] }}" />
+    <input type="hidden" name="story_type" value="{{ result[2] }}" />
+
+    <label for="media_topic">Title</label>
+    <div><input type="text" name="media_topic" size="100" value="{{ result[3] }}" /></div>
+
+    <label for="media_text">Text</label>
+    <div><textarea type="text" name="media_text" cols="100" rows="10">{{ result[4] }}</textarea></div>
+
+    <label for="media_description">Description</label>
+    <div><textarea type="text" name="media_desc" cols="100" rows="10">{{ result[5] }}</textarea></div>
+
+    <label for="owner">Owner</label>
+    <div>{{ result[6] }}</div>
+
+    <label for="create_time">Created</label>
+    <div>{{ result[7] }}</div>
+
+    <div><input type = "submit" value="submit" /></div>
  </form>
-</div>
+
 
  {% endblock %}

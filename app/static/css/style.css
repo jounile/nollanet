@@ -188,15 +188,12 @@ footer {
     margin-bottom: 10px;
 }
 
-.news-thumb {
-    padding-left:15px;
-}
 .news-details {
-    padding-left:10px;
+    padding-left:20px;
 }
 
 .news-desc {
-
+    max-width: 600px;
 }
 
 .news-date {

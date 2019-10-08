@@ -8,18 +8,15 @@
         <div class="module-title-wrap"><h4 class="module-title"><span>Latest news</span></h4></div>
         {% for item in news[:3] %}
             <div class="row news-item">
-                <div class="news-thumb">
-                    <img width="130" height="100" src="">
-                </div>
                 <div class="news-details">
                     <div class="news-title">
                         <b><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></b>
                     </div>
-                    <div class="news-desc" style="max-width: 430px;">
+                    <div class="news-desc">
                         {{ item.media_desc }}
                     </div>
                     <div class="news-date">
-                        {{ item.create_time }} Published by: {{ item.owner }}
+                        {{ item.create_time }} published by: {{ item.owner }}
                     </div>
                 </div>
             </div>

@@ -200,29 +200,34 @@ def view_photo(media_id):
 @auto.doc()
 def update_media_without_file(media_id):
     if request.method == 'POST':
+        media_id = request.form.get('media_id')
         media_type = request.form.get('media_type')
-        media_genre = request.form.get('media_genre')
         story_type = request.form.get('story_type')
         media_topic = request.form.get('media_topic')
         media_text = request.form.get('media_text')
         media_desc = request.form.get('media_desc')
-        owner = 'owner'
-        create_time = get_now()
-        lang_id = 2
-        owner = "owner"
 
-        sql = "UPDATE media_table SET media_type=%s, media_genre=%s, story_type=%s, media_topic=%s, media_text=%s, media_desc=%s, owner=%s, create_time=%s, lang_id=%s WHERE media_id=%s AND owner=%s"
+        sql = "UPDATE media_table SET media_topic=%s, media_text=%s, media_desc=%s WHERE media_id=%s"
         cursor = db.connection.cursor()
-        cursor.execute(sql, (media_type, media_genre, story_type, media_topic, media_text, media_desc, owner, create_time, lang_id, media_id, owner))
+        cursor.execute(sql, (media_topic, media_text, media_desc, media_id))
+        db.connection.commit()
         if(media_type == "1"):
             return redirect(url_for("view_photo", media_id=media_id)) 
-        elif(media_type == "2"):
-            return redirect(url_for("view_video", media_id=media_id))
+        elif(media_type == "6"): 
+            if(story_type == "0"):
+                return redirect(url_for("view_video", media_id=media_id))
+        elif(media_type == "5"):
+            if(story_type == "2"):
+                return redirect(url_for("view_reviews_item", review_id=media_id))
+            elif(story_type == "3"):
+                return redirect(url_for("view_interviews_item", interview_id=media_id))
+            elif(story_type == "4"):
+                return redirect(url_for("view_news_item", news_id=media_id))
         else:
             return redirect(url_for("home"))
     else:
         cursor = db.connection.cursor()
-        cursor.execute("SELECT * FROM media_table WHERE media_id=%s", (media_id, ))
+        cursor.execute("SELECT media_id, media_type, story_type, media_topic, media_text, media_desc, owner, create_time FROM media_table WHERE media_id=%s", (media_id, ))
         result = cursor.fetchone()
         return render_template("views/update_media.html", result=result)
 
@@ -237,7 +242,7 @@ def insert_media_without_file():
         media_text = request.form.get('media_text')
         media_desc = request.form.get('media_desc')
         owner = 'owner'
-        create_time = get_now()
+        create_time = utils.get_now()
         lang_id = 2
         
         sql = "INSERT INTO media_table (media_type, media_genre, story_type, media_topic, media_text, media_desc, owner, create_time, lang_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"

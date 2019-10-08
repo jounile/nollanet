@@ -9,8 +9,8 @@
             <li>
                 <a href="/guide/{{ item.page_id }}">{{ item.header }}</a>
                 {% if session['logged_in'] and session['user_level'] == 1 %}
-                    <a href="/guide/update/{{ item.page_id }}">Edit</a>
-                    <a href="/guide/delete/{{ item.page_id }}">Delete</a>
+                    <a href="/general/update/{{ item.page_id }}">Edit</a>
+                    <a href="/general/delete/{{ item.page_id }}">Delete</a>
                 {% endif %}
             </li>
         {% endfor %}

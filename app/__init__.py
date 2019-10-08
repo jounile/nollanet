@@ -57,11 +57,8 @@ nav.Bar('top', [
     nav.Item('Stories', 'stories', items=[
         nav.Item('Interviews', 'interviews'),
         nav.Item('Reviews', 'reviews'),
-        #nav.Item('General', 'general'),
-        #nav.Item('Other', 'other'),
     ]),
     nav.Item('Guides', 'guides'),
-    #nav.Item('About', 'about'),
 ])
 
 from . import api, views
