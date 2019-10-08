@@ -241,19 +241,50 @@ def insert_media_without_file():
         media_topic = request.form.get('media_topic')
         media_text = request.form.get('media_text')
         media_desc = request.form.get('media_desc')
-        owner = 'owner'
+        owner = ""
         create_time = utils.get_now()
         lang_id = 2
-        
+
+        print("media_type", media_type)
+        print("media_genre", media_genre)
+        print("story_type", story_type)
+        print("media_topic", media_topic)
+        print("media_text", media_text)
+        print("media_desc", media_desc)
+        print("owner", owner)
+        print("lang_id", lang_id)
+
         sql = "INSERT INTO media_table (media_type, media_genre, story_type, media_topic, media_text, media_desc, owner, create_time, lang_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
         cursor = db.connection.cursor()
         cursor.execute(sql, (media_type, media_genre, story_type, media_topic, media_text, media_desc, owner, create_time, lang_id))
+        db.connection.commit()
         media_id = cursor.lastrowid
+        print("media_id", media_id)
         if(media_type == "1"):
             return redirect(url_for("view_photo", media_id=media_id)) 
-        elif(media_type == "2"):
-            return redirect(url_for("view_video", media_id=media_id))
+        elif(media_type == "6"): 
+            if(story_type == "0"):
+                return redirect(url_for("view_video", media_id=media_id))
+        elif(media_type == "5"):
+            if(story_type == "2"):
+                return redirect(url_for("view_reviews_item", review_id=media_id))
+            elif(story_type == "3"):
+                return redirect(url_for("view_interviews_item", interview_id=media_id))
+            elif(story_type == "4"):
+                return redirect(url_for("view_news_item", news_id=media_id))
         else:
             return redirect(url_for("home"))
     else:
         return render_template("views/add_media.html")
+
+@app.route("/media/delete/<media_id>")
+@auto.doc()
+def delete_media(media_id):
+    requests.get(url=request.url_root + "api/media/delete/" + media_id)
+    return redirect(url_for("home"))
+
+@app.route("/media/latest/")
+@auto.doc()
+def media_latest():
+    latest = requests.get(url=request.url_root + "api/latest").json()
+    return render_template("views/latest_media.html", latest=latest)

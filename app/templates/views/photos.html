@@ -6,15 +6,16 @@
 <div class="photos-list">
     {{ pagination.info }}
     {{ pagination.links }}
-    <table>  
+    <table width="100%">
         <tr>
-            <td>ID</td>
-            <td>Photo</td>
-            <td>Description</td>
-            <td>Created</td>
-            <td>Published</td>
+            <th>ID</th>
+            <th>Photo</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Published</th>
             {% if session['logged_in'] %}
-            <td>Actions</td>
+                <th></th>
+                <th></th>
             {% endif %}
         </tr>
         {% for photo in photos %}

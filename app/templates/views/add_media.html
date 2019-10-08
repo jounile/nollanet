@@ -4,13 +4,54 @@
 {% block content %}
 
 <form action = "{{ url_for('insert_media_without_file') }}" method = "POST">
-    <p>media_type <input type="number" name="media_type" /></p>
-    <p>media_genre <input type="number" name="media_genre" /></p>
-    <p>story_type <input type="number" name="story_type" /></p>
-    <p>media_topic <input type="text" name="media_topic" /></p>
-    <p>media_text <input type="text" name="media_text" /></p>
-    <p>media_desc <input type="text" name="media_desc" /></p>
-    <p><input type = "submit" value = "submit" /></p>
- </form>
+    <fieldset>
+        <legend>New media:</legend>
+            <label for="media_type">Media type</label>
+            <div>
+                <select name="media_type">
+                    <option value="1">Photo</option>
+                    <option value="6">Video</option>
+                    <option value="5">Stories</option>
+                    <option value="">None</option>
+                </select>
+            </div>
 
- {% endblock %}
+            <label for="story_type">Story type</label>
+            <div>
+                <select name="story_type">
+                    <option value="2">Review</option>
+                    <option value="3">Interview</option>
+                    <option value="4">News</option>
+                    <option value="">None</option>
+                </select>
+            </div>
+
+            <label for="media_genre">Media genre</label>
+            <div>
+                <select name="media_genre">
+                    <option value="1">Skateboarding</option>
+                    <option value="2">Snowboarding</option>
+                    <option value="10">Nollagang</option>
+                    <option value="11">Snowskate</option>
+                    <option value="">None</option>
+                </select>
+            </div>
+
+            <label for="media_topic">Media title</label>
+            <div><input type="text" size="100" name="media_topic" /></div>
+
+            <label for="media_text">Media text</label>
+            <div>
+                <textarea type="text" name="media_text" cols="100" rows="10"></textarea>
+            </div>
+
+            <label for="media_desc">Media description</label>
+            <div>
+                <textarea type="text" name="media_desc" cols="100" rows="10"></textarea>
+            </div>
+
+            <input type = "submit" value = "submit" /></p>
+    </fieldset>
+</form>
+
+{% endblock %}

@@ -5,7 +5,16 @@
 
 <h1>Interviews</h1>
 <div class="interviews-list">
-    <table>
+    <table width="100%">
+        <tr>
+            <th>Topic</th>
+            <th>Created</th>
+            <th>Owner</th>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <th></th>
+                <th></th>
+            {% endif %}
+        </tr>
         {% for item in interviews %}
             <tr>
                 <td><a href="/interview/{{ item.media_id }}">{{ item.media_topic }}</a></td>

@@ -201,10 +201,18 @@ def api_video(media_id):
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/media/delete/<media_id>')
-def delete_photo(media_id):
+def api_delete_media(media_id):
     # TODO: Check owner = username
     cursor = db.connection.cursor()
-    cursor.execute("DELETE FROM media_table WHERE media_id=%s", (media_id, ))
+    sql = "DELETE FROM media_table WHERE media_id=%s"
+    cursor.execute(sql, (media_id, ))
     db.connection.commit()
     return redirect(url_for("home"))
 
+@app.route('/api/latest')
+@auto.doc()
+def api_latest():
+    cursor = db.connection.cursor()
+    cursor.execute("SELECT media_id, media_type, story_type, media_topic, media_text, media_desc, owner, create_time FROM media_table ORDER BY create_time DESC LIMIT 10")
+    result = cursor.fetchall()
+    return utils.query_result_to_json(cursor, result)
