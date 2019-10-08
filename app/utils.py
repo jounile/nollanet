@@ -75,9 +75,7 @@ def create_photo_json(media_id, media_topic, create_time, owner):
         'media_id': media_id,
         'media_topic': media_topic,
         'create_time': create_time.strftime('%d/%m/%Y %H:%M'),
-        'owner': owner,
-        'tn': str(media_id) + '_50.jpg',
-        'img': str(media_id) + '_400.jpg',
+        'owner': owner
         }
     return photoJson
 
@@ -86,9 +84,7 @@ def create_video_json(media_id, media_topic, create_time, owner):
         'media_id': media_id,
         'media_topic': media_topic,
         'create_time': create_time.strftime('%d/%m/%Y %H:%M'),
-        'owner': owner,
-        'tn': str(media_id) + '_50.jpg',
-        'video': str(media_id) + '.flv'
+        'owner': owner
         }
     return videoJson
 

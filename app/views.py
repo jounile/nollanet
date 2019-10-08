@@ -118,7 +118,16 @@ def view_videos():
 
 @app.route('/video/<string:media_id>')
 def view_video(media_id):
-    video = requests.get(url=request.url_root + "api/video/" + media_id).json()
+    result = requests.get(url=request.url_root + "api/video/" + media_id).json()
+    item = result[0]
+    video = {
+        'media_id': item['media_id'],
+        'media_topic': item['media_topic'],
+        'media_text': item['media_text'],
+        'media_desc': item['media_desc'],
+        'owner': item['owner'],
+        'create_time': utils.convertDateTime(item['create_time'])
+    }
     return render_template('views/video.html', video=video)
 
 @app.route('/youtube/')
@@ -179,8 +188,6 @@ def view_photo(media_id):
         'media_text': item['media_text'],
         'media_desc': item['media_desc'],
         'owner': item['owner'],
-        'tn': str(media_id) + '_50.jpg',
-        'img': str(media_id) + '_400.jpg',
         'create_time': utils.convertDateTime(item['create_time'])
     }
 

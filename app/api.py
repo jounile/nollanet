@@ -1,7 +1,8 @@
 import os
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
-from urlparse import urljoin
+from urllib.parse import urljoin
+#from urlparse import urljoin # Python 2.7
 
 from . import app, db, utils, auto
 
@@ -163,8 +164,6 @@ def get_videos_by_genre(genre):
         media_topic = item[1].encode('utf-8')
         create_time = item[2]
         owner = item[3]
-        tn = '/thumbs/' + str(item[0]) + '_50.jpg'
-        video = '/flv/' + str(item[0]) + '.flv'
         videoJson = utils.create_video_json(media_id, media_topic, create_time, owner)
         videos.append(videoJson)
     return jsonify(videos)

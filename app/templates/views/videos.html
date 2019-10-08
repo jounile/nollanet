@@ -17,7 +17,7 @@
             <tr>
                 <td>
                     <a href="/video/{{ item.media_id }}">
-                        <img src="{{ url_for('cdn', filename='thumbs/' + item['tn']) }}" />
+                        <img src="{{ url_for('cdn', filename='thumbs/' + item['media_id']|string + '_50.jpg') }}" />
                     </a>
                 </td>
                 <td><a href="/video/{{ item.media_id }}">{{ item.media_topic }}</a></td>

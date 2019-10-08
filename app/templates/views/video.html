@@ -4,25 +4,24 @@
 {% block content %}
 
 <div class="page-title">
-    {% for item in video %}
 
-        <div><h1>{{ item.media_topic }}</h1></div>
-        <div>{{ item.create_time }}</div>
-        <div>{{ item.media_desc }}</div>
-        
-        <div class="videoplayer">
-            <embed src="/static/flash_flv_player/flvplayer.swf"
-                width="450"
-                height="350"
-                allowfullscreen="true"
-                flashvars="&file=&height=350&image=&width=450&location=/static/flash_flv_player/flvplayer.swf" />
-
-            <p class="getflash">
-                <a href="http://www.macromedia.com/go/getflashplayer">Download Flash Player</a>
-            </p>
-        </div>
-
-    {% endfor %}
+    <div><h1>{{ video.media_topic }}</h1></div>
+    <div>{{ video.create_time }}</div>
+    <div>{{ video.media_desc }}</div>
+    
+    <div class="videoplayer">
+    
+        <embed src="/static/flash_flv_player/flvplayer.swf"
+            width="450"
+            height="350"
+            allowfullscreen="true"
+            flashvars="&file={{ url_for('cdn', filename='flv/' + video['media_id']|string  + '.flv') }}&height=350&image=&width=450&location=/static/flash_flv_player/flvplayer.swf" />
+    
+        <p class="getflash">
+            <a href="http://www.macromedia.com/go/getflashplayer">Download Flash Player</a>
+        </p>
+    </div>
+    
 </div>
 
 {% endblock %}
