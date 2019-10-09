@@ -6,9 +6,9 @@
 <form action = "{{ url_for('insert_media_without_file') }}" method = "POST">
     <fieldset>
         <legend>New media:</legend>
-            <label for="media_type">Media type</label>
-            <div>
-                <select name="media_type">
+            <div class="form-group">
+                <label for="media_type">Media type</label>
+                <select name="media_type" class="form-control">
                     <option value="1">Photo</option>
                     <option value="6">Video</option>
                     <option value="5">Stories</option>
@@ -16,9 +16,9 @@
                 </select>
             </div>
 
-            <label for="story_type">Story type</label>
-            <div>
-                <select name="story_type">
+            <div class="form-group">
+                <label for="story_type">Story type</label>
+                <select name="story_type" class="form-control">
                     <option value="2">Review</option>
                     <option value="3">Interview</option>
                     <option value="4">News</option>
@@ -26,9 +26,9 @@
                 </select>
             </div>
 
-            <label for="media_genre">Media genre</label>
-            <div>
-                <select name="media_genre">
+            <div class="form-group">
+                <label for="media_genre">Media genre</label>
+                <select name="media_genre" class="form-control">
                     <option value="1">Skateboarding</option>
                     <option value="2">Snowboarding</option>
                     <option value="10">Nollagang</option>
@@ -37,20 +37,22 @@
                 </select>
             </div>
 
-            <label for="media_topic">Media title</label>
-            <div><input type="text" size="100" name="media_topic" /></div>
-
-            <label for="media_text">Media text</label>
-            <div>
-                <textarea type="text" name="media_text" cols="100" rows="10"></textarea>
+            <div class="form-group">
+                <label for="media_topic">Media title</label>
+                <input type="text" class="form-control" size="100" name="media_topic" />
             </div>
 
-            <label for="media_desc">Media description</label>
-            <div>
-                <textarea type="text" name="media_desc" cols="100" rows="10"></textarea>
+            <div class="form-group">
+                <label for="media_text">Media text</label>
+                <textarea type="text" class="form-control" name="media_text" cols="100" rows="10"></textarea>
             </div>
 
-            <input type = "submit" value = "submit" /></p>
+            <div class="form-group">
+                <label for="media_desc">Media description</label>
+                <textarea type="text" class="form-control" name="media_desc" cols="100" rows="10"></textarea>
+            </div>
+
+            <input type="submit" class="btn btn-primary" value="submit" />
     </fieldset>
 </form>
 

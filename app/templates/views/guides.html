@@ -3,18 +3,29 @@
 
 {% block content %}
 
-<div class="row guides-list">
-    <ul>
-        {% for item in guides %}
-            <li>
-                <a href="/guide/{{ item.page_id }}">{{ item.header }}</a>
-                {% if session['logged_in'] and session['user_level'] == 1 %}
-                    <a href="/general/update/{{ item.page_id }}">Edit</a>
-                    <a href="/general/delete/{{ item.page_id }}">Delete</a>
-                {% endif %}
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+<h1>Guides</h1>
+<table width="100%" class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Title</th>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <th></th>
+                <th></th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in guides %}
+        <tr>
+            <td><a href="/guide/{{ item.page_id }}">{{ item.header }}</a></td>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <td><a href="/general/update/{{ item.page_id }}">Edit</a></td>
+                <td><a href="/general/delete/{{ item.page_id }}">Delete</a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
 
 {% endblock %}

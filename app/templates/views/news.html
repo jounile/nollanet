@@ -3,29 +3,33 @@
 
 {% block content %}
 
-<div class="news-list">
-    <table width="100%" class="table table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>Title</th>
-                <th>Created</th>
-                <th>Publisher</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for item in news %}
-            <tr>
-                <td><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></td>
-                <td>{{ item.create_time }}</td>
-                <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
-                {% if session['logged_in'] and session['user_level'] == 1 %}
-                    <td><a href="/media/update/{{ item.media_id }}">Edit</a></td>
-                    <td><a href="/media/delete/{{ item.media_id }}">Delete</a></td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+<h1>News</h1>
+
+<table width="100%" class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Title</th>
+            <th>Created</th>
+            <th>Publisher</th>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <th></th>
+                <th></th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in news %}
+        <tr>
+            <td><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></td>
+            <td>{{ item.create_time }}</td>
+            <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <td><a href="/media/update/{{ item.media_id }}">Edit</a></td>
+                <td><a href="/media/delete/{{ item.media_id }}">Delete</a></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
             
 {% endblock %}

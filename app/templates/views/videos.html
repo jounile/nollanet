@@ -3,6 +3,7 @@
 
 {% block content %}
 
+<h1>Videos</h1>
 <div class="videos-list">
     {{ pagination.info }}
     {{ pagination.links }}
@@ -13,6 +14,10 @@
                 <th>Created</th>
                 <th>Name</th>
                 <th>Publisher</th>
+                {% if session['logged_in'] and session['user_level'] == 1 %}
+                    <th></th>
+                    <th></th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>

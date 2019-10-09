@@ -5,7 +5,8 @@
 
 <h1>Latest media</h1>
 <div class="media-list">
-    <table width="100%">
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
         <tr>
             <th>media_id</th>
             <th>media_type</th>
@@ -18,20 +19,23 @@
                 <th></th>
             {% endif %}
         </tr>
+        </thead>
+        <tbody>
         {% for item in latest %}
-        <tr style="border-top: 1px solid #ccc;">
-            <td>{{ item.media_id }}</td>
-            <td>{{ item.media_type }}</td>
-            <td>{{ item.story_type }}</td>
-            <td>{{ item.media_topic }}</td>
-            <td>{{ item.media_text }}</td>
-            <td>{{ item.create_time }}</td>
-            {% if session['logged_in'] and session['user_level'] == 1 %}
-                <td><a href="/media/update/{{ item.media_id }}">Edit</a></td>
-                <td><a href="/api/media/delete/{{ item.media_id }}">Delete</a></td>
-            {% endif %}
-        </tr>
+            <tr>
+                <td>{{ item.media_id }}</td>
+                <td>{{ item.media_type }}</td>
+                <td>{{ item.story_type }}</td>
+                <td>{{ item.media_topic }}</td>
+                <td>{{ item.media_text }}</td>
+                <td>{{ item.create_time }}</td>
+                {% if session['logged_in'] and session['user_level'] == 1 %}
+                    <td><a href="/media/update/{{ item.media_id }}">Edit</a></td>
+                    <td><a href="/api/media/delete/{{ item.media_id }}">Delete</a></td>
+                {% endif %}
+            </tr>
         {% endfor %}
+        </tbody>
     </table>
 </div>
 

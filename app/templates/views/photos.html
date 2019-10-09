@@ -3,6 +3,7 @@
 
 {% block content %}
 
+<h1>Photos</h1>
 <div class="photos-list">
     {{ pagination.info }}
     {{ pagination.links }}
@@ -14,7 +15,7 @@
                 <th>Description</th>
                 <th>Created</th>
                 <th>Published</th>
-                {% if session['logged_in'] %}
+                {% if session['logged_in'] and session['user_level'] == 1 %}
                     <th></th>
                     <th></th>
                 {% endif %}

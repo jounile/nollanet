@@ -2,11 +2,12 @@
 
 {% block content %}
 
-<div class="">
+<!--
 Channel name: n0llanet<br>
 Channel ID: {{ channelId }}<br>
+-->
 
-<h2>Youtube playlists</h2>
+<h1>Playlists</h1>
 
 {% for playlist in playlists %}
 
@@ -14,6 +15,6 @@ Channel ID: {{ channelId }}<br>
     <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list={{ playlist.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe><br><br>-->
 
 {% endfor %}
-</div>
+
 
 {% endblock %}
