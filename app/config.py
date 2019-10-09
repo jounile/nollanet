@@ -40,3 +40,11 @@ class DefaultConfig(object):
 
     # Azure Blob Storage
     AZURE_BLOB = os.getenv('AZURE_BLOB')
+
+    # Facebook
+    USER_SHORT_TOKEN = os.getenv('USER_SHORT_TOKEN')
+    USER_LONG_TOKEN = 'None'
+    APP_ID = os.getenv('APP_ID')
+    APP_SECRET = os.getenv('APP_SECRET')
+    PAGE_TOKEN = 'None'
+    FACEBOOK_PAGE_ID = os.getenv('FACEBOOK_PAGE_ID')

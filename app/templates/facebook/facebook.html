@@ -2,13 +2,7 @@
 
 {% block content %}
 
-<div class="col">
-
-<h2>Facebook Nolla.net</h2>
-
-<p><a href="https://www.facebook.com/Nolla.net">{{ infos.name }}</a></p>
-<p>{{ infos.about }}</p>
-<p>{{ infos.description }}</p>
+<h1>Facebook</h1>
 
 {% for post in infos.posts.data %}
     {% if(post.is_published) %}
@@ -26,6 +20,5 @@
         </div>
     {% endif %}
 {% endfor %}
-</div>
 
 {% endblock %}
