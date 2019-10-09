@@ -18,10 +18,23 @@
     {% for item in guides %}
         <tr>
             <td><a href="/guide/{{ item.page_id }}">{{ item.header }}</a></td>
+            <td></td>
+            <td></td>
+            <!--
             {% if session['logged_in'] and session['user_level'] == 1 %}
-                <td><a href="/general/update/{{ item.page_id }}">Edit</a></td>
-                <td><a href="/general/delete/{{ item.page_id }}">Delete</a></td>
+                <td>
+                    <form action="/general/update/{{ item.page_id }}" method="GET">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/general/delete" method="POST">
+                        <input type="hidden" name="page_id" value="{{ item.page_id }}" />
+                        <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                    </form>
+                </td>
             {% endif %}
+            -->
         </tr>
     {% endfor %}
     </tbody>

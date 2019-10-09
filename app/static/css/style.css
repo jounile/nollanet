@@ -5,6 +5,11 @@ html {
 .flash-messages {
     background-color: orange;
 }
+
+.flash {
+    padding: 10px;
+}
+
 .news-bar {
     height: 40px;
     padding: 8px 0;

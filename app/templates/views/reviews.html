@@ -24,8 +24,17 @@
                 <td>{{ item.create_time }}</td>
                 <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
                 {% if session['logged_in'] and session['user_level'] == 1 %}
-                    <td><a href="/media/update/{{ item.media_id }}">Edit</a></td>
-                    <td><a href="/api/media/delete/{{ item.media_id }}">Delete</a></td>
+                    <td>
+                        <form action="/media/update/{{ item.media_id }}" method="GET">
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/media/delete" method="POST">
+                            <input type="hidden" name="media_id" value="{{ item.media_id }}" />
+                            <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                        </form>
+                    </td>
                 {% endif %}
             </tr>
         {% endfor %}

@@ -9,22 +9,28 @@
     <input type="hidden" name="media_type" value="{{ result[1] }}" />
     <input type="hidden" name="story_type" value="{{ result[2] }}" />
 
-    <label for="media_topic">Title</label>
-    <div><input type="text" name="media_topic" size="100" value="{{ result[3] }}" /></div>
+    <div class="form-group">
+        <label for="media_topic">Title</label>
+        <input type="text" name="media_topic" class="form-control" size="100" value="{{ result[3] }}" />
+    </div>
 
-    <label for="media_text">Text</label>
-    <div><textarea type="text" name="media_text" cols="100" rows="10">{{ result[4] }}</textarea></div>
+    <div class="form-group">
+        <label for="media_text">Text</label>
+        <textarea type="text" name="media_text" class="form-control" cols="100" rows="10">{{ result[4] }}</textarea>
+    </div>
 
-    <label for="media_description">Description</label>
-    <div><textarea type="text" name="media_desc" cols="100" rows="10">{{ result[5] }}</textarea></div>
+    <div class="form-group">
+        <label for="media_description">Description</label>
+        <textarea type="text" name="media_desc" class="form-control" cols="100" rows="10">{{ result[5] }}</textarea>
+    </div>
 
     <label for="owner">Owner</label>
     <div>{{ result[6] }}</div>
-
+    
     <label for="create_time">Created</label>
     <div>{{ result[7] }}</div>
 
-    <div><input type = "submit" value="submit" /></div>
+    <button type="submit" class="btn btn-primary">Create</button>
  </form>
 
 

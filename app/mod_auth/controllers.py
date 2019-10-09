@@ -43,8 +43,8 @@ def register():
             except Exception as e:
                 print(e)
             return redirect(url_for("home"))
-    else:
-        print("Invalid form data")
+    #else:
+        #print("Invalid form data")
 
     return render_template('auth/register.html', form=form)
 
