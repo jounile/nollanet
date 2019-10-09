@@ -6,13 +6,16 @@
 <div class="videos-list">
     {{ pagination.info }}
     {{ pagination.links }}
-    <table width="100%">
-        <tr>
-            <th>Thumbnail</th>
-            <th>Created</th>
-            <th>Name</th>
-            <th>Publisher</th>
-        </tr>
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Thumbnail</th>
+                <th>Created</th>
+                <th>Name</th>
+                <th>Publisher</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for item in videos %}
             <tr>
                 <td>
@@ -29,6 +32,7 @@
                 {% endif %}
             </tr>
         {% endfor %}
+        </tbody>
         </table>
     {{ pagination.links }}
 </div>

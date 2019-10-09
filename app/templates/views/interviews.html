@@ -5,16 +5,19 @@
 
 <h1>Interviews</h1>
 <div class="interviews-list">
-    <table width="100%">
-        <tr>
-            <th>Topic</th>
-            <th>Created</th>
-            <th>Owner</th>
-            {% if session['logged_in'] and session['user_level'] == 1 %}
-                <th></th>
-                <th></th>
-            {% endif %}
-        </tr>
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Topic</th>
+                <th>Created</th>
+                <th>Owner</th>
+                {% if session['logged_in'] and session['user_level'] == 1 %}
+                    <th></th>
+                    <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
         {% for item in interviews %}
             <tr>
                 <td><a href="/interview/{{ item.media_id }}">{{ item.media_topic }}</a></td>
@@ -26,6 +29,7 @@
                 {% endif %}
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 </div>
 

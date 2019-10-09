@@ -6,18 +6,21 @@
 <div class="photos-list">
     {{ pagination.info }}
     {{ pagination.links }}
-    <table width="100%">
-        <tr>
-            <th>ID</th>
-            <th>Photo</th>
-            <th>Description</th>
-            <th>Created</th>
-            <th>Published</th>
-            {% if session['logged_in'] %}
-                <th></th>
-                <th></th>
-            {% endif %}
-        </tr>
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Photo</th>
+                <th>Description</th>
+                <th>Created</th>
+                <th>Published</th>
+                {% if session['logged_in'] %}
+                    <th></th>
+                    <th></th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
         {% for photo in photos %}
         <tr>
             <td>{{ loop.index + pagination.skip }}</td>
@@ -39,6 +42,7 @@
             {% endif %}
         </tr>
         {% endfor %}
+        </tbody>
     </table>
     {{ pagination.links }}
 </div>

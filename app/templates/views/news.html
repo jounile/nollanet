@@ -4,12 +4,15 @@
 {% block content %}
 
 <div class="news-list">
-    <table width="100%">
-        <tr>
-            <th>Title</th>
-            <th>Created</th>
-            <th>Publisher</th>
-        </tr>
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Title</th>
+                <th>Created</th>
+                <th>Publisher</th>
+            </tr>
+        </thead>
+        <tbody>
         {% for item in news %}
             <tr>
                 <td><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></td>
@@ -21,6 +24,7 @@
                 {% endif %}
             </tr>
         {% endfor %}
+        </tbody>
     </table>
 </div>
             
