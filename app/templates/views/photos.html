@@ -4,57 +4,55 @@
 {% block content %}
 
 <h1>Photos</h1>
-<div class="photos-list">
-    {{ pagination.info }}
-    {{ pagination.links }}
-    <table width="100%" class="table table-bordered">
-        <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Photo</th>
-                <th>Description</th>
-                <th>Created</th>
-                <th>Published</th>
-                {% if session['logged_in'] and session['user_level'] == 1 %}
-                    <th></th>
-                    <th></th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-        {% for item in photos %}
+
+{{ pagination.info }}
+<table width="100%" class="table table-bordered">
+    <thead class="thead-dark">
         <tr>
-            <td>{{ loop.index + pagination.skip }}</td>
-            <td>
-                <a href="/photo/{{ item.media_id }}">
-                    <img src="{{ url_for('cdn', filename='thumbs/' + item['media_id']|string + '_50.jpg') }}" />
-                </a>
-            </td>
-            <td>
-                <a href="/photo/{{ item.media_id }}">
-                    {{ item.media_topic }}
-                </a>
-            </td>
-            <td>{{ item.create_time }}</td>
-            <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
+            <th>ID</th>
+            <th>Photo</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Published</th>
             {% if session['logged_in'] and session['user_level'] == 1 %}
-                <td>
-                    <form action="/media/update/{{ item.media_id }}" method="GET">
-                        <button type="submit" class="btn btn-primary">Edit</button>
-                    </form>
-                </td>
-                <td>
-                    <form action="/media/delete" method="POST">
-                        <input type="hidden" name="media_id" value="{{ item.media_id }}" />
-                        <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
-                    </form>
-                </td>
+                <th></th>
+                <th></th>
             {% endif %}
         </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {{ pagination.links }}
-</div>
+    </thead>
+    <tbody>
+    {% for item in photos %}
+    <tr>
+        <td>{{ loop.index + pagination.skip }}</td>
+        <td>
+            <a href="/photo/{{ item.media_id }}">
+                <img src="{{ url_for('cdn', filename='thumbs/' + item['media_id']|string + '_50.jpg') }}" />
+            </a>
+        </td>
+        <td>
+            <a href="/photo/{{ item.media_id }}">
+                {{ item.media_topic }}
+            </a>
+        </td>
+        <td>{{ item.create_time }}</td>
+        <td>[<a href="/user/{{ item.owner }}">{{ item.owner }}</a>]</td>
+        {% if session['logged_in'] and session['user_level'] == 1 %}
+            <td>
+                <form action="/media/update/{{ item.media_id }}" method="GET">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form action="/media/delete" method="POST">
+                    <input type="hidden" name="media_id" value="{{ item.media_id }}" />
+                    <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                </form>
+            </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{{ pagination.links }}
 
 {% endblock %}

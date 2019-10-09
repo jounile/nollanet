@@ -43,15 +43,17 @@ def get_guides():
     result = cursor.fetchall()
     return utils.query_result_to_json(cursor, result)
 
-@app.route('/api/stories/<type>')
+@app.route('/api/stories/<type>/')
 @auto.doc()
 def get_stories(type):
+    page, per_page, offset = utils.get_page_args(page_parameter='page',
+                                           per_page_parameter='per_page')
     story_type = utils.get_story_type(type)
     cursor = db.connection.cursor()
     if (request.args.get('newest')):
         cursor.execute("SELECT media_id, media_topic, story_type, media_text, media_desc, create_time, owner FROM media_table WHERE media_type IN (4,5) AND story_type=%s AND lang_id=2 ORDER BY create_time desc LIMIT 10", (story_type, ))
     else:
-        cursor.execute("SELECT media_id, media_topic, story_type, media_text, media_desc, create_time, owner FROM media_table WHERE media_type IN (4,5) AND story_type=%s AND lang_id=2 ORDER BY create_time desc", (story_type, ))
+        cursor.execute("SELECT media_id, media_topic, story_type, media_text, media_desc, create_time, owner FROM media_table WHERE media_type IN (4,5) AND story_type=%s AND lang_id=2 ORDER BY create_time DESC limit %s, %s", (story_type, offset, per_page))
     result = cursor.fetchall()
     stories = []
 

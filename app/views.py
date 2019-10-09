@@ -9,15 +9,13 @@ from . import app, db, utils, auto
 def get_documentation():
 	return auto.html()
 
+
 @app.route('/stories')
 def stories():
     interviews = requests.get(url=request.url_root + "api/stories/interviews").json()
     news = requests.get(url=request.url_root + "api/stories/news").json()
     reviews = requests.get(url=request.url_root + "api/stories/reviews").json()
-    return render_template("views/stories.html", 
-                                interviews=interviews,
-                                news=news,
-                                reviews=reviews)
+    return render_template("views/stories.html", interviews=interviews, news=news, reviews=reviews)
 
 @app.route('/interviews')
 def interviews():
@@ -26,8 +24,11 @@ def interviews():
 
 @app.route('/news')
 def news():
-    news = requests.get(url=request.url_root + "api/stories/news").json()
-    return render_template("views/news.html", news=news)
+    total = utils.get_total_news_count()
+    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
+    news = requests.get(url=request.url_root + "api/stories/news/?page=" + str(page)).json()
+    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' news', format_total=True, format_number=True,)
+    return render_template("views/news.html", news=news, pagination=pagination)
 
 @app.route('/reviews')
 def reviews():
@@ -142,32 +143,17 @@ def view_photos_default():
 def view_photos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_photos_count_by_genre(media_genre)
-
-    page, per_page, offset = utils.get_page_args(page_parameter='page',
-                                           per_page_parameter='per_page')
-
+    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
     photos = requests.get(url=request.url_root + "api/photos/" + genre + "/?page=" + str(page)).json()
-
-    pagination = utils.get_pagination(page=page,
-                                per_page=per_page,
-                                total=total,
-                                record_name=' photos',
-                                format_total=True,
-                                format_number=True,
-                                )
-                                              
+    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' photos', format_total=True, format_number=True,)                                 
     return render_template('views/photos.html', photos=photos, pagination=pagination)
 
 @app.route('/videos/<string:genre>/')
 def view_videos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_videos_count_by_genre(media_genre)
-
-    page, per_page, offset = utils.get_page_args(page_parameter='page',
-                                           per_page_parameter='per_page')
-
+    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
     videos = requests.get(url=request.url_root + "api/videos/" + genre + "/?page=" + str(page)).json()
-
     pagination = utils.get_pagination(page=page,
                                 per_page=per_page,
                                 total=total,
