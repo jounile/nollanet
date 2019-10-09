@@ -23,12 +23,12 @@ def youtube_playlists():
 
 		channelId = result['id']
 		#print(channelId)
-	
-	playlists = youtube_playlists(channelId)
+
+	playlists = get_youtube_playlists(channelId)
 
 	return render_template('youtube/playlists.html', channelId=channelId, playlists=playlists)
 
-def youtube_playlists(channel_id):
+def get_youtube_playlists(channel_id):
 	search = youtube.playlists().list(
 		part = "snippet,contentDetails",
 		channelId = channel_id,
@@ -38,13 +38,14 @@ def youtube_playlists(channel_id):
 	playlists = []
 	
 	for result in results:
-
 		playlist_id = result['id']
 		playlist_title = result['snippet']['title']
+		playlist_thumbnail = result['snippet']['thumbnails']['default']['url']
 
 		playlist = {
 			'id': playlist_id,
-			'title': playlist_title
+			'title': playlist_title,
+			'thumbnail': playlist_thumbnail
 		}
 		playlists.append(playlist)
 

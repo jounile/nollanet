@@ -9,12 +9,26 @@ Channel ID: {{ channelId }}<br>
 
 <h1>Playlists</h1>
 
-{% for playlist in playlists %}
-
-    <a href="/youtube/playlist/{{ playlist.id }}">{{ playlist.title }}</a><br>
-    <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list={{ playlist.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe><br><br>-->
-
-{% endfor %}
-
+<table width="100%" class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Thumbnail</th>
+            <th>Title</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for playlist in playlists %}
+        <tr>
+            <td>
+                <img src="{{ playlist.thumbnail }}" />
+            </td>
+            <td>
+                <a href="/youtube/playlist/{{ playlist.id }}">{{ playlist.title }}</a>
+                <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?list={{ playlist.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe><br><br>-->
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}
