@@ -200,6 +200,9 @@ footer {
     color: #ccc;
 }
 
+@media screen and (max-width: 720px) {
+    .mobile-hide{ display: none; }
+}
 
 /* adjusting column width for mobile phones */
 .latest-news,
