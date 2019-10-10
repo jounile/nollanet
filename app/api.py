@@ -9,9 +9,7 @@ from . import app, db, utils, auto
 @app.route('/media/<path:filename>', methods=['GET'])
 def media(filename):
     static_url = app.config.get('AZURE_BLOB')
-    print("static_url: ", static_url)
     if static_url:
-        #print('redirect: ', urljoin(static_url, filename))
         return redirect(urljoin(static_url, filename))
     return app.send_static_file(filename)
 
