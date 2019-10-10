@@ -15,7 +15,7 @@
             width="450"
             height="350"
             allowfullscreen="true"
-            flashvars="&file={{ url_for('cdn', filename='flv/' + video['media_id']|string  + '.flv') }}&height=350&image=&width=450&location=/static/flash_flv_player/flvplayer.swf" />
+            flashvars="&file={{ url_for('media', filename='flv/' + video['media_id']|string  + '.flv') }}&height=350&image=&width=450&location=/static/flash_flv_player/flvplayer.swf" />
     
         <p class="getflash">
             <a href="http://www.macromedia.com/go/getflashplayer">Download Flash Player</a>

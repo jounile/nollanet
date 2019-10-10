@@ -6,18 +6,14 @@ from urlparse import urljoin # Python 2.7
 
 from . import app, db, utils, auto
 
-@app.route('/cdn/<path:filename>')
-def cdn(filename):
+@app.route('/media/<path:filename>', methods=['GET'])
+def media(filename):
     static_url = app.config.get('AZURE_BLOB')
+    print("static_url: ", static_url)
     if static_url:
-        print('redirect: ', urljoin(static_url, filename))
+        #print('redirect: ', urljoin(static_url, filename))
         return redirect(urljoin(static_url, filename))
     return app.send_static_file(filename)
-
-@app.route("/api/data")
-@auto.doc()
-def get_data():
-    return app.send_static_file("data.json")
 
 @app.route('/api/user/<string:username>/', methods=['GET'])
 @auto.doc()
