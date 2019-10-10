@@ -14,9 +14,10 @@
         <embed src="{{ url_for('static', filename='flash_flv_player/flvplayer.swf') }}"
             width="450"
             height="350"
+            allowscriptaccess="always"
             allowfullscreen="true"
             flashvars="&file={{ url_for('media', filename='flv/' + video['media_id']|string  + '.flv') }}&height=350&image=&width=450&location={{ url_for('static', filename='flash_flv_player/flvplayer.swf') }}" />
-    
+
         <p class="getflash">
             <a href="http://www.macromedia.com/go/getflashplayer">Download Flash Player</a>
         </p>
