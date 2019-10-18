@@ -60,9 +60,9 @@ def get_stories(type):
     story_type = utils.get_story_type(type)
     cursor = db.connection.cursor()
     if (request.args.get('newest')):
-        cursor.execute("SELECT media_id, media_topic, story_type, media_text, media_desc, create_time, owner FROM media_table WHERE media_type IN (4,5) AND story_type=%s AND lang_id=2 ORDER BY create_time desc LIMIT 10", (story_type, ))
+        cursor.execute("SELECT media_id, media_topic, story_type, create_time, owner FROM media_table WHERE media_type IN (4,5) AND story_type=%s AND lang_id=2 ORDER BY create_time desc LIMIT 10", (story_type, ))
     else:
-        cursor.execute("SELECT media_id, media_topic, story_type, media_text, media_desc, create_time, owner FROM media_table WHERE media_type IN (4,5) AND story_type=%s AND lang_id=2 ORDER BY create_time DESC limit %s, %s", (story_type, offset, per_page))
+        cursor.execute("SELECT media_id, media_topic, story_type, create_time, owner FROM media_table WHERE media_type IN (4,5) AND story_type=%s AND lang_id=2 ORDER BY create_time DESC limit %s, %s", (story_type, offset, per_page))
     result = cursor.fetchall()
     stories = []
 
@@ -70,11 +70,9 @@ def get_stories(type):
         media_id = item[0]
         media_topic = item[1]
         story_type = item[2]
-        media_text = item[3]
-        media_desc = item[4]
-        create_time = item[5]
-        owner = item[6]
-        storyJson = utils.create_story_json(media_id, media_topic, media_text, media_desc, create_time, owner)
+        create_time = item[3]
+        owner = item[4]
+        storyJson = utils.create_story_json(media_id, media_topic, create_time, owner)
         stories.append(storyJson)
     return jsonify(stories)
 
@@ -135,7 +133,7 @@ def get_story(media_id):
         media_text = item[4]
         create_time = item[5]
         owner = item[6]
-        storyJson = utils.create_story_json(media_id, media_topic, media_text, media_desc, create_time, owner)
+        storyJson = utils.create_story_content_json(media_id, media_topic, media_text, media_desc, create_time, owner)
         stories.append(storyJson)
     return jsonify(stories)
 

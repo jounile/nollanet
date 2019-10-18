@@ -63,15 +63,27 @@ def get_total_news_count():
     total = cursor.fetchone()[0]
     return total
 
-def create_story_json(media_id, media_topic, media_text, media_desc, create_time, owner):
+def create_story_json(media_id, media_topic, create_time, owner):
+    if(create_time):
+        create_time = create_time.strftime('%d/%m/%Y %H:%M')
+
+    storyJson = {
+        'media_id': media_id,
+        'media_topic': media_topic,
+        'create_time': create_time,
+        'owner': owner
+        }
+    return storyJson
+
+def create_story_content_json(media_id, media_topic, media_text, media_desc, create_time, owner):
     if(create_time):
         create_time = create_time.strftime('%d/%m/%Y %H:%M')
     
     storyJson = {
         'media_id': media_id,
         'media_topic': media_topic,
-        'media_text': media_text,
         'media_desc': media_desc,
+        'media_text': media_text,
         'create_time': create_time,
         'owner': owner
         }
