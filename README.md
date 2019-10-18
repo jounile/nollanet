@@ -96,12 +96,6 @@ $ docker build -t mynginx -f Dockerfile-nginx .
 $ docker run --name mynginx -p 80:80 -d mynginx
 ```
 
-http://localhost/static/tn/6134_50.jpg
-
-is reverse proxied to
-
-http://nolla.net/mediagalleria/tn/6134_50.jpg
-
 ## Run locally
 ```bash
 $ python app.py
