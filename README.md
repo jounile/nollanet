@@ -1,4 +1,4 @@
-# Introduction to Flask
+# Nolla.net
 
 ## Create a virtualenv (Mac & WSL)
 ```bash
