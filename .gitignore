@@ -59,7 +59,6 @@ target/
 
 # VSCode
 .DS_Store
-.vscode/
 
 # Virtualenv
 venv/

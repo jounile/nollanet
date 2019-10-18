@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<form action = "{{ url_for('insert_media_without_file') }}" method = "POST">
+<form action="{{ url_for('insert_media_without_file') }}" method = "POST">
     <fieldset>
         <legend>New media:</legend>
             <div class="form-group">
@@ -53,6 +53,28 @@
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
+    </fieldset>
+</form>
+
+
+<h3>Select file(s) to upload</h3>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+        <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
+
+<form method="post" action="upload" enctype="multipart/form-data">
+    <fieldset>
+        <div class="form-group">
+            <input type="file" name="files[]" multiple="true" autocomplete="off" required><br />
+            <input type="submit" class="btn btn-primary" value="Submit">
+        </div>
     </fieldset>
 </form>
 

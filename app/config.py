@@ -22,6 +22,10 @@ class DefaultConfig(object):
     # Bcrypt algorithm hashing rounds
     BCRYPT_LOG_ROUNDS = 5
 
+    # File upload
+    UPLOAD_FOLDER = '/Users/jouni.leino/Git/jounile/nollanet/app/static/media'
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
+
     # DB connection params
     MYSQL_HOST = os.getenv('MYSQL_HOST')
     MYSQL_USER = os.getenv('MYSQL_USER')

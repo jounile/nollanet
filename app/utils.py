@@ -126,3 +126,8 @@ def get_now():
     utcnow = datetime.datetime.utcnow()
     now = utcnow.strftime('%Y-%m-%d %H:%M:%S')
     return now
+
+def allowed_file(filename):
+	ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
