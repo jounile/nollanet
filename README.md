@@ -4,8 +4,8 @@
 ```bash
 $ pip install virtualenv
 $ virtualenv venv
-$ virtualenv -p /usr/bin/python3.6 venv
-$ export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.6
+$ virtualenv -p /usr/bin/python2.7 venv
+$ export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python2.7
 $ source venv/bin/activate
 ```
 
@@ -16,42 +16,29 @@ $ sudo apt-get install python3-dev
 $ pip install -r requirements.txt
 ```
 
-Add to environment vars
+## Run locally
+```bash
+$ python app.py
+```
 
-## Database connection params
-```text
+## Environment vars
+
+```bash
 MYSQL_HOST = '127.0.0.1'
 MYSQL_USER = ''
 MYSQL_PASSWORD = ''
 MYSQL_DB = ''
 MYSQL_PORT = 3306
-```
-
-## ReCaptcha
-```bash
 RECAPTCHA_USE_SSL = False
 RECAPTCHA_PUBLIC_KEY = ''
 RECAPTCHA_PRIVATE_KEY = ''
 RECAPTCHA_OPTIONS = {'theme':'black'}
-```
-
-## Youtube
-```bash
 GOOGLE_API_KEY = ""
-```
-
-## Session handling
-```bash
 SECRET_KEY = ""
-```
-
-## Images and videos
-```bash
 AZURE_BLOB = ""
 ```
 
-## Facebook
-Add this in the /app/mod_facebook/facebook.json file
+## Facebook tokens
 ```bash
 {
     "app": {
@@ -94,11 +81,6 @@ Password: root
 ```bash
 $ docker build -t mynginx -f Dockerfile-nginx .
 $ docker run --name mynginx -p 80:80 -d mynginx
-```
-
-## Run locally
-```bash
-$ python app.py
 ```
 
 ## Store new packages in requirements.txt
