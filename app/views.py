@@ -47,7 +47,7 @@ def other():
 
 @app.route('/')
 def home():
-    response = requests.get(url=request.url_root + "api/stories/interviews?newest=10").json()
+    response = requests.get(url=request.url_root + "api/stories/interviews?newest=10")
     if response.status_code != 200:
         print("Server didn't return an 'OK' response.  Content was: {!r}".format(response.content))
     else:
