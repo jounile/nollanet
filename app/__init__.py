@@ -54,11 +54,19 @@ nav.Bar('top', [
         nav.Item('Skateboarding', 'view_videos_by_genre', {'genre': 'skateboarding'}),
         nav.Item('Snowboarding', 'view_videos_by_genre', {'genre': 'snowboarding'}),
     ]),
-    nav.Item('Stories', 'stories', items=[
+    nav.Item('Stories', 'interviews', items=[
         nav.Item('Interviews', 'interviews'),
         nav.Item('Reviews', 'reviews'),
     ]),
     nav.Item('Guides', 'guides'),
+])
+
+nav.Bar('user', [
+    nav.Item('My', 'auth.profile', items=[
+        nav.Item('Profile', 'auth.profile'),
+        nav.Item('Uploads', 'my_uploads'),
+        nav.Item('Posts', 'my_posts'),
+    ])
 ])
 
 from . import api, views

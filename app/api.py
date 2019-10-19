@@ -6,21 +6,6 @@ from werkzeug.utils import secure_filename
 
 from . import app, db, utils, auto
 
-@app.route('/media/upload', methods=['POST'])
-def upload_file():
-	if request.method == 'POST':
-        # check if the post request has the files part
-		if 'files[]' not in request.files:
-			flash('No file part')
-			return redirect(request.url)
-		files = request.files.getlist('files[]')
-		for file in files:
-			if file and utils.allowed_file(file.filename):
-				filename = secure_filename(file.filename)
-				file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-		flash('File(s) successfully uploaded')
-		return redirect('/')
-
 @app.route('/media/<path:filename>', methods=['GET'])
 def media(filename):
     static_url = app.config.get('AZURE_BLOB')
@@ -29,7 +14,6 @@ def media(filename):
     return app.send_static_file(filename)
 
 @app.route('/api/user/<string:username>/', methods=['GET'])
-@auto.doc()
 def get_user(username):
     cursor = db.connection.cursor()
     cursor.execute("SELECT user_id, username, name, email, location, address, postnumber, bornyear, email2, homepage, info, date, hobbies, extrainfo, sukupuoli, icq, apulainen, last_login, chat, oikeus, lang_id, login_count, lastloginip, lastloginclient, emails, puhelin, kantaasiakasnro, lamina_lisatieto, blogs, user_showid, messenger, myspace, rss, youtube, ircgalleria, last_profile_update, avatar, flickr_username FROM users WHERE username=%s", (username, ))
@@ -37,7 +21,6 @@ def get_user(username):
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/users')
-@auto.doc()
 def get_users():
     cursor = db.connection.cursor()
     cursor.execute("SELECT * FROM users")
@@ -45,7 +28,6 @@ def get_users():
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/guides')
-@auto.doc()
 def get_guides():
     cursor = db.connection.cursor()
     cursor.execute("SELECT id, page_id, header FROM general WHERE lang_id=2")
@@ -53,7 +35,6 @@ def get_guides():
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/stories/<type>/')
-@auto.doc()
 def get_stories(type):
     page, per_page, offset = utils.get_page_args(page_parameter='page',
                                            per_page_parameter='per_page')
@@ -76,9 +57,7 @@ def get_stories(type):
         stories.append(storyJson)
     return jsonify(stories)
 
-
 @app.route('/api/news/<media_id>/')
-@auto.doc()
 def get_news_item(media_id):
     cursor = db.connection.cursor()
     cursor.execute("SELECT * FROM media_table WHERE media_id=%s", (media_id, ))
@@ -86,7 +65,6 @@ def get_news_item(media_id):
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/photos/newest')
-@auto.doc()
 def get_photos_newest():
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_topic FROM media_table WHERE media_type=1 AND media_genre < 9 AND media_file_size > 20000 AND lang_id=2 ORDER BY create_time desc LIMIT 0,10")
@@ -94,7 +72,6 @@ def get_photos_newest():
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/videos/newest')
-@auto.doc()
 def get_videos_newest():
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_topic FROM media_table WHERE media_type=3 AND media_file_size > 30000 AND lang_id=2 ORDER BY create_time desc LIMIT 0,10")
@@ -102,15 +79,13 @@ def get_videos_newest():
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/movies/newest')
-@auto.doc()
 def get_movies_newest():
     cursor = db.connection.cursor()
-    cursor.execute("SELECT media_id, media_topic, media_text FROM media_table WHERE media_type=6 AND lang_id=2 ORDER BY create_time desc LIMIT 0,10")
+    cursor.execute("SELECT media_id, media_topic FROM media_table WHERE media_type=6 AND lang_id=2 ORDER BY create_time desc LIMIT 0,10")
     result = cursor.fetchall()
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/guide/<string:guide_id>/')
-@auto.doc()
 def get_page(guide_id):
     cursor = db.connection.cursor()
     cursor.execute("SELECT id, page_id, header, text, info FROM general WHERE page_id=%s AND lang_id=2", (guide_id, ))
@@ -118,7 +93,6 @@ def get_page(guide_id):
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/story/<string:media_id>/')
-@auto.doc()
 def get_story(media_id):
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_topic, story_type, media_desc, media_text, create_time, owner FROM media_table WHERE media_id=%s", (media_id, ))
@@ -138,7 +112,6 @@ def get_story(media_id):
     return jsonify(stories)
 
 @app.route('/api/photos/<string:genre>/')
-@auto.doc()
 def get_photos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
 
@@ -155,7 +128,6 @@ def get_photos_by_genre(genre):
     return jsonify(photos)
 
 @app.route('/api/videos/<string:genre>/')
-@auto.doc()
 def get_videos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
 
@@ -178,7 +150,6 @@ def get_videos_by_genre(genre):
     return jsonify(videos)
 
 @app.route('/api/photo/<media_id>')
-@auto.doc()
 def get_photo(media_id):
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_topic, media_text, media_desc, owner, create_time FROM media_table WHERE media_id=%s", (media_id, ))
@@ -186,7 +157,6 @@ def get_photo(media_id):
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/comments/<int:media_id>')
-@auto.doc()
 def api_comments(media_id):
     cursor = db.connection.cursor()
     cursor.execute("SELECT k.user_id, u.username, k.header, k.comment, k.timestamp, k.media_id, k.comment_user_id, k.youtube_id, k.tapahtuma_id, k.diary_id FROM kommentti k, users u WHERE k.user_id = u.user_id AND media_id = %s ORDER BY k.id desc LIMIT 0, 100", (media_id, ))
@@ -194,7 +164,6 @@ def api_comments(media_id):
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/videos')
-@auto.doc()
 def api_videos():
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_topic, owner, create_time FROM media_table WHERE media_type=6 AND lang_id=2 ORDER BY create_time DESC")
@@ -202,17 +171,44 @@ def api_videos():
     return utils.query_result_to_json(cursor, result)
 
 @app.route('/api/video/<int:media_id>')
-@auto.doc()
 def api_video(media_id):
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_topic, media_text, media_genre, media_desc, owner, create_time FROM media_table WHERE media_type=6 AND media_id=%s AND lang_id=2", (media_id, ))
     result = cursor.fetchall()
     return utils.query_result_to_json(cursor, result)
 
+
+""" Admin """
+
 @app.route('/api/latest')
-@auto.doc()
 def api_latest():
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_type, story_type, media_topic, media_text, media_desc, owner, create_time FROM media_table ORDER BY create_time DESC LIMIT 10")
     result = cursor.fetchall()
     return utils.query_result_to_json(cursor, result)
+
+
+""" User """
+
+@app.route('/media/upload', methods=['POST'])
+def upload_file():
+	if request.method == 'POST':
+        # check if the post request has the files part
+		if 'files[]' not in request.files:
+			flash('No file part')
+			return redirect(request.url)
+		files = request.files.getlist('files[]')
+		for file in files:
+			if file and utils.allowed_file(file.filename):
+				filename = secure_filename(file.filename)
+				file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+		flash('File(s) successfully uploaded')
+		return redirect('/')
+
+@app.route('/api/posts/<username>/')
+def api_posts(username):
+    if(username):
+        cursor = db.connection.cursor()
+        cursor.execute("SELECT media_id, media_type, story_type, media_topic, owner, create_time FROM media_table WHERE owner=%s ORDER BY create_time DESC", (username,))
+        result = cursor.fetchall()
+        return utils.query_result_to_json(cursor, result)

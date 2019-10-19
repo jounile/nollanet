@@ -3,8 +3,10 @@
 
 {% block content %}
 
-<form action = "/media/update/{{ result[0] }}" method = "POST">
+<h1>Update post</h1>
 
+<form action = "{{ url_for('update_media', media_id=result[0]) }}" method = "POST">
+    
     <input type="hidden" name="media_id" value="{{ result[0] }}" />
     <input type="hidden" name="media_type" value="{{ result[1] }}" />
     <input type="hidden" name="story_type" value="{{ result[2] }}" />
@@ -30,7 +32,7 @@
     <label for="create_time">Created</label>
     <div>{{ result[7] }}</div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-primary">Update</button>
  </form>
 
 

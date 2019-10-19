@@ -5,18 +5,6 @@ from flask_paginate import Pagination, get_page_args
 
 from . import app, db, utils, auto
 
-@app.route('/documentation')
-def get_documentation():
-	return auto.html()
-
-
-@app.route('/stories')
-def stories():
-    interviews = requests.get(url=request.url_root + "api/stories/interviews").json()
-    news = requests.get(url=request.url_root + "api/stories/news").json()
-    reviews = requests.get(url=request.url_root + "api/stories/reviews").json()
-    return render_template("views/stories.html", interviews=interviews, news=news, reviews=reviews)
-
 @app.route('/interviews')
 def interviews():
     interviews = requests.get(url=request.url_root + "api/stories/interviews").json()
@@ -182,9 +170,32 @@ def view_photo(media_id):
     return render_template('views/photo.html', photo=photo, comments=comments)
 
 
+""" Admin """
+
+@app.route("/media/latest/")
+def media_latest():
+    latest = requests.get(url=request.url_root + "api/latest").json()
+    return render_template("views/admin/latest_media.html", latest=latest)
+
+@app.route('/media/delete', methods = ['POST'])
+def delete_media():
+    if(session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'POST':
+            media_id = request.form.get('media_id')
+            cursor = db.connection.cursor()
+            sql = "DELETE FROM media_table WHERE media_id=%s"
+            cursor.execute(sql, (media_id, ))
+            db.connection.commit()
+            flash("Record " + media_id + " was deleted succesfully by " + session['username'] + ".")
+    else:
+        flash("Please login first")
+    return redirect(url_for("home"))
+
+
+""" User """
+
 @app.route("/media/update/<media_id>", methods = ['POST', 'GET'])
-@auto.doc()
-def update_media_without_file(media_id):
+def update_media(media_id):
     if request.method == 'POST':
         media_id = request.form.get('media_id')
         media_type = request.form.get('media_type')
@@ -219,14 +230,17 @@ def update_media_without_file(media_id):
             cursor = db.connection.cursor()
             cursor.execute("SELECT media_id, media_type, story_type, media_topic, media_text, media_desc, owner, create_time FROM media_table WHERE media_id=%s", (media_id, ))
             result = cursor.fetchone()
-            return render_template("views/update_media.html", result=result)
+            return render_template("views/user/update_media.html", result=result)
         else:
             flash("Please login first")
             return redirect(url_for("home"))
 
-@app.route("/media/insert", methods = ['POST', 'GET'])
-@auto.doc()
-def insert_media_without_file():
+@app.route("/media/newupload")
+def new_upload():
+    return render_template("views/user/new_upload.html")
+
+@app.route("/media/newpost", methods = ['POST', 'GET'])
+def new_post():
     if(session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
             media_type = request.form.get('media_type')
@@ -260,27 +274,21 @@ def insert_media_without_file():
             else:
                 return redirect(url_for("home"))
         else:
-            return render_template("views/add_media.html")
+            return render_template("views/user/new_post.html")
     else:
         flash("Please login first")
         return redirect(url_for("home"))
 
-@app.route("/media/latest/")
-@auto.doc()
-def media_latest():
-    latest = requests.get(url=request.url_root + "api/latest").json()
-    return render_template("views/latest_media.html", latest=latest)
-
-@app.route('/media/delete', methods = ['POST'])
-def delete_media():
-    if(session['logged_in'] and session['user_level'] == 1):
-        if request.method == 'POST':
-            media_id = request.form.get('media_id')
-            cursor = db.connection.cursor()
-            sql = "DELETE FROM media_table WHERE media_id=%s"
-            cursor.execute(sql, (media_id, ))
-            db.connection.commit()
-            flash("Record " + media_id + " was deleted succesfully by " + session['username'] + ".")
+@app.route("/my/posts/")
+def my_posts():
+    if(session['logged_in']):
+        username = session['username']
+        posts = requests.get(url=request.url_root + "api/posts/" + username + "/").json()
+        return render_template("views/user/posts.html", posts=posts)
     else:
         flash("Please login first")
-    return redirect(url_for("home"))
+        return redirect(url_for("home"))
+
+@app.route("/my/uploads/")
+def my_uploads():
+    return render_template("views/user/uploads.html")

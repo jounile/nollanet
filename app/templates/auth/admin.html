@@ -6,17 +6,8 @@
 
     <h2>Administrators</h2>
 
-    <div class="pages-list">
-        <ul>
-            <li><a href="{{ url_for('guides') }}">Guides</a></li>
-            
-            <li><a href="{{ url_for('insert_media_without_file') }}">Insert media</a></li>
-
-            <li><a href="{{ url_for('media_latest') }}">Latest media</a></li>
-            
-        </ul>
-    </div>
-
+    <a class="btn btn-primary" role="button" href="{{ url_for('media_latest') }}">Latest media</a>
+    
 </div>
 
 {% endblock %}
