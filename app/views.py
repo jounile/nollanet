@@ -2,6 +2,8 @@ import datetime
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
 from flask_paginate import Pagination, get_page_args
+from werkzeug import secure_filename
+from azure.storage.blob import BlockBlobService, PublicAccess
 
 from . import app, db, utils, auto
 
@@ -235,8 +237,44 @@ def update_media(media_id):
             flash("Please login first")
             return redirect(url_for("home"))
 
-@app.route("/media/newupload")
+@app.route("/media/newupload", methods=['POST','GET'])
 def new_upload():
+    if request.method == 'POST':
+
+        # Create blob service
+        blob_service = BlockBlobService(account_name=app.config.get('AZURE_ACCOUNT'), account_key=app.config.get('AZURE_STORAGE_KEY'))
+
+        # Create a container called 'quickstartblobs'.
+        #container_name = 'quickstartblobs'
+        #blob_service.create_container(container_name)
+
+        # Set the permission so the blobs are public.
+        #blob_service.set_container_acl(container_name, public_access=PublicAccess.Container)
+
+        # List the blobs in the container.
+        print("\nList blobs in the container")
+        generator = blob_service.list_blobs(app.config.get('AZURE_CONTAINER'))
+        for blob in generator:
+            print("\t Blob name: " + blob.name)
+
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        fileextension = filename.rsplit('.',1)[1]
+        Randomfilename = utils.id_generator()
+        filename = Randomfilename + '.' + fileextension
+        print("filename: ", filename)
+        print("AZURE_CONTAINER: ", app.config.get('AZURE_CONTAINER'))
+        print("file: ", file)
+
+        try:
+            blob_service.create_blob_from_stream(app.config.get('AZURE_CONTAINER'), filename, file)
+            print("Created")
+        except:
+            print('container not found: ', app.config.get('AZURE_CONTAINER'))
+        ref =  app.config.get('AZURE_BLOB') + '/' + app.config.get('AZURE_CONTAINER') + '/' + filename
+        print("ref: ", ref)
+        flash("File " + ref + " was uploaded successfully")
+        return render_template("views/user/uploads.html")
     return render_template("views/user/new_upload.html")
 
 @app.route("/media/newpost", methods = ['POST', 'GET'])

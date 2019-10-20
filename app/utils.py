@@ -3,6 +3,7 @@ import os
 from flask import Flask, jsonify
 import datetime
 from flask_paginate import Pagination, get_page_args
+import string, random
 
 from . import app, db
 
@@ -143,3 +144,5 @@ def allowed_file(filename):
 	ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+def id_generator(size=32, chars=string.ascii_uppercase + string.digits):
+    return ''.join(random.choice(chars) for _ in range(size))
