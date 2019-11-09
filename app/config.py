@@ -33,6 +33,10 @@ class DefaultConfig(object):
     MYSQL_DB = os.getenv('MYSQL_DB')
     MYSQL_PORT = 3306
 
+    # SQLAlchemy
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = 'mysql://' + MYSQL_USER + ':' + MYSQL_PASSWORD + '@' + MYSQL_HOST + '/' + MYSQL_DB
+
     # ReCaptcha
     RECAPTCHA_USE_SSL = False
     RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
@@ -56,3 +60,4 @@ class DefaultConfig(object):
     APP_SECRET = os.getenv('APP_SECRET')
     PAGE_TOKEN = 'None'
     FACEBOOK_PAGE_ID = os.getenv('FACEBOOK_PAGE_ID')
+

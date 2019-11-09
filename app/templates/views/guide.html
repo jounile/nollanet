@@ -4,11 +4,11 @@
 {% block content %}
 
 <div class="guide-title">
-{% for item in guide %}
-    <h1>{{ item.header }}</h1>
-    <div>{{ item.text|safe }}</div>
-    <div>{{ item.info|safe }}</div>
-{% endfor %}
+
+    <h1>{{ guide.header }}</h1>
+    <div>{{ guide.text|safe }}</div>
+    <div>{{ guide.info|safe }}</div>
+
 </div>
 
 {% endblock %}

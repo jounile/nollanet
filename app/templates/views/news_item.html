@@ -4,12 +4,10 @@
 {% block content %}
 
 <div class="newsitem-title">
-{% for item in news_item %}
-    <div><h1>{{ item.media_topic }}</h1></div>
-    <div>{{ item.create_time }}</div>
-    <div>{{ item.media_desc|safe }}</div>
-    <div>{{ item.media_text|safe }}</div>
-{% endfor %}
+    <div><h1>{{ news_item.media_topic }}</h1></div>
+    <div>{{ news_item.create_time }}</div>
+    <div>{{ news_item.media_desc|safe }}</div>
+    <div>{{ news_item.media_text|safe }}</div>
 </div>
 
 {% endblock %}

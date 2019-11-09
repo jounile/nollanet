@@ -5,45 +5,56 @@ from flask_paginate import Pagination, get_page_args
 from werkzeug import secure_filename
 from azure.storage.blob import BlockBlobService, PublicAccess
 
+from azure.common import (
+    AzureConflictHttpError,
+    AzureMissingResourceHttpError,
+)
+
+from azure.storage.blob import (
+    Include,
+)
+from azure.storage.common import (
+    Metrics,
+    CorsRule,
+    Logging,
+)
+
+from models import Media, Page
+
 from . import app, db, utils, auto
 
 @app.route('/interviews')
 def interviews():
-    interviews = requests.get(url=request.url_root + "api/stories/interviews").json()
+    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(lang_id=2).order_by(Media.create_time.desc())
     return render_template("views/interviews.html", interviews=interviews)
 
 @app.route('/news')
 def news():
     total = utils.get_total_news_count()
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    news = requests.get(url=request.url_root + "api/stories/news/?page=" + str(page)).json()
+    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' news', format_total=True, format_number=True,)
     return render_template("views/news.html", news=news, pagination=pagination)
 
 @app.route('/reviews')
 def reviews():
-    reviews = requests.get(url=request.url_root + "api/stories/reviews").json()
+    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(lang_id=2).order_by(Media.create_time.desc())
     return render_template("views/reviews.html", reviews=reviews)
-
-@app.route('/general')
-def general():
-    general = requests.get(url=request.url_root + "api/stories/general").json()
-    return render_template("views/general.html", general=general)
-
-@app.route('/other')
-def other():
-    other = requests.get(url=request.url_root + "api/stories/other").json()
-    return render_template("views/other.html", other=other)
 
 @app.route('/')
 def home():
-    interviews = requests.get(url=request.url_root + "api/stories/interviews?newest=10").json()
-    news = requests.get(url=request.url_root + "api/stories/news?newest=10").json()
-    reviews = requests.get(url=request.url_root + "api/stories/reviews?newest=10").json()
-    photos_skateboarding = requests.get(url=request.url_root + "api/photos/skateboarding").json()
-    photos_snowboarding = requests.get(url=request.url_root + "api/photos/snowboarding").json()
-    photos_nollagang = requests.get(url=request.url_root + "api/photos/nollagang").json()
-    photos_snowskate = requests.get(url=request.url_root + "api/photos/snowskate").json()    
+
+    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(10)
+    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(10)
+    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(10)
+
+    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
+
+    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+
     return render_template('index.html', 
         interviews=interviews, 
         news=news, 
@@ -55,8 +66,13 @@ def home():
 
 @app.route('/guides')
 def guides():
-    guides = requests.get(url=request.url_root + "api/guides").json()
+    guides = Page.query.filter_by(lang_id=2)
     return render_template("views/guides.html", guides=guides)
+
+@app.route('/guide/<page_id>/')
+def view_guide(page_id):
+    guide = Page.query.filter_by(lang_id=2, page_id=page_id).first()
+    return render_template('views/guide.html', guide=guide)
 
 @app.route("/support")
 def support():
@@ -71,55 +87,20 @@ def view_user(user_id):
     user = requests.get(url=request.url_root + "api/user/" + user_id).json()
     return render_template('views/user.html', user=user)   
 
-@app.route('/guide/<guide_id>/')
-def view_guide(guide_id):
-    guide = requests.get(url=request.url_root + "api/guide/" + guide_id).json()
-    print(guide)
-    return render_template('views/guide.html', guide=guide)
-
-@app.route('/interview/<interview_id>/')
-def view_interviews_item(interview_id):
-    interview = requests.get(url=request.url_root + "api/story/" + interview_id).json()
+@app.route('/interview/<media_id>/')
+def view_interviews_item(media_id):
+    interview = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/interview.html', interview=interview)
 
-@app.route('/news/<news_id>/')
-def view_news_item(news_id):
-    news_item = requests.get(url=request.url_root + "api/story/" + news_id).json()
+@app.route('/news/<media_id>/')
+def view_news_item(media_id):
+    news_item = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/news_item.html', news_item=news_item)
 
-@app.route('/general/<general_id>/')
-def view_general_item(general_id):
-    general_item = requests.get(url=request.url_root + "api/story/" + general_id).json()
-    return render_template('views/general.html', general_item=general_item)
-
-@app.route('/reviews/<review_id>/')
-def view_reviews_item(review_id):
-    reviews_item = requests.get(url=request.url_root + "api/story/" + review_id).json()
-    return render_template('views/review.html', reviews_item=reviews_item)
-
-@app.route('/other/<other_id>/')
-def view_other_item(other_id):
-    other_item = requests.get(url=request.url_root + "api/story/" + other_id).json()
-    return render_template('views/other.html', other_item=other_item)
-
-@app.route('/videos/')
-def view_videos():
-    videos = requests.get(url=request.url_root + "api/videos").json()
-    return render_template('views/videos.html', videos=videos)
-
-@app.route('/video/<string:media_id>')
-def view_video(media_id):
-    result = requests.get(url=request.url_root + "api/video/" + media_id).json()
-    item = result[0]
-    video = {
-        'media_id': item['media_id'],
-        'media_topic': item['media_topic'],
-        'media_text': item['media_text'],
-        'media_desc': item['media_desc'],
-        'owner': item['owner'],
-        'create_time': utils.convertDateTime(item['create_time'])
-    }
-    return render_template('views/video.html', video=video)
+@app.route('/reviews/<media_id>/')
+def view_reviews_item(media_id):
+    review = Media.query.filter_by(media_id=media_id).first()
+    return render_template('views/review.html', review=review)
 
 @app.route('/youtube/')
 def youtube():
@@ -134,7 +115,7 @@ def view_photos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_photos_count_by_genre(media_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    photos = requests.get(url=request.url_root + "api/photos/" + genre + "/?page=" + str(page)).json()
+    photos = Media.query.filter_by(media_type=1).filter_by(media_genre=media_genre).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' photos', format_total=True, format_number=True,)                                 
     return render_template('views/photos.html', photos=photos, pagination=pagination)
 
@@ -143,7 +124,7 @@ def view_videos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_videos_count_by_genre(media_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    videos = requests.get(url=request.url_root + "api/videos/" + genre + "/?page=" + str(page)).json()
+    videos = Media.query.filter_by(media_type=6).filter_by(media_genre=media_genre).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
     pagination = utils.get_pagination(page=page,
                                 per_page=per_page,
                                 total=total,
@@ -156,21 +137,15 @@ def view_videos_by_genre(genre):
 
 @app.route('/photo/<media_id>')
 def view_photo(media_id):
-    result = requests.get(url=request.url_root + "api/photo/" + media_id).json()
-    item = result[0]
-    photo = {
-        'media_id': item['media_id'],
-        'media_topic': item['media_topic'],
-        'media_text': item['media_text'],
-        'media_desc': item['media_desc'],
-        'owner': item['owner'],
-        'create_time': utils.convertDateTime(item['create_time'])
-    }
-
+    photo = Media.query.filter_by(lang_id=2).filter_by(media_id=media_id).first()
     # Get comments
     comments = requests.get(url=request.url_root + "api/comments/"+ media_id).json()
     return render_template('views/photo.html', photo=photo, comments=comments)
 
+@app.route('/video/<string:media_id>')
+def view_video(media_id):
+    video = Media.query.filter_by(media_id=media_id).first()
+    return render_template('views/video.html', video=video)
 
 """ Admin """
 
@@ -244,34 +219,39 @@ def new_upload():
         # Create blob service
         blob_service = BlockBlobService(account_name=app.config.get('AZURE_ACCOUNT'), account_key=app.config.get('AZURE_STORAGE_KEY'))
 
-        # Create a container called 'quickstartblobs'.
-        #container_name = 'quickstartblobs'
-        #blob_service.create_container(container_name)
+        CONTAINER_NAME = app.config.get('AZURE_CONTAINER')
+        print("CONTAINER_NAME", CONTAINER_NAME)
 
-        # Set the permission so the blobs are public.
-        #blob_service.set_container_acl(container_name, public_access=PublicAccess.Container)
+        try:
+            # Create a container
+            blob_service.create_container('test', fail_on_exist=True)
+            # Set the permission so the blobs are public.
+            blob_service.set_container_acl(CONTAINER_NAME, public_access=PublicAccess.Container)
+            print("Container %s"%CONTAINER_NAME + " creation success status: %s"%container_status)
+        except AzureMissingResourceHttpError:
+            print("Container %s"%CONTAINER_NAME + " creation failed")
+            pass
 
         # List the blobs in the container.
         print("\nList blobs in the container")
-        generator = blob_service.list_blobs(app.config.get('AZURE_CONTAINER'))
+        generator = blob_service.list_blobs(CONTAINER_NAME)
         for blob in generator:
             print("\t Blob name: " + blob.name)
 
         file = request.files['file']
         filename = secure_filename(file.filename)
-        fileextension = filename.rsplit('.',1)[1]
-        Randomfilename = utils.id_generator()
-        filename = Randomfilename + '.' + fileextension
-        print("filename: ", filename)
-        print("AZURE_CONTAINER: ", app.config.get('AZURE_CONTAINER'))
-        print("file: ", file)
+        #fileextension = filename.rsplit('.',1)[1]
+        #Randomfilename = utils.id_generator()
+        #filename = Randomfilename + '.' + fileextension
 
         try:
-            blob_service.create_blob_from_stream(app.config.get('AZURE_CONTAINER'), filename, file)
-            print("Created")
+            # Upload the created file, use local_file_name for the blob name.
+            blob_service.create_blob_from_path(CONTAINER_NAME, blob_name, filename)
+            print("File upload successful %s"%blob_name)
         except:
-            print('container not found: ', app.config.get('AZURE_CONTAINER'))
-        ref =  app.config.get('AZURE_BLOB') + '/' + app.config.get('AZURE_CONTAINER') + '/' + filename
+            print ("Something went wrong while uploading the files %s"%blob_name)
+
+        ref =  app.config.get('AZURE_BLOB') + '/' + CONTAINER_NAME + '/' + filename
         print("ref: ", ref)
         flash("File " + ref + " was uploaded successfully")
         return render_template("views/user/uploads.html")
