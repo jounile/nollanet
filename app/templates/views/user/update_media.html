@@ -5,32 +5,32 @@
 
 <h1>Update post</h1>
 
-<form action = "{{ url_for('update_media', media_id=result[0]) }}" method = "POST">
+<form action = "{{ url_for('update_media', media_id=result.media_id) }}" method = "POST">
     
-    <input type="hidden" name="media_id" value="{{ result[0] }}" />
-    <input type="hidden" name="media_type" value="{{ result[1] }}" />
-    <input type="hidden" name="story_type" value="{{ result[2] }}" />
+    <input type="hidden" name="media_id" value="{{ result.media_id  }}" />
+    <input type="hidden" name="media_type" value="{{ result.media_type }}" />
+    <input type="hidden" name="story_type" value="{{ result.story_type }}" />
 
     <div class="form-group">
         <label for="media_topic">Title</label>
-        <input type="text" name="media_topic" class="form-control" size="100" value="{{ result[3] }}" />
+        <input type="text" name="media_topic" class="form-control" size="100" value="{{ result.media_topic }}" />
     </div>
 
     <div class="form-group">
         <label for="media_text">Text</label>
-        <textarea type="text" name="media_text" class="form-control" cols="100" rows="10">{{ result[4] }}</textarea>
+        <textarea type="text" name="media_text" class="form-control" cols="100" rows="10">{{ result.media_text }}</textarea>
     </div>
 
     <div class="form-group">
         <label for="media_description">Description</label>
-        <textarea type="text" name="media_desc" class="form-control" cols="100" rows="10">{{ result[5] }}</textarea>
+        <textarea type="text" name="media_desc" class="form-control" cols="100" rows="10">{{ result.media_desc }}</textarea>
     </div>
 
     <label for="owner">Owner</label>
-    <div>{{ result[6] }}</div>
+    <div>{{ result.owner }}</div>
     
     <label for="create_time">Created</label>
-    <div>{{ result[7] }}</div>
+    <div>{{ result.create_time }}</div>
 
     <button type="submit" class="btn btn-primary">Update</button>
  </form>

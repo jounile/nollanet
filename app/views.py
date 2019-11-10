@@ -172,39 +172,39 @@ def delete_media():
 @app.route("/media/update/<media_id>", methods = ['POST', 'GET'])
 def update_media(media_id):
     if request.method == 'POST':
-        media_id = request.form.get('media_id')
-        media_type = request.form.get('media_type')
-        story_type = request.form.get('story_type')
-        media_topic = request.form.get('media_topic')
-        media_text = request.form.get('media_text')
-        media_desc = request.form.get('media_desc')
-        if(session['logged_in'] and session['user_level'] == 1):
-            sql = "UPDATE media_table SET media_topic=%s, media_text=%s, media_desc=%s WHERE media_id=%s"
-            cursor = db.connection.cursor()
-            cursor.execute(sql, (media_topic, media_text, media_desc, media_id))
-            db.connection.commit()
-            if(media_type == "1"):
-                return redirect(url_for("view_photo", media_id=media_id)) 
-            elif(media_type == "6"): 
-                if(story_type == "0"):
-                    return redirect(url_for("view_video", media_id=media_id))
-            elif(media_type == "5"):
-                if(story_type == "2"):
-                    return redirect(url_for("view_reviews_item", review_id=media_id))
-                elif(story_type == "3"):
-                    return redirect(url_for("view_interviews_item", interview_id=media_id))
-                elif(story_type == "4"):
-                    return redirect(url_for("view_news_item", news_id=media_id))
+
+        media = { 'media_id': request.form.get('media_id'),
+                'media_type': request.form.get('media_type'),
+                'story_type': request.form.get('story_type'),
+                'media_topic': request.form.get('media_topic'),
+                'media_text': request.form.get('media_text'),
+                'media_desc': request.form.get('media_desc') }
+
+        if(session and session['logged_in'] and session['user_level'] == 1):
+
+            Media.query.filter_by(media_id=media_id).update(media)
+            dba.session.commit()
+
+            if(media['media_type'] == "1"):
+                return redirect(url_for("view_photo", media_id=media['media_id']))
+            elif(media['media_type'] == "6"):
+                if(media['story_type'] == "0"):
+                    return redirect(url_for("view_video", media_id=media['media_id']))
+            elif(media['media_type'] == "5"):
+                if(media['story_type'] == "2"):
+                    return redirect(url_for("view_reviews_item", review_id=media['media_id']))
+                elif(media['story_type'] == "3"):
+                    return redirect(url_for("view_interviews_item", interview_id=media['media_id']))
+                elif(media['story_type'] == "4"):
+                    return redirect(url_for("view_news_item", news_id=media['media_id']))
             else:
                 return redirect(url_for("home"))
         else:
             flash("Please login first")
             return redirect(url_for("home"))
     else:
-        if(session['logged_in'] and session['user_level'] == 1):
-            cursor = db.connection.cursor()
-            cursor.execute("SELECT media_id, media_type, story_type, media_topic, media_text, media_desc, owner, create_time FROM media_table WHERE media_id=%s", (media_id, ))
-            result = cursor.fetchone()
+        if(session and session['logged_in'] and session['user_level'] == 1):
+            result = Media.query.filter_by(media_id=media_id).first()
             return render_template("views/user/update_media.html", result=result)
         else:
             flash("Please login first")
