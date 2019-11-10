@@ -5,6 +5,8 @@ import datetime
 from flask_paginate import Pagination, get_page_args
 import string, random
 
+from models import Media
+
 from . import app, db
 
 def get_css_framework():
@@ -44,69 +46,13 @@ def get_media_genre_id(genre):
     return media_genre
 
 def get_total_photos_count_by_genre(media_genre):
-    cursor = db.connection.cursor()
-    sql = "SELECT count(*) FROM media_table WHERE media_type=1 AND media_genre=%s AND lang_id=2"
-    cursor.execute(sql, (media_genre, ))
-    total = cursor.fetchone()[0]
-    return total
+    return Media.query.filter_by(media_type=1).filter_by(media_genre=media_genre).filter_by(lang_id=2).count()
 
 def get_total_videos_count_by_genre(media_genre):
-    cursor = db.connection.cursor()
-    sql = "SELECT count(*) FROM media_table WHERE media_type=6 AND media_genre=%s AND lang_id=2"
-    cursor.execute(sql, (media_genre, ))
-    total = cursor.fetchone()[0]
-    return total
+    return Media.query.filter_by(media_type=6).filter_by(media_genre=media_genre).filter_by(lang_id=2).count()
 
 def get_total_news_count():
-    cursor = db.connection.cursor()
-    sql = "SELECT count(*) FROM media_table WHERE media_type IN (4,5) AND story_type=4 AND lang_id=2"
-    cursor.execute(sql, )
-    total = cursor.fetchone()[0]
-    return total
-
-def create_story_json(media_id, media_topic, create_time, owner):
-    if(create_time):
-        create_time = create_time.strftime('%d/%m/%Y %H:%M')
-
-    storyJson = {
-        'media_id': media_id,
-        'media_topic': media_topic,
-        'create_time': create_time,
-        'owner': owner
-        }
-    return storyJson
-
-def create_story_content_json(media_id, media_topic, media_text, media_desc, create_time, owner):
-    if(create_time):
-        create_time = create_time.strftime('%d/%m/%Y %H:%M')
-    
-    storyJson = {
-        'media_id': media_id,
-        'media_topic': media_topic,
-        'media_desc': media_desc,
-        'media_text': media_text,
-        'create_time': create_time,
-        'owner': owner
-        }
-    return storyJson
-
-def create_photo_json(media_id, media_topic, create_time, owner):
-    photoJson = {
-        'media_id': media_id,
-        'media_topic': media_topic,
-        'create_time': create_time.strftime('%d/%m/%Y %H:%M'),
-        'owner': owner
-        }
-    return photoJson
-
-def create_video_json(media_id, media_topic, create_time, owner):
-    videoJson = {
-        'media_id': media_id,
-        'media_topic': media_topic,
-        'create_time': create_time.strftime('%d/%m/%Y %H:%M'),
-        'owner': owner
-        }
-    return videoJson
+    return Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=4).filter_by(lang_id=2).count()
 
 def query_result_to_json(cursor, result):
     json = [dict((cursor.description[i][0], value)
