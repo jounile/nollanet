@@ -61,7 +61,6 @@ def login():
 
         try:
             user = User.query.filter_by(username=username).first()
-            print(user.password)
         except Exception as e:
             print(e)
             flash("User does not exist")

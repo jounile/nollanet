@@ -21,7 +21,7 @@ from azure.storage.common import (
 
 from models import Media, Page, User
 
-from . import app, db, utils, auto
+from . import app, db, dba, utils, auto
 
 @app.route('/interviews')
 def interviews():
@@ -156,13 +156,11 @@ def media_latest():
 
 @app.route('/media/delete', methods = ['POST'])
 def delete_media():
-    if(session['logged_in'] and session['user_level'] == 1):
+    if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
             media_id = request.form.get('media_id')
-            cursor = db.connection.cursor()
-            sql = "DELETE FROM media_table WHERE media_id=%s"
-            cursor.execute(sql, (media_id, ))
-            db.connection.commit()
+            Media.query.filter_by(media_id=media_id).delete()
+            dba.session.commit()
             flash("Record " + media_id + " was deleted succesfully by " + session['username'] + ".")
     else:
         flash("Please login first")
@@ -259,36 +257,34 @@ def new_upload():
 
 @app.route("/media/newpost", methods = ['POST', 'GET'])
 def new_post():
-    if(session['logged_in'] and session['user_level'] == 1):
+    if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
-            media_type = request.form.get('media_type')
-            media_genre = request.form.get('media_genre')
-            story_type = request.form.get('story_type')
-            media_topic = request.form.get('media_topic')
-            media_text = request.form.get('media_text')
-            media_desc = request.form.get('media_desc')
-            owner = session['username']
-            create_time = utils.get_now()
-            lang_id = 2
+            media = Media(media_type = request.form.get('media_type'), 
+                        media_genre = request.form.get('media_genre'), 
+                        story_type = request.form.get('story_type'),
+                        media_topic = request.form.get('media_topic'),
+                        media_text = request.form.get('media_text'),
+                        media_desc = request.form.get('media_desc'),
+                        owner = session['username'],
+                        create_time = utils.get_now(),
+                        lang_id = 2)
+            dba.session.add(media)
+            dba.session.commit()
 
-            sql = "INSERT INTO media_table (media_type, media_genre, story_type, media_topic, media_text, media_desc, owner, create_time, lang_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-            cursor = db.connection.cursor()
-            cursor.execute(sql, (media_type, media_genre, story_type, media_topic, media_text, media_desc, owner, create_time, lang_id))
-            db.connection.commit()
-            media_id = cursor.lastrowid
+            flash("New post created with ID " + str(media.media_id))
 
-            if(media_type == "1"):
-                return redirect(url_for("view_photo", media_id=media_id)) 
-            elif(media_type == "6"): 
-                if(story_type == "0"):
-                    return redirect(url_for("view_video", media_id=media_id))
-            elif(media_type == "5"):
-                if(story_type == "2"):
-                    return redirect(url_for("view_reviews_item", review_id=media_id))
-                elif(story_type == "3"):
-                    return redirect(url_for("view_interviews_item", interview_id=media_id))
-                elif(story_type == "4"):
-                    return redirect(url_for("view_news_item", news_id=media_id))
+            if(media.media_type == "1"):
+                return redirect(url_for("view_photo", media_id=media.media_id)) 
+            elif(media.media_type == "6"): 
+                if(media.story_type == "0"):
+                    return redirect(url_for("view_video", media_id=media.media_id))
+            elif(media.media_type == "5"):
+                if(media.story_type == "2"):
+                    return redirect(url_for("view_reviews_item", review_id=media.media_id))
+                elif(media.story_type == "3"):
+                    return redirect(url_for("view_interviews_item", interview_id=media.media_id))
+                elif(media.story_type == "4"):
+                    return redirect(url_for("view_news_item", news_id=media.media_id))
             else:
                 return redirect(url_for("home"))
         else:

@@ -5,6 +5,8 @@
 
 <h1>My posts</h1>
 
+<a class="btn btn-primary" role="button" href="{{ url_for('new_post') }}">New post</a>
+
 <table width="100%" class="table table-bordered">
     <thead class="thead-dark">
     <tr>
@@ -42,7 +44,5 @@
     {% endfor %}
     </tbody>
 </table>
-
-<a class="btn btn-primary" role="button" href="{{ url_for('new_post') }}">New post</a>
 
 {% endblock %}
