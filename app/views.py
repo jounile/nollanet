@@ -19,7 +19,7 @@ from azure.storage.common import (
     Logging,
 )
 
-from models import Media, Page
+from models import Media, Page, User
 
 from . import app, db, utils, auto
 
@@ -82,10 +82,10 @@ def support():
 def about():
     return render_template("views/about.html")
 
-@app.route('/user/<user_id>/')
-def view_user(user_id):
-    user = requests.get(url=request.url_root + "api/user/" + user_id).json()
-    return render_template('views/user.html', user=user)   
+@app.route('/user/<user_id>/', methods=['GET'])
+def view_user_by_id(user_id):
+    user = User.query.filter_by(user_id=user_id).first()
+    return render_template('views/user.html', user=user)
 
 @app.route('/interview/<media_id>/')
 def view_interviews_item(media_id):
@@ -151,7 +151,7 @@ def view_video(media_id):
 
 @app.route("/media/latest/")
 def media_latest():
-    latest = requests.get(url=request.url_root + "api/latest").json()
+    latest = Media.query.order_by(Media.create_time.desc()).limit(10)
     return render_template("views/admin/latest_media.html", latest=latest)
 
 @app.route('/media/delete', methods = ['POST'])

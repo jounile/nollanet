@@ -3,6 +3,8 @@ import requests, json
 from app.mod_auth.form import RegisterForm, ProfileForm
 from datetime import datetime
 
+from app.models import User
+
 from app import app, db
 
 from app.mod_auth import bcrypt
@@ -58,38 +60,33 @@ def login():
         usr_entered = request.form['password']
 
         try:
-            cursor = db.connection.cursor()
-            sql = "SELECT username, password, level, login_count FROM users WHERE username=%s"
-            cursor.execute(sql, (username, ))
-
-            if cursor is not None:
-                user = cursor.fetchone()
-                password = user[1]
-                if user and bcrypt.check_password_hash(password, usr_entered):
-                    flash("Welcome " + user[0] + "!")
-                    session['logged_in'] = True
-                    session['username'] = user[0]
-                    session['user_level'] = user[2]
-
-                    # Save last_login time
-                    last_login = datetime.now()
-                    login_count = user[3] + 1
-                    try:
-                        cursor = db.connection.cursor()
-                        sql = "UPDATE users SET last_login=%s, login_count=%s WHERE username=%s LIMIT 1"
-                        cursor.execute(sql, (last_login, login_count, username, ))
-                        db.connection.commit()
-                    except Exception as e:
-                        print(e)
-                else:
-                    flash("Wrong credentials!")
-
+            user = User.query.filter_by(username=username).first()
+            print(user.password)
         except Exception as e:
             print(e)
             flash("User does not exist")
             return redirect(url_for('auth.login'))
 
-        return redirect(url_for('home'))
+        if user and bcrypt.check_password_hash(user.password, usr_entered):
+            flash("Welcome " + user.username + "!")
+            session['logged_in'] = True
+            session['username'] = user.username
+            session['user_level'] = user.level
+
+            # Save last_login time
+            last_login = datetime.now()
+            login_count = user.login_count + 1
+            try:
+                cursor = db.connection.cursor()
+                sql = "UPDATE users SET last_login=%s, login_count=%s WHERE username=%s LIMIT 1"
+                cursor.execute(sql, (last_login, login_count, username, ))
+                db.connection.commit()
+            except Exception as e:
+                print(e)
+        else:
+            flash("Wrong credentials!")
+
+    return redirect(url_for('home'))
 
 @mod_auth.route('/logout')
 def logout():
@@ -109,44 +106,43 @@ def profile():
 
         if request.method == 'GET':
             username = session.get('username')
-            response = requests.get(url=request.url_root + "api/user/" + username)
-            result = response.json()
-            for user in result:
-                form.user_id.data = user['user_id']
-                form.username.data = user['username']
-                form.date.data = user['date']
-                form.last_login.data = user['last_login']
-                form.name.data = user['name']
-                form.email.data = user['email']
-                form.location.data = user['location']
-                form.address.data = user['address']
-                form.postnumber.data = user['postnumber']
-                form.bornyear.data = user['bornyear']
-                form.email2.data = user['email2']
-                form.homepage.data = user['homepage']
-                form.info.data = user['info']
-                form.hobbies.data = user['hobbies']
-                form.extrainfo.data = user['extrainfo']
-                form.sukupuoli.data = user['sukupuoli']
-                form.sukupuoli.process_data(user['sukupuoli']) #selected
-                form.icq.data = user['icq']
-                form.apulainen.data = user['apulainen']
-                form.chat.data = user['chat']
-                form.oikeus.data = user['oikeus']
-                form.lang_id.data = user['lang_id']
-                form.lang_id.process_data(user['lang_id']) #selected
-                form.login_count.data = user['login_count']
-                form.emails.data = user['emails']
-                form.puhelin.data = user['puhelin']
-                form.blogs.data = user['blogs']
-                form.messenger.data = user['messenger']
-                form.myspace.data = user['myspace']
-                form.rss.data = user['rss']
-                form.youtube.data = user['youtube']
-                form.ircgalleria.data = user['ircgalleria']
-                form.last_profile_update.data = user['last_profile_update']
-                form.avatar.data = user['avatar']
-                form.flickr_username.data = user['flickr_username']
+            user = User.query.filter_by(username=username).first()
+
+            form.user_id.data = user.user_id
+            form.username.data = user.username
+            form.date.data = user.date
+            form.last_login.data = user.last_login
+            form.name.data = user.name
+            form.email.data = user.email
+            form.location.data = user.location
+            form.address.data = user.address
+            form.postnumber.data = user.postnumber
+            form.bornyear.data = user.bornyear
+            form.email2.data = user.email2
+            form.homepage.data = user.homepage
+            form.info.data = user.info
+            form.hobbies.data = user.hobbies
+            form.extrainfo.data = user.extrainfo
+            form.sukupuoli.data = user.sukupuoli
+            form.sukupuoli.process_data(user.sukupuoli) #selected
+            form.icq.data = user.icq
+            form.apulainen.data = user.apulainen
+            form.chat.data = user.chat
+            form.oikeus.data = user.oikeus
+            form.lang_id.data = user.lang_id
+            form.lang_id.process_data(user.lang_id) #selected
+            form.login_count.data = user.login_count
+            form.emails.data = user.emails
+            form.puhelin.data = user.puhelin
+            form.blogs.data = user.blogs
+            form.messenger.data = user.messenger
+            form.myspace.data = user.myspace
+            form.rss.data = user.rss
+            form.youtube.data = user.youtube
+            form.ircgalleria.data = user.ircgalleria
+            form.last_profile_update.data = user.last_profile_update
+            form.avatar.data = user.avatar
+            form.flickr_username.data = user.flickr_username
 
             return render_template('auth/profile.html', form=form)
 

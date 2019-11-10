@@ -13,20 +13,6 @@ def media(filename):
         return redirect(urljoin(static_url, filename))
     return app.send_static_file(filename)
 
-@app.route('/api/user/<string:username>/', methods=['GET'])
-def get_user(username):
-    cursor = db.connection.cursor()
-    cursor.execute("SELECT user_id, username, name, email, location, address, postnumber, bornyear, email2, homepage, info, date, hobbies, extrainfo, sukupuoli, icq, apulainen, last_login, chat, oikeus, lang_id, login_count, lastloginip, lastloginclient, emails, puhelin, kantaasiakasnro, lamina_lisatieto, blogs, user_showid, messenger, myspace, rss, youtube, ircgalleria, last_profile_update, avatar, flickr_username FROM users WHERE username=%s", (username, ))
-    result = cursor.fetchall()
-    return utils.query_result_to_json(cursor, result)
-
-@app.route('/api/users')
-def get_users():
-    cursor = db.connection.cursor()
-    cursor.execute("SELECT * FROM users")
-    result = cursor.fetchall()
-    return utils.query_result_to_json(cursor, result)
-
 @app.route('/api/comments/<int:media_id>')
 def api_comments(media_id):
     cursor = db.connection.cursor()
@@ -36,14 +22,14 @@ def api_comments(media_id):
 
 
 """ Admin """
-
+"""
 @app.route('/api/latest')
 def api_latest():
     cursor = db.connection.cursor()
     cursor.execute("SELECT media_id, media_type, story_type, media_topic, media_text, media_desc, owner, create_time FROM media_table ORDER BY create_time DESC LIMIT 10")
     result = cursor.fetchall()
     return utils.query_result_to_json(cursor, result)
-
+"""
 
 """ User """
 
