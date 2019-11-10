@@ -299,9 +299,9 @@ def new_post():
 
 @app.route("/my/posts/")
 def my_posts():
-    if(session['logged_in']):
+    if(session and session['logged_in']):
         username = session['username']
-        posts = requests.get(url=request.url_root + "api/posts/" + username + "/").json()
+        posts = Media.query.filter_by(owner=username).order_by(Media.create_time.desc())
         return render_template("views/user/posts.html", posts=posts)
     else:
         flash("Please login first")

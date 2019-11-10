@@ -21,16 +21,6 @@ def api_comments(media_id):
     return utils.query_result_to_json(cursor, result)
 
 
-""" Admin """
-"""
-@app.route('/api/latest')
-def api_latest():
-    cursor = db.connection.cursor()
-    cursor.execute("SELECT media_id, media_type, story_type, media_topic, media_text, media_desc, owner, create_time FROM media_table ORDER BY create_time DESC LIMIT 10")
-    result = cursor.fetchall()
-    return utils.query_result_to_json(cursor, result)
-"""
-
 """ User """
 
 @app.route('/media/upload', methods=['POST'])
@@ -47,11 +37,3 @@ def upload_file():
 				file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 		flash('File(s) successfully uploaded')
 		return redirect('/')
-
-@app.route('/api/posts/<username>/')
-def api_posts(username):
-    if(username):
-        cursor = db.connection.cursor()
-        cursor.execute("SELECT media_id, media_type, story_type, media_topic, owner, create_time FROM media_table WHERE owner=%s ORDER BY create_time DESC", (username,))
-        result = cursor.fetchall()
-        return utils.query_result_to_json(cursor, result)
