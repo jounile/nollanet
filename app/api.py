@@ -4,7 +4,7 @@ import requests, json
 from urlparse import urljoin # Python 2.7
 from werkzeug.utils import secure_filename
 
-from . import app, db, utils, auto
+from . import app, utils, auto
 
 @app.route('/media/<path:filename>', methods=['GET'])
 def media(filename):

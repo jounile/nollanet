@@ -5,7 +5,7 @@ from datetime import datetime
 
 from app.models import User
 
-from app import app, db
+from app import app, db, dba
 
 from app.mod_auth import bcrypt
 
@@ -16,19 +16,13 @@ def register():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        name = form.name.data
-        email = form.email.data
+
         username = form.username.data
         password = form.password.data
-        location = form.location.data
-        address = form.address.data
-        postnumber = form.postnumber.data
 
         # Check if user exists
-        cursor = db.connection.cursor()
-        sql = "SELECT username FROM users WHERE username=%s"
-        cursor.execute(sql,(username, ))
-        user = cursor.fetchone()
+        user = User.query.filter_by(username=form.username.data).first()
+
         if user:
             flash("Username " + username + " exists already.")
             return render_template('auth/register.html', form=form)
@@ -37,16 +31,47 @@ def register():
             date = datetime.today().strftime('%Y-%m-%d')
             login_count = 0
             try:
-                cursor = db.connection.cursor()
-                sql = "INSERT INTO users (date, login_count, name, email, username, password, location, address, postnumber) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-                cursor.execute(sql,(date, login_count, name, email, username, crypted_password, location, address, postnumber))
-                db.connection.commit()
-                flash("User has been registered.")
+                newUser = User(date=date,
+                    login_count=login_count,
+                    name=form.name.data,
+                    email=form.email.data,
+                    username=form.username.data,
+                    password=crypted_password,
+                    location=form.location.data,
+                    address=form.address.data,
+                    postnumber=form.postnumber.data,
+                    level=2,
+                    bornyear='',
+                    sukupuoli='',
+                    oikeus='',
+                    lang_id='',
+                    lastloginip='',
+                    lastloginclient='',
+                    emails='',
+                    puhelin='',
+                    kantaasiakasnro='',
+                    lamina_lisatieto='',
+                    blogs='',
+                    user_showid='',
+                    messenger='',
+                    myspace='',
+                    rss='',
+                    youtube='',
+                    ircgalleria='',
+                    last_profile_update='',
+                    avatar='',
+                    flickr_username=''
+                    )
+
+                dba.session.add(newUser)
+                dba.session.commit()
+
+                flash("User " + username + " has been registered.")
             except Exception as e:
                 print(e)
             return redirect(url_for("home"))
-    #else:
-        #print("Invalid form data")
+    else:
+        print("Invalid form data")
 
     return render_template('auth/register.html', form=form)
 
@@ -63,7 +88,7 @@ def login():
             user = User.query.filter_by(username=username).first()
         except Exception as e:
             print(e)
-            flash("User does not exist")
+            flash("User " + username + " does not exist")
             return redirect(url_for('auth.login'))
 
         if user and bcrypt.check_password_hash(user.password, usr_entered):

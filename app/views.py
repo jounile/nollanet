@@ -21,7 +21,7 @@ from azure.storage.common import (
 
 from models import Media, Page, User, Comment
 
-from . import app, db, dba, utils, auto
+from . import app, dba, utils, auto
 
 @app.route('/interviews')
 def interviews():
