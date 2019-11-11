@@ -19,7 +19,7 @@ from azure.storage.common import (
     Logging,
 )
 
-from models import Media, Page, User
+from models import Media, Page, User, Comment
 
 from . import app, db, dba, utils, auto
 
@@ -138,8 +138,7 @@ def view_videos_by_genre(genre):
 @app.route('/photo/<media_id>')
 def view_photo(media_id):
     photo = Media.query.filter_by(lang_id=2).filter_by(media_id=media_id).first()
-    # Get comments
-    comments = requests.get(url=request.url_root + "api/comments/"+ media_id).json()
+    comments = Comment.query.filter_by(media_id=media_id).filter(Comment.user_id == User.user_id).order_by(Comment.id.desc()).limit(100)
     return render_template('views/photo.html', photo=photo, comments=comments)
 
 @app.route('/video/<string:media_id>')

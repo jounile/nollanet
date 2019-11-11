@@ -13,13 +13,6 @@ def media(filename):
         return redirect(urljoin(static_url, filename))
     return app.send_static_file(filename)
 
-@app.route('/api/comments/<int:media_id>')
-def api_comments(media_id):
-    cursor = db.connection.cursor()
-    cursor.execute("SELECT k.user_id, u.username, k.header, k.comment, k.timestamp, k.media_id, k.comment_user_id, k.youtube_id, k.tapahtuma_id, k.diary_id FROM kommentti k, users u WHERE k.user_id = u.user_id AND media_id = %s ORDER BY k.id desc LIMIT 0, 100", (media_id, ))
-    result = cursor.fetchall()
-    return utils.query_result_to_json(cursor, result)
-
 
 """ User """
 

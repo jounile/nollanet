@@ -65,3 +65,16 @@ class User(dba.Model):
     last_profile_update = dba.Column(dba.String(50))
     avatar = dba.Column(dba.String(50))
     flickr_username = dba.Column(dba.String(50))
+
+class Comment(dba.Model):
+    __tablename__ = 'kommentti'
+    id = dba.Column(dba.Integer, primary_key = True)
+    user_id = dba.Column(dba.Integer)
+    header = dba.Column(dba.String(50))
+    comment = dba.Column(dba.String(50))
+    timestamp = dba.Column(dba.String(50))
+    media_id = dba.Column(dba.String(50))
+    comment_user_id = dba.Column(dba.String(50))
+    youtube_id = dba.Column(dba.String(50))
+    tapahtuma_id = dba.Column(dba.String(50))
+    diary_id = dba.Column(dba.String(50))
