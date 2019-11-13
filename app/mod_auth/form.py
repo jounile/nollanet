@@ -4,7 +4,8 @@ from flask_wtf import RecaptchaField
 from wtforms import TextField, PasswordField, TextAreaField, StringField, IntegerField, SelectField, HiddenField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Optional
 
-from app import db
+from app import app, dba
+from app.models import User
 
 class RegisterForm(FlaskForm):
     name = StringField('Name', [DataRequired(), Length(min=4)])
@@ -55,10 +56,9 @@ class ProfileForm(FlaskForm):
 
     def update_details(self, user):
         try:
-            cursor = db.connection.cursor()
-            sql = "UPDATE users SET name=%s, email=%s, location=%s, address=%s, postnumber=%s, bornyear=%s, email2=%s, homepage=%s, info=%s, hobbies=%s, extrainfo=%s, sukupuoli=%s, icq=%s, apulainen=%s, chat=%s, oikeus=%s, lang_id=%s, login_count=%s, emails=%s, puhelin=%s, blogs=%s, messenger=%s, myspace=%s, rss=%s, youtube=%s, ircgalleria=%s, last_profile_update=%s, avatar=%s, flickr_username=%s WHERE username=%s LIMIT 1"
-            cursor.execute(sql, (user['name'], user['email'], user['location'], user['address'], user['postnumber'], user['bornyear'], user['email2'], user['homepage'], user['info'], user['hobbies'], user['extrainfo'], user['sukupuoli'], user['icq'], user['apulainen'], user['chat'], user['oikeus'], user['lang_id'], user['login_count'], user['emails'], user['puhelin'], user['blogs'], user['messenger'], user['myspace'], user['rss'], user['youtube'], user['ircgalleria'], user['last_profile_update'], user['avatar'], user['flickr_username'], user['username'], ))
-            db.connection.commit()
+            username = user['username']
+            result = dba.session.query(User).filter(User.username == username).update(user, synchronize_session=False)
+            dba.session.commit()
             flash("User details updated")
         except Exception as e:
             print("UPDATE failed")
