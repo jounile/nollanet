@@ -1,5 +1,8 @@
-from . import dba
+from datetime import datetime
 from sqlalchemy import inspect
+from sqlalchemy.types import Integer, String, DateTime
+
+from . import dba
 
 class Media(dba.Model):
     __tablename__ = 'media_table'
@@ -44,7 +47,7 @@ class User(dba.Model):
     sukupuoli = dba.Column(dba.String(50))
     icq = dba.Column(dba.String(50))
     apulainen = dba.Column(dba.String(50))
-    last_login = dba.Column(dba.String(50))
+    last_login = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
     chat = dba.Column(dba.String(50))
     oikeus = dba.Column(dba.String(50))
     lang_id = dba.Column(dba.String(50))

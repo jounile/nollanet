@@ -1,12 +1,10 @@
+from datetime import datetime
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
 import requests, json
 from app.mod_auth.form import RegisterForm, ProfileForm
-from datetime import datetime
 
+from app import app, dba
 from app.models import User
-
-from app import app, db, dba
-
 from app.mod_auth import bcrypt
 
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -87,7 +85,6 @@ def login():
         try:
             user = User.query.filter_by(username=username).first()
         except Exception as e:
-            print(e)
             flash("User " + username + " does not exist")
             return redirect(url_for('auth.login'))
 
@@ -97,14 +94,11 @@ def login():
             session['username'] = user.username
             session['user_level'] = user.level
 
-            # Save last_login time
-            last_login = datetime.now()
+            # Increment login_count by one
             login_count = user.login_count + 1
             try:
-                cursor = db.connection.cursor()
-                sql = "UPDATE users SET last_login=%s, login_count=%s WHERE username=%s LIMIT 1"
-                cursor.execute(sql, (last_login, login_count, username, ))
-                db.connection.commit()
+                result = dba.session.query(User).filter(User.username == username).update(dict(login_count=login_count), synchronize_session=False)
+                dba.session.commit()
             except Exception as e:
                 print(e)
         else:
