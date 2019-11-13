@@ -4,7 +4,7 @@ import requests
 import json
 import os
 
-from app import app, db, utils
+from app import app, utils
 
 mod_facebook = Blueprint('facebook', __name__, url_prefix='/facebook')
 

@@ -31,7 +31,6 @@ class DefaultConfig(object):
     MYSQL_USER = os.getenv('MYSQL_USER')
     MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD')
     MYSQL_DB = os.getenv('MYSQL_DB')
-    MYSQL_PORT = 3306
 
     # SQLAlchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = False

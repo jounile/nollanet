@@ -7,7 +7,7 @@ import string, random
 
 from models import Media
 
-from . import app, db
+from . import app
 
 def get_css_framework():
     return app.config.get('CSS_FRAMEWORK', 'bootstrap4')

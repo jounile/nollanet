@@ -1,7 +1,6 @@
 import os
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 from flask_session import Session
-from flask_mysqldb import MySQL
 from flask_login import LoginManager, login_user , logout_user , current_user , login_required, UserMixin
 from flask_selfdoc import Autodoc
 from flask_navigation import Navigation
@@ -16,7 +15,6 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(DefaultConfig)
 
 # Database connection
-db = MySQL(app)
 dba = SQLAlchemy(app)
 
 # Login
