@@ -71,3 +71,9 @@ $ export FLASK_APP=app/cli.py
 ```bash
 $ flask alter_database
 ```
+
+
+## Functional tests
+```bash
+$ pytest --setup-show tests/functional/test_users.py::test_home_page
+```

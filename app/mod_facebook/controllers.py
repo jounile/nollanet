@@ -73,6 +73,5 @@ def facebook_info():
 	# Query page data
 	graph = facebook.GraphAPI(access_token=page_token, version="2.10")
 	infos = graph.get_object("/me?fields=id,name,about,description,posts{picture,message,permalink_url,created_time,is_published}")
-	#print(infos)
 
 	return render_template('facebook/facebook.html', infos=infos)

@@ -26,9 +26,14 @@ $ . env.sh
 $ python app.py
 ```
 
-## Tests
+## Unit tests
 ```bash
 $ python tests.py
+```
+
+## Functional tests
+```bash
+$ pytest
 ```
 
 ## Deactivate virtual environment
