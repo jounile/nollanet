@@ -58,6 +58,7 @@ docs/_build/
 target/
 
 # VSCode
+.vscode
 .DS_Store
 
 # Virtualenv
