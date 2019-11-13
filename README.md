@@ -102,3 +102,7 @@ $ export FLASK_APP=app/cli.py
 $ flask alter_database
 ```
 
+## Tests
+```bash
+$ python ./tests.py
+```
