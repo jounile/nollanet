@@ -29,12 +29,12 @@
     <div class="form-group">
         <label for="country_id">Country</label>
         <select name="country_id" class="form-control">
-            <option value="1">Finland</option>
-            <option value="2">Sweden</option>
-            <option value="3">Estonia</option>
-            <option value="4">Denmark</option>
-            <option value="5">Germany</option>
-            <option value="">Other</option>
+            <option value="1"{% if result.country_id==1 %} selected="selected" {% endif %}>Finland</option>
+            <option value="2"{% if result.country_id==2 %} selected="selected" {% endif %}>Sweden</option>
+            <option value="3"{% if result.country_id==3 %} selected="selected" {% endif %}>Estonia</option>
+            <option value="4"{% if result.country_id==4 %} selected="selected" {% endif %}>Denmark</option>
+            <option value="5"{% if result.country_id==5 %} selected="selected" {% endif %}>Germany</option>
+            <option value="0"{% if result.country_id==0 %} selected="selected" {% endif %}>Other</option>
         </select>
     </div>
 
