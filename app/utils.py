@@ -54,11 +54,6 @@ def get_total_videos_count_by_genre(media_genre):
 def get_total_news_count():
     return Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=4).filter_by(lang_id=2).count()
 
-def query_result_to_json(cursor, result):
-    json = [dict((cursor.description[i][0], value)
-        for i, value in enumerate(row)) for row in result]
-    return jsonify(json)
-
 def write_file(data, filename):
     with open(filename, 'wb') as f:
         f.write(data)
