@@ -157,7 +157,6 @@ def media_latest():
         Media.media_text,
         Media.create_time,
         Media.owner).order_by(Media.create_time.desc()).limit(10)
-    print(latest)
     return render_template("views/admin/latest_media.html", latest=latest)
 
 @app.route('/media/delete', methods = ['POST'])
@@ -303,7 +302,13 @@ def new_post():
 def my_posts():
     if(session and session['logged_in']):
         username = session['username']
-        posts = Media.query.filter_by(owner=username).order_by(Media.create_time.desc())
+        posts = dba.session.query(Media).join(Storytype).add_columns(Media.media_id,
+            Media.media_type,
+            Storytype.type_name,
+            Media.media_topic,
+            Media.create_time,
+            Media.owner).filter(Media.owner==username).order_by(Media.create_time.desc()).limit(10)
+        print(posts)
         return render_template("views/user/posts.html", posts=posts)
     else:
         flash("Please login first")
