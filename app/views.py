@@ -39,7 +39,7 @@ def interviews():
 def news():
     total = utils.get_total_news_count()
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    news = dba.session.query(Media.media_type.in_((1,4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
+    news = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
@@ -136,7 +136,11 @@ def view_photos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_photos_count_by_genre(media_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    photos = Media.query.filter_by(media_type=1).filter_by(media_genre=media_genre).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+    photos = dba.session.query(Media).join(Country).add_columns(Media.media_id,
+            (Country.country_code).label("country_code"),
+            Media.media_topic,
+            Media.create_time,
+            Media.owner).filter(Media.media_type==1).filter(Media.media_genre==media_genre).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' photos', format_total=True, format_number=True,)                                 
     return render_template('views/photos.html', photos=photos, pagination=pagination)
 
@@ -145,20 +149,22 @@ def view_videos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_videos_count_by_genre(media_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    videos = Media.query.filter_by(media_type=6).filter_by(media_genre=media_genre).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
-    pagination = utils.get_pagination(page=page,
-                                per_page=per_page,
-                                total=total,
-                                record_name=' videos',
-                                format_total=True,
-                                format_number=True,
-                                )
-                                              
+    videos = dba.session.query(Media).join(Country).add_columns(Media.media_id,
+            (Country.country_code).label("country_code"),
+            Media.media_topic,
+            Media.create_time,
+            Media.owner).filter(Media.media_type==6).filter(Media.media_genre==media_genre).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' videos', format_total=True, format_number=True)              
     return render_template('views/videos.html', videos=videos, pagination=pagination)
 
 @app.route('/photo/<media_id>')
 def view_photo(media_id):
-    photo = Media.query.filter_by(lang_id=2).filter_by(media_id=media_id).first()
+    photo = dba.session.query(Media).join(Country).add_columns(Media.media_id,
+        (Country.country_code).label("country_code"),
+        Media.media_topic,
+        Media.media_text,
+        Media.create_time,
+        Media.owner).filter(Media.media_id==media_id).first()
     comments = Comment.query.filter_by(media_id=media_id).filter(Comment.user_id == User.user_id).order_by(Comment.id.desc()).limit(100)
     return render_template('views/photo.html', photo=photo, comments=comments)
 
@@ -213,21 +219,8 @@ def update_media(media_id):
 
             Media.query.filter_by(media_id=media_id).update(media)
             dba.session.commit()
-
-            if(media['media_type'] == "1"):
-                return redirect(url_for("view_photo", media_id=media['media_id']))
-            elif(media['media_type'] == "6"):
-                if(media['story_type'] == "0"):
-                    return redirect(url_for("view_video", media_id=media['media_id']))
-            elif(media['media_type'] == "5"):
-                if(media['story_type'] == "2"):
-                    return redirect(url_for("view_reviews_item", review_id=media['media_id']))
-                elif(media['story_type'] == "3"):
-                    return redirect(url_for("view_interviews_item", interview_id=media['media_id']))
-                elif(media['story_type'] == "4"):
-                    return redirect(url_for("view_news_item", news_id=media['media_id']))
-            else:
-                return redirect(url_for("home"))
+            flash("Record " + media_id + " was updated by user " + session['username'])
+            return redirect(url_for("home"))
         else:
             flash("Please login first")
             return redirect(url_for("home"))

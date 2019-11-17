@@ -9,6 +9,7 @@
 <table width="100%" class="table table-bordered">
     <thead class="thead-dark">
         <tr>
+            <th>ID</th>
             <th>Thumbnail</th>
             <th>Created</th>
             <th>Name</th>
@@ -23,6 +24,7 @@
     <tbody>
     {% for item in videos %}
         <tr>
+            <td>{{ loop.index + pagination.skip }}</td>
             <td>
                 <a href="/video/{{ item.media_id }}">
                     <img src="{{ url_for('media', filename='thumbs/' + item['media_id']|string + '_50.jpg') }}" />

@@ -26,6 +26,18 @@
         <textarea type="text" name="media_desc" class="form-control" cols="100" rows="10">{{ result.media_desc }}</textarea>
     </div>
 
+    <div class="form-group">
+        <label for="country_id">Country</label>
+        <select name="country_id" class="form-control">
+            <option value="1">Finland</option>
+            <option value="2">Sweden</option>
+            <option value="3">Estonia</option>
+            <option value="4">Denmark</option>
+            <option value="5">Germany</option>
+            <option value="">Other</option>
+        </select>
+    </div>
+
     <label for="owner">Owner</label>
     <div>{{ result.owner }}</div>
     
