@@ -9,6 +9,7 @@
         <thead class="thead-dark">
         <tr>
             <th>media_id</th>
+            <th>genre</th>
             <th>media_type</th>
             <th>story_type</th>
             <th>media_topic</th>
@@ -25,10 +26,11 @@
         {% for item in latest %}
             <tr>
                 <td>{{ item.media_id }}</td>
-                <td>{{ item.media_type }}</td>
-                <td>{{ item.type_name }}</td>
+                <td>{{ item.genre }}</td>
+                <td>{{ item.mediatype_name }}</td>
+                <td>{{ item.storytype_name }}</td>
                 <td>{{ item.media_topic }}</td>
-                <td>{{ item.media_text }}</td>
+                <td>{{ item.media_text[:80] }}</td>
                 <td>{{ item.create_time }}</td>
                 <td>{{ item.owner }}</td>
                 {% if session['logged_in'] and session['user_level'] == 1 %}
