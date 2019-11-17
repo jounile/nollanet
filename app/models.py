@@ -16,6 +16,7 @@ class Media(dba.Model):
     create_time = dba.Column(dba.String(50))
     owner = dba.Column(dba.String(50))
     lang_id = dba.Column(dba.Integer)
+    country_id = dba.Column(dba.Integer)
 
 class Page(dba.Model):
     __tablename__ = 'general'
@@ -99,3 +100,9 @@ class Mediatype(dba.Model):
     id = dba.Column(dba.Integer, primary_key= True)
     type_id = dba.Column(dba.Integer, dba.ForeignKey('media_table.media_type'))
     type_name = dba.Column(String(50))
+
+class Country(dba.Model):
+    __tablename__ = 'countries'
+    id = dba.Column(dba.Integer, dba.ForeignKey('media_table.country_id'), primary_key= True)
+    country_code = dba.Column(String(50))
+    country_name = dba.Column(String(50))

@@ -19,16 +19,17 @@ from azure.storage.common import (
     Logging,
 )
 
-from models import Media, Page, User, Comment, Storytype, Genre, Mediatype
+from models import Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
 
 from . import app, dba, utils, auto
 
 @app.route('/interviews')
 def interviews():
-    interviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+    interviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
+            (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
             Media.owner).filter(Media.story_type==utils.get_story_type('interviews')).filter(Media.lang_id==2).order_by(Media.create_time.desc())
@@ -38,11 +39,11 @@ def interviews():
 def news():
     total = utils.get_total_news_count()
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    #news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
-    news = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+    news = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
+            (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
             Media.owner).filter(Media.story_type==utils.get_story_type('news')).filter(Media.lang_id==2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
@@ -51,10 +52,11 @@ def news():
 
 @app.route('/reviews')
 def reviews():
-    reviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+    reviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
+            (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
             Media.owner).filter(Media.story_type==utils.get_story_type('reviews')).filter(Media.lang_id==2).order_by(Media.create_time.desc())
@@ -169,10 +171,11 @@ def view_video(media_id):
 
 @app.route("/media/latest/")
 def media_latest():
-    latest = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+    latest = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
         (Genre.type_name).label("genre"),
         (Mediatype.type_name).label("mediatype_name"),
         (Storytype.type_name).label("storytype_name"),
+        (Country.country_code).label("country_code"),
         Media.media_topic,
         Media.media_text,
         Media.create_time,
@@ -322,10 +325,11 @@ def new_post():
 def my_posts():
     if(session and session['logged_in']):
         username = session['username']
-        posts = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+        posts = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
+            (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
             Media.owner).filter(Media.owner==username).order_by(Media.create_time.desc()).limit(10)

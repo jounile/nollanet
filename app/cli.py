@@ -10,7 +10,7 @@ from sqlalchemy import Table, Column, String, Integer, Float, Boolean, MetaData
 
 from .config import DefaultConfig
 
-from models import Storytype, Genre, Mediatype
+from models import Storytype, Genre, Mediatype, Country
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -101,6 +101,31 @@ def insert_mediatypes():
         dba.session.add(model4)
         dba.session.add(model5)
         dba.session.add(model6)
+        dba.session.commit()
+
+@app.cli.command("create_countries")
+def create_mediatype():
+        metadata = MetaData()
+        data = Table('countries', metadata,
+                Column('id', Integer(), primary_key=True),
+                Column('country_code', String(50)),
+                Column('country_name', String(50))
+        )
+        metadata.create_all(dba.engine)
+        print(repr(data))
+
+@app.cli.command("insert_countries")
+def insert_mediatypes():
+        model1 = Country(id=1, country_code='fi', country_name='Finland')
+        model2 = Country(id=2, country_code='se', country_name='Sweden')
+        model3 = Country(id=3, country_code='ee', country_name='Estonia')
+        model4 = Country(id=4, country_code='dk', country_name='Denmark')
+        model5 = Country(id=5, country_code='de', country_name='Germany')
+        dba.session.add(model1)
+        dba.session.add(model2)
+        dba.session.add(model3)
+        dba.session.add(model4)
+        dba.session.add(model5)
         dba.session.commit()
 
 """
