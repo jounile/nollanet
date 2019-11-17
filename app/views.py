@@ -19,26 +19,45 @@ from azure.storage.common import (
     Logging,
 )
 
-from models import Media, Page, User, Comment, Storytype
+from models import Media, Page, User, Comment, Storytype, Genre, Mediatype
 
 from . import app, dba, utils, auto
 
 @app.route('/interviews')
 def interviews():
-    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(lang_id=2).order_by(Media.create_time.desc())
+    interviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+            (Genre.type_name).label("genre"),
+            (Mediatype.type_name).label("mediatype_name"),
+            (Storytype.type_name).label("storytype_name"),
+            Media.media_topic,
+            Media.create_time,
+            Media.owner).filter(Media.story_type==utils.get_story_type('interviews')).filter(Media.lang_id==2).order_by(Media.create_time.desc())
     return render_template("views/interviews.html", interviews=interviews)
 
 @app.route('/news')
 def news():
     total = utils.get_total_news_count()
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+    #news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(lang_id=2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+    news = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+            (Genre.type_name).label("genre"),
+            (Mediatype.type_name).label("mediatype_name"),
+            (Storytype.type_name).label("storytype_name"),
+            Media.media_topic,
+            Media.create_time,
+            Media.owner).filter(Media.story_type==utils.get_story_type('news')).filter(Media.lang_id==2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' news', format_total=True, format_number=True,)
     return render_template("views/news.html", news=news, pagination=pagination)
 
 @app.route('/reviews')
 def reviews():
-    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(lang_id=2).order_by(Media.create_time.desc())
+    reviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+            (Genre.type_name).label("genre"),
+            (Mediatype.type_name).label("mediatype_name"),
+            (Storytype.type_name).label("storytype_name"),
+            Media.media_topic,
+            Media.create_time,
+            Media.owner).filter(Media.story_type==utils.get_story_type('reviews')).filter(Media.lang_id==2).order_by(Media.create_time.desc())
     return render_template("views/reviews.html", reviews=reviews)
 
 @app.route('/')
@@ -150,9 +169,10 @@ def view_video(media_id):
 
 @app.route("/media/latest/")
 def media_latest():
-    latest = dba.session.query(Media).join(Storytype).add_columns(Media.media_id,
-        Media.media_type,
-        Storytype.type_name,
+    latest = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+        (Genre.type_name).label("genre"),
+        (Mediatype.type_name).label("mediatype_name"),
+        (Storytype.type_name).label("storytype_name"),
         Media.media_topic,
         Media.media_text,
         Media.create_time,
@@ -302,13 +322,13 @@ def new_post():
 def my_posts():
     if(session and session['logged_in']):
         username = session['username']
-        posts = dba.session.query(Media).join(Storytype).add_columns(Media.media_id,
-            Media.media_type,
-            Storytype.type_name,
+        posts = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).add_columns(Media.media_id,
+            (Genre.type_name).label("genre"),
+            (Mediatype.type_name).label("mediatype_name"),
+            (Storytype.type_name).label("storytype_name"),
             Media.media_topic,
             Media.create_time,
             Media.owner).filter(Media.owner==username).order_by(Media.create_time.desc()).limit(10)
-        print(posts)
         return render_template("views/user/posts.html", posts=posts)
     else:
         flash("Please login first")
