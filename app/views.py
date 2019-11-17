@@ -19,7 +19,7 @@ from azure.storage.common import (
     Logging,
 )
 
-from models import Media, Page, User, Comment
+from models import Media, Page, User, Comment, Storytype
 
 from . import app, dba, utils, auto
 
@@ -150,7 +150,14 @@ def view_video(media_id):
 
 @app.route("/media/latest/")
 def media_latest():
-    latest = Media.query.order_by(Media.create_time.desc()).limit(10)
+    latest = dba.session.query(Media).join(Storytype).add_columns(Media.media_id,
+        Media.media_type,
+        Storytype.type_name,
+        Media.media_topic,
+        Media.media_text,
+        Media.create_time,
+        Media.owner).order_by(Media.create_time.desc()).limit(10)
+    print(latest)
     return render_template("views/admin/latest_media.html", latest=latest)
 
 @app.route('/media/delete', methods = ['POST'])
