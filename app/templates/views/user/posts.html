@@ -17,6 +17,7 @@
         <th>media_topic</th>
         <th>create_time</th>
         <th>owner</th>
+        <th>Country</th>
         <th></th>
         <th></th>
     </tr>
@@ -31,6 +32,7 @@
             <td>{{ item.media_topic }}</td>
             <td>{{ item.create_time }}</td>
             <td>{{ item.owner }}</td>
+            <td>{{ item.country_code }}</td>
             <td>
                 <form action="/media/update/{{ item.media_id }}" method="GET">
                     <button type="submit" class="btn btn-primary">Edit</button>
