@@ -81,3 +81,9 @@ class Comment(dba.Model):
     youtube_id = dba.Column(dba.String(50))
     tapahtuma_id = dba.Column(dba.String(50))
     diary_id = dba.Column(dba.String(50))
+
+class Storytype(dba.Model):
+    __tablename__ = 'storytype'
+    id = dba.Column(dba.Integer, primary_key= True)
+    type_id = dba.Column(dba.Integer, dba.ForeignKey('media_table.story_type'))
+    type_name = dba.Column(String(50))
