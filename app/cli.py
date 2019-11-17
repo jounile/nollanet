@@ -10,7 +10,7 @@ from sqlalchemy import Table, Column, String, Integer, Float, Boolean, MetaData
 
 from .config import DefaultConfig
 
-from models import Storytype
+from models import Storytype, Genre, Mediatype
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -39,7 +39,7 @@ def create_storytype():
         metadata.create_all(dba.engine)
         print(repr(data))
 
-@app.cli.command("insert_types")
+@app.cli.command("insert_storytypes")
 def insert_types():
         model1 = Storytype(id=1, type_id=1, type_name='general')
         model2 = Storytype(id=2, type_id=2, type_name='reviews')
@@ -51,6 +51,56 @@ def insert_types():
         dba.session.add(model3)
         dba.session.add(model4)
         dba.session.add(model5)
+        dba.session.commit()
+
+@app.cli.command("create_genre")
+def create_genre():
+        metadata = MetaData()
+        data = Table('genre', metadata,
+                Column('id', Integer(), primary_key=True),
+                Column('type_id', Integer()),
+                Column('type_name', String(50))
+        )
+        metadata.create_all(dba.engine)
+        print(repr(data))
+
+@app.cli.command("insert_genres")
+def insert_types():
+        model1 = Genre(id=1, type_id=1, type_name='skateboarding')
+        model2 = Genre(id=2, type_id=2, type_name='snowboarding')
+        model3 = Genre(id=3, type_id=3, type_name='nollagang')
+        model4 = Genre(id=4, type_id=4, type_name='snowskate')
+        dba.session.add(model1)
+        dba.session.add(model2)
+        dba.session.add(model3)
+        dba.session.add(model4)
+        dba.session.commit()
+
+@app.cli.command("create_mediatype")
+def create_mediatype():
+        metadata = MetaData()
+        data = Table('mediatype', metadata,
+                Column('id', Integer(), primary_key=True),
+                Column('type_id', Integer()),
+                Column('type_name', String(50))
+        )
+        metadata.create_all(dba.engine)
+        print(repr(data))
+
+@app.cli.command("insert_mediatypes")
+def insert_mediatypes():
+        model1 = Mediatype(id=1, type_id=1, type_name='photo')
+        model2 = Mediatype(id=2, type_id=2, type_name='mediatype2')
+        model3 = Mediatype(id=3, type_id=3, type_name='music')
+        model4 = Mediatype(id=4, type_id=4, type_name='movies')
+        model5 = Mediatype(id=5, type_id=5, type_name='stories') # interviews, reviews
+        model6 = Mediatype(id=6, type_id=6, type_name='video')
+        dba.session.add(model1)
+        dba.session.add(model2)
+        dba.session.add(model3)
+        dba.session.add(model4)
+        dba.session.add(model5)
+        dba.session.add(model6)
         dba.session.commit()
 
 """
