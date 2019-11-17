@@ -87,3 +87,15 @@ class Storytype(dba.Model):
     id = dba.Column(dba.Integer, primary_key= True)
     type_id = dba.Column(dba.Integer, dba.ForeignKey('media_table.story_type'))
     type_name = dba.Column(String(50))
+
+class Genre(dba.Model):
+    __tablename__ = 'genre'
+    id = dba.Column(dba.Integer, primary_key= True)
+    type_id = dba.Column(dba.Integer, dba.ForeignKey('media_table.media_genre'))
+    type_name = dba.Column(String(50))
+
+class Mediatype(dba.Model):
+    __tablename__ = 'mediatype'
+    id = dba.Column(dba.Integer, primary_key= True)
+    type_id = dba.Column(dba.Integer, dba.ForeignKey('media_table.media_type'))
+    type_name = dba.Column(String(50))
