@@ -60,16 +60,16 @@ def write_file(data, filename):
 
 def get_story_type(story_type):
     if(story_type == "general"):
-        media_id = 1
+        type_id = 1
     if(story_type == "reviews"):
-        media_id = 2
+        type_id = 2
     if(story_type == "interviews"):
-        media_id = 3
+        type_id = 3
     if(story_type == "news"):
-        media_id = 4
+        type_id = 4
     if(story_type == "other"):
-        media_id = 99
-    return media_id
+        type_id = 99
+    return type_id
 
 def convertDateTime(datetimestr):
     date_time_obj = datetime.datetime.strptime(datetimestr, '%a, %d %b %Y %H:%M:%S GMT')
