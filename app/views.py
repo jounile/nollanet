@@ -32,21 +32,21 @@ def interviews():
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.story_type==utils.get_story_type('interviews')).filter(Media.lang_id==2).order_by(Media.create_time.desc())
+            Media.owner).filter(Media.story_type==utils.get_story_type('interviews')).order_by(Media.create_time.desc())
     return render_template("views/interviews.html", interviews=interviews)
 
 @app.route('/news')
 def news():
     total = utils.get_total_news_count()
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    news = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
+    news = dba.session.query(Media.media_type.in_((1,4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.story_type==utils.get_story_type('news')).filter(Media.lang_id==2).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+            Media.owner).filter(Media.story_type==utils.get_story_type('news')).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' news', format_total=True, format_number=True,)
     return render_template("views/news.html", news=news, pagination=pagination)
 
@@ -59,22 +59,22 @@ def reviews():
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.story_type==utils.get_story_type('reviews')).filter(Media.lang_id==2).order_by(Media.create_time.desc())
+            Media.owner).filter(Media.story_type==utils.get_story_type('reviews')).order_by(Media.create_time.desc())
     return render_template("views/reviews.html", reviews=reviews)
 
 @app.route('/')
 def home():
 
-    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(10)
-    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(10)
-    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(10)
+    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).order_by(Media.create_time.desc()).limit(10)
+    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).order_by(Media.create_time.desc()).limit(10)
+    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).order_by(Media.create_time.desc()).limit(10)
 
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
 
-    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).filter_by(lang_id=2).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
 
     return render_template('index.html', 
         interviews=interviews, 
@@ -206,7 +206,8 @@ def update_media(media_id):
                 'story_type': request.form.get('story_type'),
                 'media_topic': request.form.get('media_topic'),
                 'media_text': request.form.get('media_text'),
-                'media_desc': request.form.get('media_desc') }
+                'media_desc': request.form.get('media_desc'),
+                'country_id': request.form.get('country_id') }
 
         if(session and session['logged_in'] and session['user_level'] == 1):
 
@@ -288,7 +289,8 @@ def new_post():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
             media = Media(media_type = request.form.get('media_type'), 
-                        media_genre = request.form.get('media_genre'), 
+                        media_genre = request.form.get('media_genre'),
+                        country_id = request.form.get('country_id'),
                         story_type = request.form.get('story_type'),
                         media_topic = request.form.get('media_topic'),
                         media_text = request.form.get('media_text'),
