@@ -3,21 +3,11 @@ from flask import Flask, request, flash, g, render_template, jsonify, session, r
 import requests, json
 from flask_paginate import Pagination, get_page_args
 from werkzeug import secure_filename
-from azure.storage.blob import BlockBlobService, PublicAccess
 
-from azure.common import (
-    AzureConflictHttpError,
-    AzureMissingResourceHttpError,
-)
+from azure.storage.blob import BlockBlobService
+from azure.storage.common import CloudStorageAccount
+from azure.common import AzureConflictHttpError, AzureMissingResourceHttpError
 
-from azure.storage.blob import (
-    Include,
-)
-from azure.storage.common import (
-    Metrics,
-    CorsRule,
-    Logging,
-)
 
 from models import Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
 
@@ -236,44 +226,38 @@ def update_media(media_id):
 def new_upload():
     if request.method == 'POST':
 
+        account = app.config.get('AZURE_ACCOUNT')
+        key = app.config.get('AZURE_STORAGE_KEY')
+        container = app.config.get('AZURE_CONTAINER')
+        blob = app.config.get('AZURE_BLOB')
+
         # Create blob service
-        blob_service = BlockBlobService(account_name=app.config.get('AZURE_ACCOUNT'), account_key=app.config.get('AZURE_STORAGE_KEY'))
-
-        CONTAINER_NAME = app.config.get('AZURE_CONTAINER')
-        print("CONTAINER_NAME", CONTAINER_NAME)
-
-        try:
-            # Create a container
-            blob_service.create_container('test', fail_on_exist=True)
-            # Set the permission so the blobs are public.
-            blob_service.set_container_acl(CONTAINER_NAME, public_access=PublicAccess.Container)
-            print("Container %s"%CONTAINER_NAME + " creation success status: %s"%container_status)
-        except AzureMissingResourceHttpError:
-            print("Container %s"%CONTAINER_NAME + " creation failed")
-            pass
+        account = CloudStorageAccount(account_name=account, account_key=key)
+        blob_service = account.create_block_blob_service()
 
         # List the blobs in the container.
         print("\nList blobs in the container")
-        generator = blob_service.list_blobs(CONTAINER_NAME)
+        generator = blob_service.list_blobs(container)
         for blob in generator:
             print("\t Blob name: " + blob.name)
 
         file = request.files['file']
         filename = secure_filename(file.filename)
-        #fileextension = filename.rsplit('.',1)[1]
-        #Randomfilename = utils.id_generator()
-        #filename = Randomfilename + '.' + fileextension
 
         try:
-            # Upload the created file, use local_file_name for the blob name.
-            blob_service.create_blob_from_path(CONTAINER_NAME, blob_name, filename)
-            print("File upload successful %s"%blob_name)
-        except:
-            print ("Something went wrong while uploading the files %s"%blob_name)
+            # Upload the created file, use filename for the blob name.
+            blob_service.create_blob_from_stream(container, filename, file)
+            print("File upload successful %s"%filename)
+            ref =  blob + '/' + container + '/' + filename
+            print("ref: ", ref)
+            flash("File " + ref + " was uploaded successfully")
 
-        ref =  app.config.get('AZURE_BLOB') + '/' + CONTAINER_NAME + '/' + filename
-        print("ref: ", ref)
-        flash("File " + ref + " was uploaded successfully")
+        except Exception, e:
+            print('Exception: ', str(e))
+            print("Something went wrong while uploading the files %s"%filename)
+            flash("Something went wrong while uploading the files %s"%filename)
+            pass
+
         return render_template("views/user/uploads.html")
     return render_template("views/user/new_upload.html")
 
