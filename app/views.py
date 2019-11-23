@@ -1,13 +1,12 @@
+import os, uuid
 import datetime
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
 from flask_paginate import Pagination, get_page_args
 from werkzeug import secure_filename
 
-from azure.storage.blob import BlockBlobService
-from azure.storage.common import CloudStorageAccount
-from azure.common import AzureConflictHttpError, AzureMissingResourceHttpError
-
+from azure.storage import CloudStorageAccount
+from azure.storage.blob import BlockBlobService, PublicAccess
 
 from models import Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
 
@@ -228,37 +227,37 @@ def new_upload():
 
         account = app.config.get('AZURE_ACCOUNT')
         key = app.config.get('AZURE_STORAGE_KEY')
-        container = app.config.get('AZURE_CONTAINER')
-        blob = app.config.get('AZURE_BLOB')
+        blob = app.config.get('AZURE_BLOB_URI')
+        container = ''
 
         # Create blob service
         account = CloudStorageAccount(account_name=account, account_key=key)
         blob_service = account.create_block_blob_service()
 
-        # List the blobs in the container.
-        print("\nList blobs in the container")
-        generator = blob_service.list_blobs(container)
-        for blob in generator:
-            print("\t Blob name: " + blob.name)
+        file_to_upload = request.files['file']
+        filename = secure_filename(file_to_upload.filename)
 
-        file = request.files['file']
-        filename = secure_filename(file.filename)
+        if(session and session['logged_in']):
+            container = session['username']
+            if not blob_service.exists(container):
+                blob_service.create_container(container)
+                blob_service.set_container_acl(container, public_access=PublicAccess.Blob)
+        else:
+            flash("Please login first")
+            return redirect(url_for("home"))
 
+        # Create Blob from stream
         try:
-            # Upload the created file, use filename for the blob name.
-            blob_service.create_blob_from_stream(container, filename, file)
-            print("File upload successful %s"%filename)
+            blob_service.create_blob_from_stream(container, filename, file_to_upload)
             ref =  blob + '/' + container + '/' + filename
-            print("ref: ", ref)
             flash("File " + ref + " was uploaded successfully")
-
         except Exception, e:
             print('Exception: ', str(e))
             print("Something went wrong while uploading the files %s"%filename)
             flash("Something went wrong while uploading the files %s"%filename)
             pass
 
-        return render_template("views/user/uploads.html")
+        return redirect(url_for("my_uploads"))
     return render_template("views/user/new_upload.html")
 
 @app.route("/media/newpost", methods = ['POST', 'GET'])
@@ -319,4 +318,25 @@ def my_posts():
 
 @app.route("/my/uploads/")
 def my_uploads():
-    return render_template("views/user/uploads.html")
+    account = app.config.get('AZURE_ACCOUNT')
+    key = app.config.get('AZURE_STORAGE_KEY')
+    blob_url = app.config.get('AZURE_BLOB_URI')
+    container = ''
+    blobs = []
+
+    # Create blob service
+    account = CloudStorageAccount(account_name=account, account_key=key)
+    blob_service = account.create_block_blob_service()
+
+    if(session and session['logged_in']):
+        container = session['username']
+        if blob_service.exists(container):
+            # List blobs in the container
+            generator = blob_service.list_blobs(container)
+            for blob in generator:
+                blob_path = blob_url + '/' + container + '/' + blob.name              
+                blobs.append(blob_path)
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+    return render_template("views/user/uploads.html", blobs=blobs)

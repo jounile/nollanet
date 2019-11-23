@@ -46,10 +46,9 @@ class DefaultConfig(object):
     GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
 
     # Azure Blob Storage
-    AZURE_BLOB = os.getenv('AZURE_BLOB')
-
+    AZURE_BLOB_URI = os.getenv('AZURE_BLOB_URI')
     AZURE_ACCOUNT = os.getenv('AZURE_ACCOUNT')
-    AZURE_KEY = os.getenv('AZURE_STORAGE_KEY')
+    AZURE_STORAGE_KEY = os.getenv('AZURE_STORAGE_KEY')
     AZURE_CONTAINER = os.getenv('AZURE_CONTAINER')
 
     # Facebook

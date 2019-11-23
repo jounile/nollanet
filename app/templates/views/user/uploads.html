@@ -5,6 +5,15 @@
 
 <h1>My uploads</h1>
 
-<a class="btn btn-primary" role="button" href="{{ url_for('new_upload') }}">New upload</a>
+<a class="btn btn-primary" role="button" href="{{ url_for('new_upload') }}">New upload</a><br />
+
+<table width="100%" class="table table-bordered">
+{% for blob in blobs %}
+    <tr>
+        <td><img src="{{ blob }}" /></td>
+        <td>{{ blob }}</td>
+    </tr>
+{% endfor %}
+</table>
 
 {% endblock %}
