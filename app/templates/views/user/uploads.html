@@ -10,8 +10,14 @@
 <table width="100%" class="table table-bordered">
 {% for blob in blobs %}
     <tr>
-        <td><img src="{{ blob }}" /></td>
-        <td>{{ blob }}</td>
+        <td><img src="{{ blob.path }}/{{ blob.container }}/{{ blob.name }}" /></td>
+        <td>{{ blob.path }}/{{ blob.container }}/{{ blob.name }}</td>
+        <td>
+            <form action="{{ url_for('delete_blob') }}" method="POST">
+                <input type="hidden" name="blob_name" value="{{ blob.name }}" />
+                <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+            </form>
+        </td>
     </tr>
 {% endfor %}
 </table>

@@ -221,45 +221,6 @@ def update_media(media_id):
             flash("Please login first")
             return redirect(url_for("home"))
 
-@app.route("/media/newupload", methods=['POST','GET'])
-def new_upload():
-    if request.method == 'POST':
-
-        account = app.config.get('AZURE_ACCOUNT')
-        key = app.config.get('AZURE_STORAGE_KEY')
-        blob = app.config.get('AZURE_BLOB_URI')
-        container = ''
-
-        # Create blob service
-        account = CloudStorageAccount(account_name=account, account_key=key)
-        blob_service = account.create_block_blob_service()
-
-        file_to_upload = request.files['file']
-        filename = secure_filename(file_to_upload.filename)
-
-        if(session and session['logged_in']):
-            container = session['username']
-            if not blob_service.exists(container):
-                blob_service.create_container(container)
-                blob_service.set_container_acl(container, public_access=PublicAccess.Blob)
-        else:
-            flash("Please login first")
-            return redirect(url_for("home"))
-
-        # Create Blob from stream
-        try:
-            blob_service.create_blob_from_stream(container, filename, file_to_upload)
-            ref =  blob + '/' + container + '/' + filename
-            flash("File " + ref + " was uploaded successfully")
-        except Exception, e:
-            print('Exception: ', str(e))
-            print("Something went wrong while uploading the files %s"%filename)
-            flash("Something went wrong while uploading the files %s"%filename)
-            pass
-
-        return redirect(url_for("my_uploads"))
-    return render_template("views/user/new_upload.html")
-
 @app.route("/media/newpost", methods = ['POST', 'GET'])
 def new_post():
     if(session and session['logged_in'] and session['user_level'] == 1):
@@ -316,6 +277,45 @@ def my_posts():
         flash("Please login first")
         return redirect(url_for("home"))
 
+@app.route("/media/newupload", methods=['POST','GET'])
+def new_upload():
+    if request.method == 'POST':
+
+        account = app.config.get('AZURE_ACCOUNT')
+        key = app.config.get('AZURE_STORAGE_KEY')
+        blob = app.config.get('AZURE_BLOB_URI')
+        container = ''
+
+        # Create blob service
+        account = CloudStorageAccount(account_name=account, account_key=key)
+        blob_service = account.create_block_blob_service()
+
+        file_to_upload = request.files['file']
+        filename = secure_filename(file_to_upload.filename)
+
+        if(session and session['logged_in']):
+            container = session['username']
+            if not blob_service.exists(container):
+                blob_service.create_container(container)
+                blob_service.set_container_acl(container, public_access=PublicAccess.Blob)
+        else:
+            flash("Please login first")
+            return redirect(url_for("home"))
+
+        # Create Blob from stream
+        try:
+            blob_service.create_blob_from_stream(container, filename, file_to_upload)
+            ref =  blob + '/' + container + '/' + filename
+            flash("File " + ref + " was uploaded successfully")
+        except Exception, e:
+            print('Exception: ', str(e))
+            print("Something went wrong while uploading the files %s"%filename)
+            flash("Something went wrong while uploading the files %s"%filename)
+            pass
+
+        return redirect(url_for("my_uploads"))
+    return render_template("views/user/new_upload.html")
+
 @app.route("/my/uploads/")
 def my_uploads():
     account = app.config.get('AZURE_ACCOUNT')
@@ -323,6 +323,7 @@ def my_uploads():
     blob_url = app.config.get('AZURE_BLOB_URI')
     container = ''
     blobs = []
+    blob = []
 
     # Create blob service
     account = CloudStorageAccount(account_name=account, account_key=key)
@@ -334,9 +335,31 @@ def my_uploads():
             # List blobs in the container
             generator = blob_service.list_blobs(container)
             for blob in generator:
-                blob_path = blob_url + '/' + container + '/' + blob.name              
-                blobs.append(blob_path)
+                blob.path = blob_url
+                blob.container = container
+                blob.name = blob.name
+                blobs.append(blob)
     else:
         flash("Please login first")
         return redirect(url_for("home"))
     return render_template("views/user/uploads.html", blobs=blobs)
+
+@app.route('/blob/delete', methods = ['POST'])
+def delete_blob():
+    account = app.config.get('AZURE_ACCOUNT')
+    key = app.config.get('AZURE_STORAGE_KEY')
+
+    # Create blob service
+    account = CloudStorageAccount(account_name=account, account_key=key)
+    blob_service = account.create_block_blob_service()
+
+    if(session and session['logged_in']):
+        container = session['username']
+        if request.method == 'POST':
+            blob_name = request.form.get('blob_name')
+            blob_service.delete_blob(container, blob_name)
+            flash("File " + blob_name + " was deleted successfully")
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+    return redirect(url_for("my_uploads"))
