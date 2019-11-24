@@ -2,6 +2,7 @@ import os, uuid
 import datetime
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
+from urlparse import urljoin # Python 2.7
 from flask_paginate import Pagination, get_page_args
 from werkzeug import secure_filename
 
@@ -191,6 +192,13 @@ def delete_media():
 
 
 """ User """
+
+@app.route('/media/<path:filename>', methods=['GET'])
+def media(filename):
+    static_url = app.config.get('AZURE_BLOB_URI')
+    if static_url:
+        return redirect(urljoin(static_url, filename))
+    return app.send_static_file(filename)
 
 @app.route("/media/update/<media_id>", methods = ['POST', 'GET'])
 def update_media(media_id):

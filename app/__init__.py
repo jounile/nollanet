@@ -69,7 +69,7 @@ nav.Bar('user', [
     ])
 ])
 
-from . import api, views
+from . import views
 
 @app.errorhandler(404)
 def not_found(error):
