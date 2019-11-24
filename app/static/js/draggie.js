@@ -12,7 +12,7 @@ $(document).ready(function() {
 	$("#textCompose").droppable({
 		accept: ".draggie",
 		drop: function(event) {
-			$('#textCompose').val($('#textCompose').val() + '<img src="' + targetName + ' />');
+			$('#textCompose').val($('#textCompose').val() + '<img src="' + targetName + '" />');
 		}
 	});
 });
