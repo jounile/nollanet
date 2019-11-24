@@ -62,9 +62,15 @@
 
     <div class="form-group">
         <label for="media_desc">Media description</label>
-        <textarea type="text" class="form-control" name="media_desc" cols="100" rows="10"></textarea>
+        <textarea type="text" id="textCompose" class="form-control" name="media_desc" cols="100" rows="10"></textarea>
     </div>
 
+    <div><b>My images</b></div>
+    {% for blob in blobs %}
+        <img src="{{ blob.path }}/{{ blob.container }}/{{ blob.name }}" draggable="true" class="draggie" /><br />
+    {% endfor %}
+
+    <br />
     <button type="submit" class="btn btn-primary">Create</button>
 
 </form>

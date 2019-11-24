@@ -263,7 +263,8 @@ def new_post():
             else:
                 return redirect(url_for("home"))
         else:
-            return render_template("views/user/new_post.html")
+            blobs = utils.get_my_blobs()
+            return render_template("views/user/new_post.html", blobs=blobs)
     else:
         flash("Please login first")
         return redirect(url_for("home"))
@@ -319,25 +320,7 @@ def new_upload():
 
 @app.route("/my/uploads/")
 def my_uploads():
-    blob_service = utils.get_azure_blob_service()
-    blob_url = app.config.get('AZURE_BLOB_URI')
-    container = ''
-    blobs = []
-    blob = []
-
-    if(session and session['logged_in']):
-        container = session['username']
-        if blob_service.exists(container):
-            # List blobs in the container
-            generator = blob_service.list_blobs(container)
-            for blob in generator:
-                blob.path = blob_url
-                blob.container = container
-                blob.name = blob.name
-                blobs.append(blob)
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
+    blobs = utils.get_my_blobs()
     return render_template("views/user/uploads.html", blobs=blobs)
 
 @app.route('/blob/delete', methods = ['POST'])

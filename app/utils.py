@@ -1,6 +1,6 @@
 
 import os
-from flask import Flask, jsonify
+from flask import Flask, jsonify, session
 import datetime
 from flask_paginate import Pagination, get_page_args
 import string, random
@@ -11,6 +11,29 @@ from azure.storage.blob import BlockBlobService, PublicAccess
 from models import Media
 
 from . import app
+
+def get_my_blobs():
+    blob_service = get_azure_blob_service()
+    blob_url = app.config.get('AZURE_BLOB_URI')
+    container = ''
+    blobs = []
+    blob = []
+
+    if(session and session['logged_in']):
+        container = session['username']
+        if blob_service.exists(container):
+            # List blobs in the container
+            generator = blob_service.list_blobs(container)
+            for blob in generator:
+                blob.path = blob_url
+                blob.container = container
+                blob.name = blob.name
+                blobs.append(blob)
+            return blobs
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
 
 def get_azure_blob_service():
     account = app.config.get('AZURE_ACCOUNT')
