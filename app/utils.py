@@ -5,9 +5,18 @@ import datetime
 from flask_paginate import Pagination, get_page_args
 import string, random
 
+from azure.storage import CloudStorageAccount
+from azure.storage.blob import BlockBlobService, PublicAccess
+
 from models import Media
 
 from . import app
+
+def get_azure_blob_service():
+    account = app.config.get('AZURE_ACCOUNT')
+    key = app.config.get('AZURE_STORAGE_KEY')
+    account = CloudStorageAccount(account_name=account, account_key=key)
+    return account.create_block_blob_service()
 
 def get_css_framework():
     return app.config.get('CSS_FRAMEWORK', 'bootstrap4')

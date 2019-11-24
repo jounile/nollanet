@@ -288,16 +288,8 @@ def my_posts():
 @app.route("/media/newupload", methods=['POST','GET'])
 def new_upload():
     if request.method == 'POST':
-
-        account = app.config.get('AZURE_ACCOUNT')
-        key = app.config.get('AZURE_STORAGE_KEY')
-        blob = app.config.get('AZURE_BLOB_URI')
+        blob_service = utils.get_azure_blob_service()
         container = ''
-
-        # Create blob service
-        account = CloudStorageAccount(account_name=account, account_key=key)
-        blob_service = account.create_block_blob_service()
-
         file_to_upload = request.files['file']
         filename = secure_filename(file_to_upload.filename)
 
@@ -313,6 +305,7 @@ def new_upload():
         # Create Blob from stream
         try:
             blob_service.create_blob_from_stream(container, filename, file_to_upload)
+            blob = app.config.get('AZURE_BLOB_URI')
             ref =  blob + '/' + container + '/' + filename
             flash("File " + ref + " was uploaded successfully")
         except Exception, e:
@@ -326,16 +319,11 @@ def new_upload():
 
 @app.route("/my/uploads/")
 def my_uploads():
-    account = app.config.get('AZURE_ACCOUNT')
-    key = app.config.get('AZURE_STORAGE_KEY')
+    blob_service = utils.get_azure_blob_service()
     blob_url = app.config.get('AZURE_BLOB_URI')
     container = ''
     blobs = []
     blob = []
-
-    # Create blob service
-    account = CloudStorageAccount(account_name=account, account_key=key)
-    blob_service = account.create_block_blob_service()
 
     if(session and session['logged_in']):
         container = session['username']
@@ -354,13 +342,7 @@ def my_uploads():
 
 @app.route('/blob/delete', methods = ['POST'])
 def delete_blob():
-    account = app.config.get('AZURE_ACCOUNT')
-    key = app.config.get('AZURE_STORAGE_KEY')
-
-    # Create blob service
-    account = CloudStorageAccount(account_name=account, account_key=key)
-    blob_service = account.create_block_blob_service()
-
+    blob_service = utils.get_azure_blob_service()
     if(session and session['logged_in']):
         container = session['username']
         if request.method == 'POST':
