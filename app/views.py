@@ -2,14 +2,15 @@ import os, uuid
 import datetime
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
-from urlparse import urljoin # Python 2.7
+#from urlparse import urljoin # Python 2.7
+from urllib.parse import urljoin # Python 3
 from flask_paginate import Pagination, get_page_args
 from werkzeug import secure_filename
 
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from models import Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
+from app.models import Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
 
 from . import app, dba, utils, auto
 
@@ -309,8 +310,7 @@ def new_upload():
             blob = app.config.get('AZURE_BLOB_URI')
             ref =  blob + '/' + container + '/' + filename
             flash("File " + ref + " was uploaded successfully")
-        except Exception, e:
-            print('Exception: ', str(e))
+        except:
             print("Something went wrong while uploading the files %s"%filename)
             flash("Something went wrong while uploading the files %s"%filename)
             pass

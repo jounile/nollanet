@@ -8,7 +8,7 @@ import string, random
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from models import Media
+from app.models import Media
 
 from . import app
 
