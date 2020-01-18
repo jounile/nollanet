@@ -36,6 +36,7 @@ class DefaultConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'mysql://' + MYSQL_USER + ':' + MYSQL_PASSWORD + '@' + MYSQL_HOST + '/' + MYSQL_DB
     SQLALCHEMY_POOL_PRE_PING = True
+    SQLALCHEMY_POOL_RECYCLE = 3600
 
     # ReCaptcha
     RECAPTCHA_USE_SSL = False
