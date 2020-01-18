@@ -66,7 +66,7 @@
     </div>
 
     <div><b>My images</b></div>
-    {% if blobs is not None: %}
+    {% if blobs is not none %}
         {% for blob in blobs %}
             <img src="{{ blob.path }}/{{ blob.container }}/{{ blob.name }}" draggable="true" class="draggie" /><br />
         {% endfor %}
