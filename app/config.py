@@ -35,8 +35,15 @@ class DefaultConfig(object):
     # SQLAlchemy
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = 'mysql://' + MYSQL_USER + ':' + MYSQL_PASSWORD + '@' + MYSQL_HOST + '/' + MYSQL_DB
-    SQLALCHEMY_POOL_PRE_PING = True
-    SQLALCHEMY_POOL_RECYCLE = 3600
+    #SQLALCHEMY_POOL_PRE_PING = True
+    #SQLALCHEMY_POOL_RECYCLE = 3600
+    SQLALCHEMY_ENGINE_OPTIONS = {
+        'connect_args': {
+            'connect_timeout': 5,
+            'pool_recycle': 3600,
+            'pool_pre_ping': True
+        }
+    }
 
     # ReCaptcha
     RECAPTCHA_USE_SSL = False
