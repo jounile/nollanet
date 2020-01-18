@@ -66,9 +66,11 @@
     </div>
 
     <div><b>My images</b></div>
-    {% for blob in blobs %}
-        <img src="{{ blob.path }}/{{ blob.container }}/{{ blob.name }}" draggable="true" class="draggie" /><br />
-    {% endfor %}
+    {% if blobs is not None: %}
+        {% for blob in blobs %}
+            <img src="{{ blob.path }}/{{ blob.container }}/{{ blob.name }}" draggable="true" class="draggie" /><br />
+        {% endfor %}
+    {% endif %}
 
     <br />
     <button type="submit" class="btn btn-primary">Create</button>
