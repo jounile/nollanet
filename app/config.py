@@ -38,10 +38,10 @@ class DefaultConfig(object):
     #SQLALCHEMY_POOL_PRE_PING = True
     #SQLALCHEMY_POOL_RECYCLE = 3600
     SQLALCHEMY_ENGINE_OPTIONS = {
+        'pool_recycle': 3600,
+        'pool_pre_ping': True,
         'connect_args': {
-            'connect_timeout': 5,
-            'pool_recycle': 3600,
-            'pool_pre_ping': True
+            'connect_timeout': 5
         }
     }
 
