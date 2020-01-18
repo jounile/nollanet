@@ -43,7 +43,7 @@ nav.Bar('top', [
     nav.Item('News', 'news'),
     nav.Item('Youtube', 'youtube.youtube_playlists'),
     #nav.Item('Podcast', 'soundcloud.soundcloud_playlists'),
-    nav.Item('Facebook', 'facebook.facebook_info'),
+    #nav.Item('Facebook', 'facebook.facebook_info'),
     nav.Item('Photos', 'view_photos_by_genre', {'genre': 'skateboarding'}, items=[
         nav.Item('Skateboarding', 'view_photos_by_genre', {'genre': 'skateboarding'}),
         nav.Item('Snowboarding', 'view_photos_by_genre', {'genre': 'snowboarding'}),
