@@ -28,7 +28,7 @@ $ python app.py
 
 ## Unit tests
 ```bash
-$ python tests.py
+$ python -m unittest -v tests/unit/tests.py
 ```
 
 ## Functional tests
