@@ -220,3 +220,7 @@ footer {
 .facebook-like-box {
     min-width: 180px;
 }
+
+#image_preview {
+    text-align: center;
+}
