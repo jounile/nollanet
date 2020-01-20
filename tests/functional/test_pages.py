@@ -29,11 +29,6 @@ def test_youtube_page(client):
     assert response.status_code == 200
     assert b"Playlists" in response.data
 
-def test_facebook_page(client):
-    response = client.get('/facebook/info')
-    assert response.status_code == 200
-    assert b"Facebook" in response.data
-
 def test_guides_page(client):
     response = client.get('/guides')
     assert response.status_code == 200
