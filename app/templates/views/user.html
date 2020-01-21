@@ -3,133 +3,113 @@
 
 {% block content %}
 
-<div class="col">
-    <table class="table">
-        <tr>
-            <th scope="col">property</th>
-            <th scope="col">value</th>
-        </tr>
-        {% if user.username %}
-        <tr>
-            <th scope="row">username</th>
-            <td scope="row">{{ user.username }}</td>
-        </tr>
+<div class="row">
+    <div class="col-md-3">
+        {% if user.gravatar %}
+            <img src="{{ user.gravatar(128) }}" style="padding: 20px;">
         {% endif %}
-        {% if user.name %}
-        <tr>
-            <th scope="row">name</th>
-            <td scope="row">{{ user.name }}</td>
-        </tr>
-        {% endif %}
-        {% if user.bornyear %}
-        <tr>
-            <th scope="row">bornyear</th>
-            <td scope="row">{{ user.bornyear }}</td>
-        </tr>
-        {% endif %}
-        {% if user.email %}
-        <tr>
-            <th scope="row">email</th>
-            <td scope="row">{{ user.email }}</td>
-        </tr>
-        {% endif %}
-        {% if user.email2 %}
-        <tr>
-            <th scope="row">email2</th>
-            <td scope="row">{{ user.email2 }}</td>
-        </tr>
-        {% endif %}
-        {% if user.homepage %}
-        <tr>
-            <th scope="row">homepage</th>
-            <td scope="row">{{ user.homepage }}</td>
-        </tr>
-        {% endif %}
-        {% if user.info %}
-        <tr>
-            <th scope="row">info</th>
-            <td scope="row">{{ user.info }}</td>
-        </tr>
-        {% endif %}
-        {% if user.hobbies %}
-        <tr>
-            <th scope="row">hobbies</th>
-            <td scope="row">{{ user.hobbies }}</td>
-        </tr>
-        {% endif %}
-        {% if user.sukupuoli %}
-        <tr>
-            <th scope="row">sukupuoli</th>
-            <td scope="row">{{ user.sukupuoli }}</td>
-        </tr>
-        {% endif %}
-        {% if user.icq %}
-        <tr>
-            <th scope="row">icq</th>
-            <td scope="row">{{ user.icq }}</td>
-        </tr>
-        {% endif %}
-        {% if user.last_login %}
-        <tr>
-            <th scope="row">last_login</th>
-            <td scope="row">{{ user.last_login }}</td>
-        </tr>
-        {% endif %}
-        {% if user.chat %}
-        <tr>
-            <th scope="row">chat</th>
-            <td scope="row">{{ user.chat }}</td>
-        </tr>
-        {% endif %}
-        {% if user.blogs %}
-        <tr>
-            <th scope="row">blogs</th>
-            <td scope="row">{{ user.blogs }}</td>
-        </tr>
-        {% endif %}
-        {% if user.messenger %}
-        <tr>
-            <th scope="row">messenger</th>
-            <td scope="row">{{ user.messenger }}</td>
-        </tr>
-        {% endif %}
-        {% if user.myspace %}
-        <tr>
-            <th scope="row">myspace</th>
-            <td scope="row">{{ user.myspace }}</td>
-        </tr>
-        {% endif %}
-        {% if user.rss %}
-        <tr>
-            <th scope="row">rss</th>
-            <td scope="row">{{ user.rss }}</td>
-        </tr>
-        {% endif %}
-        {% if user.youtube %}
-        <tr>
-            <th scope="row">youtube</th>
-            <td scope="row">{{ user.youtube }}</td>
-        </tr>
-        {% endif %}
-        {% if user.ircgalleria %}
-        <tr>
-            <th scope="row">ircgalleria</th>
-            <td scope="row">{{ user.ircgalleria }}</td>
-        </tr>
-        {% endif %}
-        {% if user.avatar %}
-        <tr>
-            <th scope="row">avatar</th>
-            <td scope="row">{{ user.avatar }}</td>
-        </tr>
-        {% endif %}
-        {% if user.flickr_username %}
-        <tr>
-            <th scope="row">flickr_username</th>
-            <td scope="row">{{ user.flickr_username }}</td>
-        </tr>
-        {% endif %}
-    </table>
+    </div>
+
+    <div class="col-md-9">
+        <table class="table">
+            {% if user.username %}
+            <tr>
+                <th>username</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            {% endif %}
+            {% if user.name %}
+            <tr>
+                <th>name</th>
+                <td>{{ user.name }}</td>
+            </tr>
+            {% endif %}
+            {% if user.bornyear %}
+            <tr>
+                <th>bornyear</th>
+                <td>{{ user.bornyear }}</td>
+            </tr>
+            {% endif %}
+            {% if user.homepage %}
+            <tr>
+                <th>homepage</th>
+                <td>{{ user.homepage }}</td>
+            </tr>
+            {% endif %}
+            {% if user.info %}
+            <tr>
+                <th>info</th>
+                <td>{{ user.info }}</td>
+            </tr>
+            {% endif %}
+            {% if user.hobbies %}
+            <tr>
+                <th>hobbies</th>
+                <td>{{ user.hobbies }}</td>
+            </tr>
+            {% endif %}
+            {% if user.icq %}
+            <tr>
+                <th>icq</th>
+                <td>{{ user.icq }}</td>
+            </tr>
+            {% endif %}
+            {% if user.chat %}
+            <tr>
+                <th>chat</th>
+                <td>{{ user.chat }}</td>
+            </tr>
+            {% endif %}
+            {% if user.blogs %}
+            <tr>
+                <th>blogs</th>
+                <td>{{ user.blogs }}</td>
+            </tr>
+            {% endif %}
+            {% if user.messenger %}
+            <tr>
+                <th>messenger</th>
+                <td>{{ user.messenger }}</td>
+            </tr>
+            {% endif %}
+            {% if user.myspace %}
+            <tr>
+                <th>myspace</th>
+                <td>{{ user.myspace }}</td>
+            </tr>
+            {% endif %}
+            {% if user.rss %}
+            <tr>
+                <th>rss</th>
+                <td>{{ user.rss }}</td>
+            </tr>
+            {% endif %}
+            {% if user.youtube %}
+            <tr>
+                <th>youtube</th>
+                <td>{{ user.youtube }}</td>
+            </tr>
+            {% endif %}
+            {% if user.ircgalleria %}
+            <tr>
+                <th>ircgalleria</th>
+                <td>{{ user.ircgalleria }}</td>
+            </tr>
+            {% endif %}
+            {% if user.avatar %}
+            <tr>
+                <th>avatar</th>
+                <td>{{ user.avatar }}</td>
+            </tr>
+            {% endif %}
+            {% if user.flickr_username %}
+            <tr>
+                <th>flickr_username</th>
+                <td>{{ user.flickr_username }}</td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
 </div>
 
 {% endblock %}

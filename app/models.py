@@ -1,6 +1,7 @@
 from datetime import datetime
 from sqlalchemy import inspect
 from sqlalchemy.types import Integer, String, DateTime
+from hashlib import md5
 
 from . import dba
 
@@ -68,6 +69,9 @@ class User(dba.Model):
     ircgalleria = dba.Column(dba.String(50))
     last_profile_update = dba.Column(dba.String(50))
     avatar = dba.Column(dba.String(50))
+    def gravatar(self, size):
+        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
     flickr_username = dba.Column(dba.String(50))
 
 class Comment(dba.Model):

@@ -94,9 +94,9 @@ def support():
 def about():
     return render_template("views/about.html")
 
-@app.route('/user/<user_id>/', methods=['GET'])
-def view_user_by_id(user_id):
-    user = User.query.filter_by(user_id=user_id).first()
+@app.route('/user/<username>/', methods=['GET'])
+def view_user_by_username(username):
+    user = User.query.filter_by(username=username).first()
     return render_template('views/user.html', user=user)
 
 @app.route('/interview/<media_id>/')
