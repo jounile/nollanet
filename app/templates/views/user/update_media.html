@@ -9,7 +9,6 @@
     
     <input type="hidden" name="media_id" value="{{ result.media_id  }}" />
     <input type="hidden" name="media_type" value="{{ result.media_type }}" />
-    <input type="hidden" name="story_type" value="{{ result.story_type }}" />
 
     <div class="form-group">
         <label for="media_topic">Title</label>
@@ -35,6 +34,15 @@
             <option value="4"{% if result.country_id==4 %} selected="selected" {% endif %}>Denmark</option>
             <option value="5"{% if result.country_id==5 %} selected="selected" {% endif %}>Germany</option>
             <option value="0"{% if result.country_id==0 %} selected="selected" {% endif %}>Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="story_type">Story type</label>
+        <select name="story_type" class="form-control">
+            <option value="4"{% if result.story_type==4 %} selected="selected" {% endif %}>News</option>
+            <option value="3"{% if result.story_type==3 %} selected="selected" {% endif %}>Interview</option>
+            <option value="2"{% if result.story_type==2 %} selected="selected" {% endif %}>Review</option>
         </select>
     </div>
 

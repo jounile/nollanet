@@ -205,6 +205,8 @@ def media(filename):
 def update_media(media_id):
     if request.method == 'POST':
 
+        print("story_type", request.form.get('story_type'))
+
         media = { 'media_id': request.form.get('media_id'),
                 'media_type': request.form.get('media_type'),
                 'story_type': request.form.get('story_type'),
