@@ -15,26 +15,13 @@ RECAPTCHA_PRIVATE_KEY = ''
 RECAPTCHA_OPTIONS = {'theme':'black'}
 GOOGLE_API_KEY = ""
 SECRET_KEY = ""
-AZURE_BLOB = ""
+AZURE_BLOB_URI = ""
+AZURE_ACCOUNT = ""
+AZURE_CONTAINER = ""
+AZURE_STORAGE_KEY = ""
+FLASK_DEBUG = "1"
 ```
 
-## Facebook tokens
-```bash
-{
-    "app": {
-        "secret": "", 
-        "id": ""
-    }, 
-    "user": {
-        "long_token": "", 
-        "short_token": ""
-    }, 
-    "page": {
-        "token": "", 
-        "id": ""
-    }
-}
-```
 
 ## Database usage
 ```bash
@@ -48,15 +35,8 @@ mysql>SELECT * FROM users;
 ## phpMyAdmin in Docker
 ```bash
 $ docker pull phpmyadmin/phpmyadmin
-$ docker run --name myadmin -d -e PMA_HOST=docker.for.mac.localhost -e PMA_PORT=3306 -p 8000:80 phpmyadmin/phpmyadmin
+$ docker run --name myadmin -d -e PMA_HOST=docker.for.mac.localhost -e PMA_PORT=3306 -p 8001:80 phpmyadmin/phpmyadmin
 ```
-
-http://localhost:8000
-
-Username: root
-
-Password: root
-
 
 ## Store new packages in requirements.txt
 ```bash
@@ -72,8 +52,25 @@ $ export FLASK_APP=app/cli.py
 $ flask alter_database
 ```
 
+## Unit tests
+```bash
+$ python -m unittest -v tests/unit/tests.py
+```
 
 ## Functional tests
 ```bash
+$ pytest
+```
+
+or more specifically
+
+```bash
 $ pytest --setup-show tests/functional/test_users.py::test_home_page
 ```
+
+
+## Leave venv
+```bash
+$ deactivate
+```
+
