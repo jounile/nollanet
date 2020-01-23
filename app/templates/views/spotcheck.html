@@ -1,0 +1,17 @@
+<!-- spotcheck.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="spotcheck-title">
+
+    <h1>{{ spotcheck.media_topic }}</h1>
+    <div>{{ spotcheck.create_time }}</div>
+    <div>Published by: <a href="/user/{{ spotcheck.owner }}">{{ spotcheck.owner }}</a></div>
+    <div>{{ spotcheck.country_code }}</div>
+    <div>{{ spotcheck.media_text|safe }}</div>
+    <div>{{ spotcheck.media_desc|safe }}</div>
+
+</div>
+
+{% endblock %}

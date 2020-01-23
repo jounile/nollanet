@@ -2,7 +2,6 @@ import os, uuid
 import datetime
 from flask import Flask, request, flash, g, render_template, jsonify, session, redirect, url_for, escape
 import requests, json
-#from urlparse import urljoin # Python 2.7
 from urllib.parse import urljoin # Python 3
 from flask_paginate import Pagination, get_page_args
 from werkzeug import secure_filename
@@ -53,12 +52,26 @@ def reviews():
             Media.owner).filter(Media.story_type==utils.get_story_type('reviews')).order_by(Media.create_time.desc())
     return render_template("views/reviews.html", reviews=reviews)
 
+@app.route('/spotchecks')
+def spotchecks():
+    spotchecks = Media.query.filter_by(media_type=5).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
+            (Genre.type_name).label("genre"),
+            (Mediatype.type_name).label("mediatype_name"),
+            (Storytype.type_name).label("storytype_name"),
+            (Country.country_code).label("country_code"),
+            Media.media_topic,
+            Media.create_time,
+            Media.owner).filter(Media.story_type==utils.get_story_type('spotchecks')).order_by(Media.create_time.desc())
+
+    return render_template("views/spotchecks.html", spotchecks=spotchecks)
+
 @app.route('/')
 def home():
 
     interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).order_by(Media.create_time.desc()).limit(10)
     news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).order_by(Media.create_time.desc()).limit(10)
     reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).order_by(Media.create_time.desc()).limit(10)
+    spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).order_by(Media.create_time.desc()).limit(10)
 
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
 
@@ -66,11 +79,12 @@ def home():
     photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-
+    
     return render_template('index.html', 
         interviews=interviews, 
         news=news, 
         reviews=reviews,
+        spotchecks=spotchecks,
         photos_skateboarding=photos_skateboarding,
         photos_snowboarding=photos_snowboarding,
         photos_nollagang=photos_nollagang,
@@ -109,10 +123,15 @@ def view_news_item(media_id):
     news_item = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/news_item.html', news_item=news_item)
 
-@app.route('/reviews/<media_id>/')
-def view_reviews_item(media_id):
+@app.route('/review/<media_id>/')
+def view_review_item(media_id):
     review = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/review.html', review=review)
+
+@app.route('/spotcheck/<media_id>/')
+def view_spotcheck_item(media_id):
+    spotcheck = Media.query.filter_by(media_id=media_id).first()
+    return render_template('views/spotcheck.html', spotcheck=spotcheck)
 
 @app.route('/youtube/')
 def youtube():
@@ -174,7 +193,7 @@ def media_latest():
         (Storytype.type_name).label("storytype_name"),
         (Country.country_code).label("country_code"),
         Media.media_topic,
-        Media.media_text,
+        Media.media_desc,
         Media.create_time,
         Media.owner).order_by(Media.create_time.desc()).limit(10)
     return render_template("views/admin/latest_media.html", latest=latest)
@@ -205,9 +224,8 @@ def media(filename):
 def update_media(media_id):
     if request.method == 'POST':
 
-        print("story_type", request.form.get('story_type'))
-
         media = { 'media_id': request.form.get('media_id'),
+                'media_genre': request.form.get('media_genre'),
                 'media_type': request.form.get('media_type'),
                 'story_type': request.form.get('story_type'),
                 'media_topic': request.form.get('media_topic'),

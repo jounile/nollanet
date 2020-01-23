@@ -57,6 +57,7 @@ nav.Bar('top', [
     nav.Item('Stories', 'interviews', items=[
         nav.Item('Interviews', 'interviews'),
         nav.Item('Reviews', 'reviews'),
+        nav.Item('Spotchecks', 'spotchecks'),
     ]),
     nav.Item('Guides', 'guides'),
 ])

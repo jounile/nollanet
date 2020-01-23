@@ -1,4 +1,4 @@
-<!-- interviews.html -->
+<!-- interview.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
@@ -7,7 +7,7 @@
 
     <h1>{{ interview.media_topic }}</h1>
     <div>{{ interview.create_time }}</div>
-    <div>[<a href="/user/{{ interview.owner }}">{{ interview.owner }}</a>]</div>
+    <div>Published by: <a href="/user/{{ interview.owner }}">{{ interview.owner }}</a></div>
     <div>{{ interview.country_code }}</div>
     <div>{{ interview.media_text|safe }}</div>
     <div>{{ interview.media_desc|safe }}</div>

@@ -99,6 +99,8 @@ def get_story_type(story_type):
         type_id = 3
     if(story_type == "news"):
         type_id = 4
+    if(story_type == "spotchecks"):
+        type_id = 5
     if(story_type == "other"):
         type_id = 99
     return type_id

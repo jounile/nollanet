@@ -91,10 +91,28 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Reviews</span></h4></div>
             <ul>
                 {% for item in reviews %}
-                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                <li><a href="/review/{{ item.media_id }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="spotchecks-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Spotcheck</span></h4></div>
+            <ul>
+                {% for item in spotchecks %}
+                <li><a href="/spotcheck/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="col">
+
+    </div>
+    <div class="col">
+
     </div>
 </div>
 

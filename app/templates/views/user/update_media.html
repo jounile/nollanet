@@ -36,10 +36,32 @@
             <option value="0"{% if result.country_id==0 %} selected="selected" {% endif %}>Other</option>
         </select>
     </div>
+ 
+    <div class="form-group">
+        <label for="media_genre">Media genre</label>
+        <select name="media_genre" class="form-control">
+            <option value="1"{% if result.story_type==1 %} selected="selected" {% endif %}>Skateboarding</option>
+            <option value="2"{% if result.story_type==2 %} selected="selected" {% endif %}>Snowboarding</option>
+            <option value="10"{% if result.story_type==10 %} selected="selected" {% endif %}>Nollagang</option>
+            <option value="11"{% if result.story_type==11 %} selected="selected" {% endif %}>Snowskate</option>
+            <option value=""{% if result.story_type=='' %} selected="selected" {% endif %}>None</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="media_type">Media type</label>
+        <select name="media_type" class="form-control">
+            <option value="1"{% if result.story_type==1 %} selected="selected" {% endif %}>Photo</option>
+            <option value="6"{% if result.story_type==6 %} selected="selected" {% endif %}>Video</option>
+            <option value="5"{% if result.story_type==5 %} selected="selected" {% endif %}>Stories</option>
+            <option value=""{% if result.story_type=='' %} selected="selected" {% endif %}>None</option>
+        </select>
+    </div>
 
     <div class="form-group">
         <label for="story_type">Story type</label>
         <select name="story_type" class="form-control">
+            <option value="5"{% if result.story_type==5 %} selected="selected" {% endif %}>Spotcheck</option>
             <option value="4"{% if result.story_type==4 %} selected="selected" {% endif %}>News</option>
             <option value="3"{% if result.story_type==3 %} selected="selected" {% endif %}>Interview</option>
             <option value="2"{% if result.story_type==2 %} selected="selected" {% endif %}>Review</option>
