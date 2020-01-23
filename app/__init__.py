@@ -47,8 +47,8 @@ nav.Bar('top', [
     nav.Item('Photos', 'view_photos_by_genre', {'genre': 'skateboarding'}, items=[
         nav.Item('Skateboarding', 'view_photos_by_genre', {'genre': 'skateboarding'}),
         nav.Item('Snowboarding', 'view_photos_by_genre', {'genre': 'snowboarding'}),
-        nav.Item('Nollagang', 'view_photos_by_genre', {'genre': 'nollagang'}),
-        nav.Item('Snowskate', 'view_photos_by_genre', {'genre': 'snowskate'}),
+        #nav.Item('Nollagang', 'view_photos_by_genre', {'genre': 'nollagang'}),
+        #nav.Item('Snowskate', 'view_photos_by_genre', {'genre': 'snowskate'}),
     ]),
     nav.Item('Videos', 'view_videos_by_genre', {'genre': 'skateboarding'}, items=[
         nav.Item('Skateboarding', 'view_videos_by_genre', {'genre': 'skateboarding'}),

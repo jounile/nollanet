@@ -5,13 +5,23 @@
 
 <h1>News</h1>
 
+
+<form action="{{ url_for('news') }}" method="GET">
+    <div class="form-group">
+        <label for="media_genre">Filter by</label>
+        <select name="genre" class="form-control" onchange="this.form.submit()">
+            <option value="1"{% if selected_genre=='1' %} selected="selected" {% endif %}>Skateboarding</option>
+            <option value="2"{% if selected_genre=='2' %} selected="selected" {% endif %}>Snowboarding</option>
+        </select>
+    </div>
+</form>
+
 {{ pagination.info }}
 <table width="100%" class="table table-bordered">
     <thead class="thead-dark">
         <tr>
             <th>ID</th>
             <th>Title</th>
-            <th>Genre</th>
             <th>Created</th>
             <th>Publisher</th>
             <th>Country</th>
@@ -26,7 +36,6 @@
         <tr>
             <td>{{ loop.index + pagination.skip }}</td>
             <td><a href="/news/{{ item.media_id }}">{{ item.media_topic }}</a></td>
-            <td>{{ item.genre }}</td>
             <td>{{ item.create_time }}</td>
             <td><a href="/user/{{ item.owner }}">{{ item.owner }}</a></td>
             <td>{{ item.country_code }}</td>

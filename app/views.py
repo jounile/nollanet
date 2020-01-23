@@ -27,18 +27,23 @@ def interviews():
 
 @app.route('/news')
 def news():
-    total = utils.get_total_news_count()
+
+    selected_genre = 1 # skateboarding by default
+    if(request.args.get('genre')):
+        selected_genre = request.args.get('genre')
+
+    total = utils.get_total_news_count(selected_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
     news = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
-            (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.story_type==utils.get_story_type('news')).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+            Media.owner).filter(Media.media_genre==selected_genre).filter(Media.story_type==utils.get_story_type('news')).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' news', format_total=True, format_number=True,)
-    return render_template("views/news.html", news=news, pagination=pagination)
+
+    return render_template("views/news.html", news=news, pagination=pagination, selected_genre=selected_genre)
 
 @app.route('/reviews')
 def reviews():
@@ -77,8 +82,8 @@ def home():
 
     photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    #photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    #photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     
     return render_template('index.html', 
         interviews=interviews, 
@@ -87,8 +92,9 @@ def home():
         spotchecks=spotchecks,
         photos_skateboarding=photos_skateboarding,
         photos_snowboarding=photos_snowboarding,
-        photos_nollagang=photos_nollagang,
-        photos_snowskate=photos_snowskate)
+        #photos_nollagang=photos_nollagang,
+        #photos_snowskate=photos_snowskate
+        )
 
 @app.route('/guides')
 def guides():

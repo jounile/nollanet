@@ -83,8 +83,8 @@ def get_total_photos_count_by_genre(media_genre):
 def get_total_videos_count_by_genre(media_genre):
     return Media.query.filter_by(media_type=6).filter_by(media_genre=media_genre).count()
 
-def get_total_news_count():
-    return Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=4).filter_by(lang_id=2).count()
+def get_total_news_count(selected_genre):
+    return Media.query.filter(Media.media_type.in_((4,5,))).filter(Media.media_genre==selected_genre).filter_by(story_type=4).filter_by(lang_id=2).count()
 
 def write_file(data, filename):
     with open(filename, 'wb') as f:

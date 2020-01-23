@@ -55,28 +55,6 @@
         </div>
     </div>
     <div class="col">
-        <div class="nollagang-list">
-            <div class="module-title-wrap"><h4 class="module-title"><span>Nollagang</span></h4></div>
-            <ul>
-                {% for item in photos_nollagang %}
-                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col">
-        <div class="snowskate-list">
-            <div class="module-title-wrap"><h4 class="module-title"><span>Snowskate</span></h4></div>
-            <ul>
-                {% for item in photos_snowskate %}
-                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
-    <div class="col">
         <div class="interviews-list">
             <div class="module-title-wrap"><h4 class="module-title"><span>Interviews</span></h4></div>
             <ul>
@@ -86,6 +64,8 @@
             </ul>
         </div>
     </div>
+</div>
+<div class="row">
     <div class="col">
         <div class="reviews-list">
             <div class="module-title-wrap"><h4 class="module-title"><span>Reviews</span></h4></div>
@@ -96,8 +76,6 @@
             </ul>
         </div>
     </div>
-</div>
-<div class="row">
     <div class="col">
         <div class="spotchecks-list">
             <div class="module-title-wrap"><h4 class="module-title"><span>Spotchecks</span></h4></div>
@@ -111,9 +89,28 @@
     <div class="col">
 
     </div>
+<!--    
     <div class="col">
-
+        <div class="nollagang-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Nollagang</span></h4></div>
+            <ul>
+                {% for item in photos_nollagang %}
+                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+-->
+<!--
+    <div class="snowskate-list">
+        <div class="module-title-wrap"><h4 class="module-title"><span>Snowskate</span></h4></div>
+        <ul>
+            {% for item in photos_snowskate %}
+            <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+-->
 </div>
 
 <div class="row">
