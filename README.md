@@ -16,13 +16,6 @@ $ . start-win.sh
 $ . start-mac.sh
 ```
 
-## Unit tests
-```bash
-$ python -m unittest -v tests/unit/tests.py
-```
+## Fire up the app
 
-## Functional tests
-```bash
-$ pytest
-```
-
+Go to <a href="http://localhost:8000" target="_blank">http://localhost:8000</a>
