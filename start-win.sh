@@ -1,16 +1,16 @@
 #!/bin/bash
 
 # Create virtualenv
-python3 -m pip install --upgrade pip
-pip3 install virtualenv
-virtualenv -p /usr/local/bin/python3 venv
+pip install virtualenv
+virtualenv venv
+virtualenv -p /usr/bin/python3.7 venv
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3.7
 source venv/bin/activate
 
 # Install python modules
 pip install --upgrade pip
-brew install openssl
-brew install mysql
-pip3 install mysqlclient
+sudo apt-get install python3-dev
+pip install mysqlclient==1.4.2.post1
 pip install -r requirements.txt
 
 # Export environment variables
