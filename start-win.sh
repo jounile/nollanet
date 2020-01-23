@@ -10,7 +10,6 @@ source venv/bin/activate
 # Install python modules
 pip install --upgrade pip
 sudo apt-get install python3-dev
-pip install mysqlclient==1.4.2.post1
 pip install -r requirements.txt
 
 # Export environment variables

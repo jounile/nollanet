@@ -11,7 +11,7 @@ pip install --upgrade pip
 brew install openssl
 brew install mysql
 pip3 install mysqlclient
-pip install -r requirements.txt
+pip install -r requirements-mac.txt
 
 # Export environment variables
 . env.sh
