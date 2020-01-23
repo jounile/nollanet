@@ -185,6 +185,11 @@ def view_video(media_id):
 
 """ Admin """
 
+@app.route("/logins/latest/")
+def latest_logins():
+    latest_logins = dba.session.query(User).order_by(User.last_login.desc()).limit(10)
+    return render_template("views/admin/latest_logins.html", latest_logins=latest_logins)
+
 @app.route("/media/latest/")
 def media_latest():
     latest = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,

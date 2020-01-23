@@ -1,0 +1,31 @@
+<!-- last_logins.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Latest logins</h1>
+<div class="latest-logins-list">
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Name</th>
+            <th>Last login</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in latest_logins %}
+            <tr>
+                <td>{{ item.user_id }}</td>
+                <td>{{ item.username }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.last_login }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
