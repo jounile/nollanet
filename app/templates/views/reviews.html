@@ -22,7 +22,7 @@
         <tbody>
         {% for item in reviews %}
             <tr>
-                <td><a href="/reviews/{{ item.media_id }}">{{ item.media_topic }}</a></td>
+                <td><a href="/review/{{ item.media_id }}">{{ item.media_topic }}</a></td>
                 <td>{{ item.genre }}</td>
                 <td>{{ item.create_time }}</td>
                 <td><a href="/user/{{ item.owner }}">{{ item.owner }}</a></td>

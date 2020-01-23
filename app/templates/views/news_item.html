@@ -4,10 +4,12 @@
 {% block content %}
 
 <div class="newsitem-title">
-    <div><h1>{{ news_item.media_topic }}</h1></div>
+
+    <h1>{{ news_item.media_topic }}</h1>
+    <h3>{{ news_item.media_desc|safe }}</h3>
     <div>{{ news_item.create_time }}</div>
-    <div>{{ news_item.media_desc|safe }}</div>
     <div>{{ news_item.media_text|safe }}</div>
+    
 </div>
 
 {% endblock %}
