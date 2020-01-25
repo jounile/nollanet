@@ -101,7 +101,7 @@ def guides():
     guides = Page.query.filter_by(lang_id=2)
     return render_template("views/guides.html", guides=guides)
 
-@app.route('/guide/<page_id>/')
+@app.route('/guide/<page_id>')
 def view_guide(page_id):
     guide = Page.query.filter_by(lang_id=2, page_id=page_id).first()
     return render_template('views/guide.html', guide=guide)
@@ -114,40 +114,40 @@ def support():
 def about():
     return render_template("views/about.html")
 
-@app.route('/user/<username>/', methods=['GET'])
+@app.route('/user/<username>', methods=['GET'])
 def view_user_by_username(username):
     user = User.query.filter_by(username=username).first()
     return render_template('views/user.html', user=user)
 
-@app.route('/interview/<media_id>/')
+@app.route('/interview/<media_id>')
 def view_interviews_item(media_id):
     interview = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/interview.html', interview=interview)
 
-@app.route('/news/<media_id>/')
+@app.route('/news/<media_id>')
 def view_news_item(media_id):
     news_item = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/news_item.html', news_item=news_item)
 
-@app.route('/review/<media_id>/')
+@app.route('/review/<media_id>')
 def view_review_item(media_id):
     review = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/review.html', review=review)
 
-@app.route('/spotcheck/<media_id>/')
+@app.route('/spotcheck/<media_id>')
 def view_spotcheck_item(media_id):
     spotcheck = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/spotcheck.html', spotcheck=spotcheck)
 
-@app.route('/youtube/')
+@app.route('/youtube')
 def youtube():
     return redirect('playlists')
 
-@app.route('/photos/')
+@app.route('/photos')
 def view_photos_default():
     return redirect('skateboarding')
 
-@app.route('/photos/<string:genre>/')
+@app.route('/photos/<string:genre>')
 def view_photos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_photos_count_by_genre(media_genre)
@@ -191,12 +191,12 @@ def view_video(media_id):
 
 """ Admin """
 
-@app.route("/logins/latest/")
+@app.route("/logins/latest")
 def latest_logins():
     latest_logins = dba.session.query(User).order_by(User.last_login.desc()).limit(10)
     return render_template("views/admin/latest_logins.html", latest_logins=latest_logins)
 
-@app.route("/media/latest/")
+@app.route("/media/latest")
 def media_latest():
     latest = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
         (Genre.type_name).label("genre"),
@@ -301,7 +301,7 @@ def new_post():
         flash("Please login first")
         return redirect(url_for("home"))
 
-@app.route("/my/posts/")
+@app.route("/my/posts")
 def my_posts():
     if(session and session['logged_in']):
         username = session['username']
@@ -349,7 +349,7 @@ def new_upload():
         return redirect(url_for("my_uploads"))
     return render_template("views/user/new_upload.html")
 
-@app.route("/my/uploads/")
+@app.route("/my/uploads")
 def my_uploads():
     blobs = utils.get_my_blobs()
     return render_template("views/user/uploads.html", blobs=blobs)
