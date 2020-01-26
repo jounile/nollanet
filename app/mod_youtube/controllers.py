@@ -51,7 +51,7 @@ def get_youtube_playlists(channel_id):
 
 	return playlists
 
-@mod_youtube.route('/playlist/<playlist_id>/')
+@mod_youtube.route('/playlist/<playlist_id>')
 def youtube_playlistItems(playlist_id):
 
 	# Get playlist title
