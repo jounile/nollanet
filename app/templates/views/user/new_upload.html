@@ -15,10 +15,13 @@
     {% endif %}
 {% endwith %}
 
-<form method="POST" action="{{ url_for('new_upload') }}" enctype="multipart/form-data">
+<form method="POST" action="{{ url_for('new_upload') }}" enctype="multipart/form-data" id="uploadForm">
     <div class="form-group">
-        <input class="text-info" type="file" name="file" autocomplete="off" required><br />
-        <input type="submit" class="btn btn-primary" value="Upload">
+        <input class="text-info" type="file" name="file" id="file" /><br/>
+        <div id="uploadPreview">
+            <img src="/static/gfx/image_placeholder.png" alt="Image placeholder" />
+        </div><br/>
+        <input type="submit" class="btn btn-primary" value="Upload" />
     </div>
 </form>
 
