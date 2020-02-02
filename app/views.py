@@ -198,11 +198,26 @@ def view_photos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_photos_count_by_genre(media_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    photos = dba.session.query(Media).join(Country).add_columns(Media.media_id,
+    photos = dba.session.query(
+            Media
+        ).join(Country
+        ).add_columns(
+            Media.media_id,
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.media_type==1).filter(Media.media_genre==media_genre).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+            Media.owner
+        ).filter(
+            Media.media_type==1
+        ).filter(
+            Media.media_genre==media_genre
+        ).filter(
+            Media.hidden==0
+        ).order_by(
+            Media.create_time.desc()
+        ).offset(
+            offset
+        ).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' photos', format_total=True, format_number=True,)                                 
     return render_template('views/photos.html', photos=photos, pagination=pagination)
 
@@ -211,11 +226,26 @@ def view_videos_by_genre(genre):
     media_genre = utils.get_media_genre_id(genre)
     total = utils.get_total_videos_count_by_genre(media_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    videos = dba.session.query(Media).join(Country).add_columns(Media.media_id,
+    videos = dba.session.query(
+            Media
+        ).join(Country
+        ).add_columns(
+            Media.media_id,
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.media_type==6).filter(Media.media_genre==media_genre).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+            Media.owner
+        ).filter(
+            Media.media_type==6
+        ).filter(
+            Media.media_genre==media_genre
+        ).filter(
+            Media.hidden==0
+        ).order_by(
+            Media.create_time.desc()
+        ).offset(
+            offset
+        ).limit(per_page)
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' videos', format_total=True, format_number=True)              
     return render_template('views/videos.html', videos=videos, pagination=pagination)
 
@@ -305,7 +335,6 @@ def update_media(media_id):
                 'media_desc': request.form.get('media_desc'),
                 'country_id': request.form.get('country_id'),
                 'hidden': request.form.get('hidden') }
-        print("media_type", request.form.get('media_type'))
         if(session and session['logged_in'] and session['user_level'] == 1):
 
             Media.query.filter_by(media_id=media_id).update(media)
