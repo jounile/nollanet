@@ -13,7 +13,7 @@
             <option value="1">Photo</option>
             <option value="6">Video</option>
             <option value="5">Stories</option>
-            <option value="">None</option>
+            <option value="0">None</option>
         </select>
     </div>
 
@@ -24,7 +24,7 @@
             <option value="3">Interview</option>
             <option value="4">News</option>
             <option value="5">Spotcheck</option>
-            <option value="">None</option>
+            <option value="0">None</option>
         </select>
     </div>
 
@@ -33,9 +33,11 @@
         <select name="media_genre" class="form-control">
             <option value="1">Skateboarding</option>
             <option value="2">Snowboarding</option>
+            <!--
             <option value="10">Nollagang</option>
             <option value="11">Snowskate</option>
-            <option value="">None</option>
+            -->
+            <option value="0">None</option>
         </select>
     </div>
 
@@ -64,6 +66,11 @@
     <div class="form-group">
         <label for="media_text">Text</label>
         <textarea type="text" id="textCompose" class="form-control" name="media_text" cols="100" rows="10"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="hidden">Hidden</label>
+        <input type="checkbox" name="hidden" value="1" />
     </div>
 
     <div><b>My images</b></div>

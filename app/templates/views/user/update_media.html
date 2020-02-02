@@ -8,8 +8,7 @@
 <form action = "{{ url_for('update_media', media_id=result.media_id) }}" method = "POST">
     
     <input type="hidden" name="media_id" value="{{ result.media_id  }}" />
-    <input type="hidden" name="media_type" value="{{ result.media_type }}" />
-
+    
     <div class="form-group">
         <label for="media_topic">Title</label>
         <input type="text" name="media_topic" class="form-control" size="100" value="{{ result.media_topic }}" />
@@ -23,6 +22,11 @@
     <div class="form-group">
         <label for="media_text">Text</label>
         <textarea type="text" name="media_text" class="form-control" cols="100" rows="10">{{ result.media_text }}</textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="hidden">Hidden</label>
+        <input type="checkbox" name="hidden" value="1"{% if result.hidden==1 %} checked {% endif %} />
     </div>
 
     <div class="form-group">
@@ -40,21 +44,23 @@
     <div class="form-group">
         <label for="media_genre">Media genre</label>
         <select name="media_genre" class="form-control">
-            <option value="1"{% if result.story_type==1 %} selected="selected" {% endif %}>Skateboarding</option>
-            <option value="2"{% if result.story_type==2 %} selected="selected" {% endif %}>Snowboarding</option>
-            <option value="10"{% if result.story_type==10 %} selected="selected" {% endif %}>Nollagang</option>
-            <option value="11"{% if result.story_type==11 %} selected="selected" {% endif %}>Snowskate</option>
-            <option value=""{% if result.story_type=='' %} selected="selected" {% endif %}>None</option>
+            <option value="1"{% if result.media_genre==1 %} selected="selected" {% endif %}>Skateboarding</option>
+            <option value="2"{% if result.media_genre==2 %} selected="selected" {% endif %}>Snowboarding</option>
+            <!--
+            <option value="10"{% if result.media_genre==10 %} selected="selected" {% endif %}>Nollagang</option>
+            <option value="11"{% if result.media_genre==11 %} selected="selected" {% endif %}>Snowskate</option>
+            -->
+            <option value="0"{% if result.media_genre==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="media_type">Media type</label>
         <select name="media_type" class="form-control">
-            <option value="1"{% if result.story_type==1 %} selected="selected" {% endif %}>Photo</option>
-            <option value="6"{% if result.story_type==6 %} selected="selected" {% endif %}>Video</option>
-            <option value="5"{% if result.story_type==5 %} selected="selected" {% endif %}>Stories</option>
-            <option value=""{% if result.story_type=='' %} selected="selected" {% endif %}>None</option>
+            <option value="1"{% if result.media_type==1 %} selected="selected" {% endif %}>Photo</option>
+            <option value="6"{% if result.media_type==6 %} selected="selected" {% endif %}>Video</option>
+            <option value="5"{% if result.media_type==5 %} selected="selected" {% endif %}>Stories</option>
+            <option value="0"{% if result.media_type==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 
@@ -65,6 +71,7 @@
             <option value="4"{% if result.story_type==4 %} selected="selected" {% endif %}>News</option>
             <option value="3"{% if result.story_type==3 %} selected="selected" {% endif %}>Interview</option>
             <option value="2"{% if result.story_type==2 %} selected="selected" {% endif %}>Review</option>
+            <option value="0"{% if result.story_type==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 

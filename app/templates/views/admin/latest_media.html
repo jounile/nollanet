@@ -17,6 +17,7 @@
             <th>Created</th>
             <th>Owner</th>
             <th>Country</th>
+            <th>Hidden</th>
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <th></th>
                 <th></th>
@@ -35,6 +36,13 @@
                 <td>{{ item.create_time }}</td>
                 <td>{{ item.owner }}</td>
                 <td>{{ item.country_code }}</td>
+                <td>
+                    {% if item.hidden==1 %} 
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
                 {% if session['logged_in'] and session['user_level'] == 1 %}
                     <td>
                         <form action="/media/update/{{ item.media_id }}" method="GET">

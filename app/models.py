@@ -18,6 +18,7 @@ class Media(dba.Model):
     owner = dba.Column(dba.String(50))
     lang_id = dba.Column(dba.Integer)
     country_id = dba.Column(dba.Integer)
+    hidden = dba.Column(dba.Integer)
 
 class Page(dba.Model):
     __tablename__ = 'general'

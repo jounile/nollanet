@@ -34,54 +34,100 @@ def news():
 
     total = utils.get_total_news_count(selected_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    news = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
+    news = dba.session.query(
+            Media.media_type.in_((4,5,))
+        ).join(Genre
+        ).join(Mediatype
+        ).join(Storytype
+        ).join(Country
+        ).add_columns(
+            Media.media_id,
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
+            Media.hidden,
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.media_genre==selected_genre).filter(Media.story_type==utils.get_story_type('news')).order_by(Media.create_time.desc()).offset(offset).limit(per_page)
+            Media.owner
+        ).filter(
+            Media.media_genre==selected_genre
+        ).filter(
+            Media.story_type==utils.get_story_type('news')
+        ).filter(
+            Media.hidden==0
+        ).order_by(
+            Media.create_time.desc()
+        ).offset(offset).limit(per_page)
+
     pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' news', format_total=True, format_number=True,)
 
     return render_template("views/news.html", news=news, pagination=pagination, selected_genre=selected_genre)
 
 @app.route('/reviews')
 def reviews():
-    reviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
+    reviews = dba.session.query(
+            Media.media_type.in_((4,5,))
+        ).join(Genre
+        ).join(Mediatype
+        ).join(Storytype
+        ).join(Country
+        ).add_columns(
+            Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.story_type==utils.get_story_type('reviews')).order_by(Media.create_time.desc())
+            Media.owner
+        ).filter(
+            Media.story_type==utils.get_story_type('reviews')
+        ).filter(
+            Media.hidden==0
+        ).order_by(
+            Media.create_time.desc()
+        )
     return render_template("views/reviews.html", reviews=reviews)
 
 @app.route('/spotchecks')
 def spotchecks():
-    spotchecks = Media.query.filter_by(media_type=5).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
+    spotchecks = Media.query.filter_by(
+            media_type=5
+        ).join(Genre
+        ).join(Mediatype
+        ).join(Storytype
+        ).join(Country
+        ).add_columns(
+            Media.media_id,
             (Genre.type_name).label("genre"),
             (Mediatype.type_name).label("mediatype_name"),
             (Storytype.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
-            Media.owner).filter(Media.story_type==utils.get_story_type('spotchecks')).order_by(Media.create_time.desc())
+            Media.owner
+        ).filter(
+            Media.story_type==utils.get_story_type('spotchecks')
+        ).filter(
+            Media.hidden==0
+        ).order_by(
+            Media.create_time.desc()
+        )
 
     return render_template("views/spotchecks.html", spotchecks=spotchecks)
 
 @app.route('/')
 def home():
 
-    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).order_by(Media.create_time.desc()).limit(10)
-    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).order_by(Media.create_time.desc()).limit(10)
-    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).order_by(Media.create_time.desc()).limit(10)
-    spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).order_by(Media.create_time.desc()).limit(10)
+    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
 
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
 
-    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     #photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     #photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     
@@ -198,16 +244,31 @@ def latest_logins():
 
 @app.route("/media/latest")
 def media_latest():
-    latest = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
-        (Genre.type_name).label("genre"),
-        (Mediatype.type_name).label("mediatype_name"),
-        (Storytype.type_name).label("storytype_name"),
-        (Country.country_code).label("country_code"),
-        Media.media_topic,
-        Media.media_desc,
-        Media.create_time,
-        Media.owner).order_by(Media.create_time.desc()).limit(10)
-    return render_template("views/admin/latest_media.html", latest=latest)
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        latest = dba.session.query(
+                Media
+            ).join(Genre
+            ).join(Mediatype
+            ).join(Storytype
+            ).join(Country
+            ).add_columns(
+                Media.media_id,
+                (Genre.type_name).label("genre"),
+                (Mediatype.type_name).label("mediatype_name"),
+                (Storytype.type_name).label("storytype_name"),
+                (Country.country_code).label("country_code"),
+                Media.media_topic,
+                Media.media_desc,
+                Media.create_time,
+                Media.owner,
+                Media.hidden
+            ).order_by(
+                Media.create_time.desc()
+            ).limit(10)
+        return render_template("views/admin/latest_media.html", latest=latest)
+    else:
+        flash("Please login first")
+    return redirect(url_for("home"))
 
 @app.route('/media/delete', methods = ['POST'])
 def delete_media():
@@ -242,8 +303,9 @@ def update_media(media_id):
                 'media_topic': request.form.get('media_topic'),
                 'media_text': request.form.get('media_text'),
                 'media_desc': request.form.get('media_desc'),
-                'country_id': request.form.get('country_id') }
-
+                'country_id': request.form.get('country_id'),
+                'hidden': request.form.get('hidden') }
+        print("media_type", request.form.get('media_type'))
         if(session and session['logged_in'] and session['user_level'] == 1):
 
             Media.query.filter_by(media_id=media_id).update(media)
@@ -272,6 +334,7 @@ def new_post():
                         media_topic = request.form.get('media_topic'),
                         media_text = request.form.get('media_text'),
                         media_desc = request.form.get('media_desc'),
+                        hidden = request.form.get('hidden'),
                         owner = session['username'],
                         create_time = utils.get_now(),
                         lang_id = 2)
@@ -305,14 +368,27 @@ def new_post():
 def my_posts():
     if(session and session['logged_in']):
         username = session['username']
-        posts = dba.session.query(Media).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
-            (Genre.type_name).label("genre"),
-            (Mediatype.type_name).label("mediatype_name"),
-            (Storytype.type_name).label("storytype_name"),
-            (Country.country_code).label("country_code"),
-            Media.media_topic,
-            Media.create_time,
-            Media.owner).filter(Media.owner==username).order_by(Media.create_time.desc()).limit(10)
+        posts = dba.session.query(
+                Media
+            ).join(Genre
+            ).join(Mediatype
+            ).join(Storytype
+            ).join(Country
+            ).add_columns(
+                Media.media_id,
+                (Genre.type_name).label("genre"),
+                (Mediatype.type_name).label("mediatype_name"),
+                (Storytype.type_name).label("storytype_name"),
+                (Country.country_code).label("country_code"),
+                Media.media_topic,
+                Media.create_time,
+                Media.owner,
+                Media.hidden
+            ).filter(
+                Media.owner==username
+            ).order_by(
+                Media.create_time.desc()
+            ).limit(10)
         return render_template("views/user/posts.html", posts=posts)
     else:
         flash("Please login first")
