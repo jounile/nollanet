@@ -15,7 +15,25 @@ function filePreview(input) {
     }
 }
 $(document).ready(function() {
+
+    /* 
+        Show file preview when a file is selected
+    */
     $("#file").change(function () {
         filePreview(this);
     });
+
+    /* 
+        Show story_type selection depending when media_type is 5 (Stories)
+    */
+    $("#story_type_form_group").hide();
+    $("#media_type_selector").change(function() {
+        var selectedMediaType = $("#media_type_selector option:selected").val();
+        if(selectedMediaType == 5){
+            $("#story_type_form_group").show();
+        } else {
+            $("#story_type_form_group").hide();
+        }
+    });
+    
 });
