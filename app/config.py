@@ -15,7 +15,7 @@ class DefaultConfig(object):
 
     # Pagination
     PER_PAGE = 10
-    CSS_FRAMEWORK = 'bootstrap3'
+    CSS_FRAMEWORK = 'bootstrap4'
     LINK_SIZE = 'sm'
     SHOW_SINGLE_PAGE = False  # decide whether or not a single page returns pagination
 

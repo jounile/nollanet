@@ -14,6 +14,16 @@ function filePreview(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+function addImageTagToTextarea(param){
+    var imgSrc = $(param).attr("src");
+    var imgAlt = $(param).attr("alt");
+    var imgTag = '<img src="'+imgSrc+'" alt="'+imgAlt+'" />'; 
+    $('#textArea').empty();
+    $('#textArea').html(imgTag);
+    $('#myModal').modal('hide');
+}
+
 $(document).ready(function() {
 
     /* 
@@ -35,5 +45,12 @@ $(document).ready(function() {
             $("#story_type_form_group").hide();
         }
     });
-    
+
+    /*
+        Modal window for image selections
+    */
+    $("#btnShowModal").click(function () {
+        $("#myModal").modal("show");
+    });
+
 });

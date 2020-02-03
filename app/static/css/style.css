@@ -153,8 +153,8 @@ footer {
     font-size: 12px;
 }
 .pagination-page-info b {
-    color: black;
-    background: #6aa6ed;
+    color: white;
+    background: #007bff;
     padding-left: 2px;
     padding: .1em .25em;
     font-size: 150%;
