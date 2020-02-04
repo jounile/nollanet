@@ -189,16 +189,20 @@ def view_spotcheck_item(media_id):
 def youtube():
     return redirect('playlists')
 
-@app.route('/photos')
-def view_photos_default():
-    return redirect('skateboarding')
+@app.route('/media')
+def view_media():
 
-@app.route('/photos/<string:genre>')
-def view_photos_by_genre(genre):
-    media_genre = utils.get_media_genre_id(genre)
-    total = utils.get_total_photos_count_by_genre(media_genre)
+    selected_media_genre = 1 # skateboarding by default
+    if(request.args.get('media_genre')):
+        selected_media_genre = request.args.get('media_genre')
+
+    selected_media_type = 1 # photos by default
+    if(request.args.get('media_type')):
+        selected_media_type = request.args.get('media_type')
+
+    total = utils.get_count_by_genre_and_type(selected_media_genre, selected_media_type)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    photos = dba.session.query(
+    media = dba.session.query(
             Media
         ).join(Country
         ).add_columns(
@@ -208,37 +212,9 @@ def view_photos_by_genre(genre):
             Media.create_time,
             Media.owner
         ).filter(
-            Media.media_type==1
+            Media.media_type==selected_media_type
         ).filter(
-            Media.media_genre==media_genre
-        ).filter(
-            Media.hidden==0
-        ).order_by(
-            Media.create_time.desc()
-        ).offset(
-            offset
-        ).limit(per_page)
-    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' photos', format_total=True, format_number=True,)                                 
-    return render_template('views/photos.html', photos=photos, pagination=pagination)
-
-@app.route('/videos/<string:genre>/')
-def view_videos_by_genre(genre):
-    media_genre = utils.get_media_genre_id(genre)
-    total = utils.get_total_videos_count_by_genre(media_genre)
-    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    videos = dba.session.query(
-            Media
-        ).join(Country
-        ).add_columns(
-            Media.media_id,
-            (Country.country_code).label("country_code"),
-            Media.media_topic,
-            Media.create_time,
-            Media.owner
-        ).filter(
-            Media.media_type==6
-        ).filter(
-            Media.media_genre==media_genre
+            Media.media_genre==selected_media_genre
         ).filter(
             Media.hidden==0
         ).order_by(
@@ -246,8 +222,8 @@ def view_videos_by_genre(genre):
         ).offset(
             offset
         ).limit(per_page)
-    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' videos', format_total=True, format_number=True)              
-    return render_template('views/videos.html', videos=videos, pagination=pagination)
+    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' media', format_total=True, format_number=True,)                                 
+    return render_template('views/media.html', media=media, pagination=pagination, selected_media_genre=selected_media_genre, selected_media_type=selected_media_type)
 
 @app.route('/photo/<media_id>')
 def view_photo(media_id):
