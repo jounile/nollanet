@@ -45,12 +45,12 @@ nav.Bar('top', [
     #nav.Item('Podcast', 'soundcloud.soundcloud_playlists'),
     #nav.Item('Facebook', 'facebook.facebook_info'),
     nav.Item('Media', 'view_media'),
-    nav.Item('Stories', 'interviews', items=[
+    #nav.Item('Stories', 'interviews', items=[
         nav.Item('Interviews', 'interviews'),
         nav.Item('Reviews', 'reviews'),
         nav.Item('Spotchecks', 'spotchecks'),
-    ]),
-    nav.Item('Guides', 'guides'),
+    #]),
+    #nav.Item('Guides', 'guides'),
 ])
 
 nav.Bar('user', [
