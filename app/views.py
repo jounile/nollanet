@@ -332,6 +332,7 @@ def update_media(media_id):
 def new_post():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
+
             media = Media(media_type = request.form.get('media_type'), 
                         media_genre = request.form.get('media_genre'),
                         country_id = request.form.get('country_id'),
@@ -339,10 +340,11 @@ def new_post():
                         media_topic = request.form.get('media_topic'),
                         media_text = request.form.get('media_text'),
                         media_desc = request.form.get('media_desc'),
-                        hidden = request.form.get('hidden'),
+                        hidden = request.form.get('hidden') != None,
                         owner = session['username'],
                         create_time = utils.get_now(),
                         lang_id = 2)
+
             dba.session.add(media)
             dba.session.commit()
 
