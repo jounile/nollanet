@@ -93,7 +93,7 @@
             <div class="modal-body">
                 {% if blobs is not none %}
                     {% for blob in blobs %}
-                        <img src="{{ blob.path }}/{{ blob.container }}/{{ blob.name }}" onclick="addImageTagToTextarea(this)" alt="{{ blob.name }}" width="100" height="100">
+                        <img src="{{ blob.path }}" onclick="addImageTagToTextarea(this)" width="100" height="100">
                     {% endfor %}
                 {% endif %}
             </div>

@@ -9,7 +9,7 @@ from werkzeug import secure_filename
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
+from app.models import Uploads, Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
 
 from . import app, dba, utils, auto
 
@@ -311,8 +311,8 @@ def update_media(media_id):
                 'media_desc': request.form.get('media_desc'),
                 'country_id': request.form.get('country_id'),
                 'hidden': request.form.get('hidden') }
-        if(session and session['logged_in'] and session['user_level'] == 1):
 
+        if(session and session['logged_in'] and session['user_level'] == 1):
             Media.query.filter_by(media_id=media_id).update(media)
             dba.session.commit()
             flash("Record " + media_id + " was updated by user " + session['username'])
@@ -365,7 +365,10 @@ def new_post():
             else:
                 return redirect(url_for("home"))
         else:
-            blobs = utils.get_my_blobs()
+            my_uploads = dba.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
+            blobs = []
+            for blob in my_uploads:
+                blobs.append(blob)
             return render_template("views/user/new_post.html", blobs=blobs)
     else:
         flash("Please login first")
@@ -404,6 +407,8 @@ def my_posts():
 @app.route("/media/newupload", methods=['POST','GET'])
 def new_upload():
     if request.method == 'POST':
+
+        # Crea a blob container with the users name
         blob_service = utils.get_azure_blob_service()
         container = ''
         file_to_upload = request.files['file']
@@ -421,30 +426,55 @@ def new_upload():
         # Create Blob from stream
         try:
             blob_service.create_blob_from_stream(container, filename, file_to_upload)
-            blob = app.config.get('AZURE_BLOB_URI')
-            ref =  blob + '/' + container + '/' + filename
-            flash("File " + ref + " was uploaded successfully")
+            flash("File " + filename + " was uploaded successfully")
         except:
             print("Something went wrong while uploading the files %s"%filename)
             flash("Something went wrong while uploading the files %s"%filename)
             pass
+
+        blob = app.config.get('AZURE_BLOB_URI')
+        path =  blob + '/' + container + '/' + filename
+
+        # Create a record in database
+        upload = Uploads(
+            user_id=session['user_id'],
+            create_time=datetime.datetime.now(),
+            path=path)
+        dba.session.add(upload)
+        dba.session.commit()
+        #print("Upload was inserted to database by user " + session['username'])
 
         return redirect(url_for("my_uploads"))
     return render_template("views/user/new_upload.html")
 
 @app.route("/my/uploads")
 def my_uploads():
-    blobs = utils.get_my_blobs()
-    return render_template("views/user/uploads.html", blobs=blobs)
+    if(session and session['logged_in']):
+        # Get records from database
+        my_uploads = dba.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
+        blobs = []
+        for blob in my_uploads:
+            blobs.append(blob)
+        return render_template("views/user/uploads.html", blobs=blobs)
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
 
 @app.route('/blob/delete', methods = ['POST'])
 def delete_blob():
-    blob_service = utils.get_azure_blob_service()
     if(session and session['logged_in']):
-        container = session['username']
         if request.method == 'POST':
-            blob_name = request.form.get('blob_name')
+            # Remove blob
+            blob_service = utils.get_azure_blob_service()
+            container = session['username']
+            blob_path = request.form.get('blob_path')
+            blob_name = os.path.basename(blob_path)
             blob_service.delete_blob(container, blob_name)
+
+            # Delete a record from database
+            upload_id = request.form.get('upload_id')
+            Uploads.query.filter_by(id=upload_id).delete()
+            dba.session.commit()
             flash("File " + blob_name + " was deleted successfully")
     else:
         flash("Please login first")

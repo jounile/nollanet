@@ -92,6 +92,7 @@ def login():
             flash("Welcome " + user.username + "!")
             session['logged_in'] = True
             session['username'] = user.username
+            session['user_id'] = user.user_id
             session['user_level'] = user.level
 
             # Increment login_count by one
@@ -111,6 +112,7 @@ def logout():
     if session.get('logged_in'):
         session['logged_in'] = False
         session.pop('username')
+        session.pop('user_id')
         session.pop('user_level')
     return redirect(url_for('home'))
 

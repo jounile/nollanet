@@ -5,6 +5,13 @@ from hashlib import md5
 
 from . import dba
 
+class Uploads(dba.Model):
+    __tablename__ = 'uploads'
+    id = dba.Column(dba.Integer, primary_key = True)
+    user_id = dba.Column(dba.String(50))
+    create_time = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
+    path = dba.Column(dba.String(50))
+
 class Media(dba.Model):
     __tablename__ = 'media_table'
     media_id = dba.Column(dba.Integer, primary_key = True)
