@@ -158,10 +158,23 @@ footer {
 }
 .pagination-page-info b {
     color: white;
-    background: #007bff;
+    background: #0079a1;
     padding-left: 2px;
     padding: .1em .25em;
     font-size: 150%;
+    border-radius: 3px;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+}
+
+.btn {
+    border-radius: 3px;
+    margin-left: 0.1em;
+    margin-right: 0.1em;
+}
+
+.thumbnail_column {
+    width: 120px;
 }
 
 .navbar {

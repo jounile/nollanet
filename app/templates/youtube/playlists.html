@@ -19,8 +19,8 @@ Channel ID: {{ channelId }}<br>
     <tbody>
     {% for playlist in playlists %}
         <tr>
-            <td>
-                <img src="{{ playlist.thumbnail }}" />
+            <td class="thumbnail_column">
+                <img src="{{ playlist.thumbnail }}" alt="{{ playlist.title }}" />
             </td>
             <td>
                 <a href="/youtube/playlist/{{ playlist.id }}">{{ playlist.title }}</a>
