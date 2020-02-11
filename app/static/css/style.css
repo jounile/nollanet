@@ -2,6 +2,10 @@ html {
     background-color: #eee;
 }
 
+h4 {
+    font-size: 1.0rem;
+}
+
 .flash-messages {
     background-color: orange;
 }
@@ -186,7 +190,7 @@ footer {
 
 .navbar-nav li.active>a
 {
-    background-color: #eee;
+    background-color: #e6e6e6;
 }
 
 .news-item {
