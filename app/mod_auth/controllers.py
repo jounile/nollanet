@@ -232,7 +232,7 @@ def promote():
 
 @mod_auth.route('/pwdreset', methods=['GET','POST'])
 def pwdreset():
-    if session.get('logged_in') and session.get('user_level') == 1:
+    if session.get('logged_in'):
         if request.method == 'GET':
             return render_template('auth/pwdreset.html')
         if request.method == 'POST':
