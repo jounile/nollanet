@@ -56,6 +56,7 @@ nav.Bar('top', [
 nav.Bar('user', [
     nav.Item('My', 'auth.profile', items=[
         nav.Item('Profile', 'auth.profile'),
+        nav.Item('Password', 'auth.pwdreset'),
         nav.Item('Uploads', 'my_uploads'),
         nav.Item('Posts', 'my_posts'),
     ])

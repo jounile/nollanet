@@ -229,3 +229,24 @@ def promote():
     else:
         flash('You are not logged in as administrator')
         return redirect(url_for('home'))
+
+@mod_auth.route('/pwdreset', methods=['GET','POST'])
+def pwdreset():
+    if session.get('logged_in') and session.get('user_level') == 1:
+        if request.method == 'GET':
+            return render_template('auth/pwdreset.html')
+        if request.method == 'POST':
+            username = session['username']
+            newpwd1 = request.form.get('newpwd1')
+            newpwd2 = request.form.get('newpwd2')
+            if newpwd1 == newpwd2:
+                crypted_password = bcrypt.generate_password_hash(newpwd2)
+                User.query.filter_by(username=username).update({"password": crypted_password})
+                dba.session.commit()
+                flash('Your password was updated successfully.')
+                return redirect(url_for('home'))
+            else:
+                return render_template('auth/pwdreset.html', error='You mistyped. Please try again.')
+    else:
+        flash('You are not logged in as administrator')
+        return redirect(url_for('home'))
