@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="">
+    <h2>Promote</h2>
+
+    <form action="{{ url_for('auth.promote') }}" method="POST">
+        <input type="username" name="username" placeholder="Username">
+        <input type="level" name="level" placeholder="Level">
+        <button type="submit" class="btn btn-success">Promote</button>
+    </form>
+
+</div>
+
+{% endblock %}
