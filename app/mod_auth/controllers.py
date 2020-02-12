@@ -248,5 +248,5 @@ def pwdreset():
             else:
                 return render_template('auth/pwdreset.html', error='You mistyped. Please try again.')
     else:
-        flash('You are not logged in as administrator')
+        flash('Please login first')
         return redirect(url_for('home'))
