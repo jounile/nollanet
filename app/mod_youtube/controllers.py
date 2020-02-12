@@ -6,14 +6,15 @@ from app import app
 YOUTUBE_API_SERVICE_NAME = "youtube"
 YOUTUBE_API_VERSION = "v3"
 
-# creating Youtube Resource Object 
-youtube = build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey = app.config.get("GOOGLE_API_KEY"))
+# creating Youtube Resource Object
+def youtube():
+	return build(YOUTUBE_API_SERVICE_NAME, YOUTUBE_API_VERSION, developerKey = app.config.get("GOOGLE_API_KEY"))
 
 mod_youtube = Blueprint('youtube', __name__, url_prefix='/youtube')
 
 @mod_youtube.route('/playlists')
 def youtube_playlists():
-	search = youtube.channels().list(
+	search = youtube().channels().list(
 		part = "snippet,contentDetails,statistics",
         forUsername = "n0llanet",
 		maxResults = 10).execute()
@@ -29,7 +30,7 @@ def youtube_playlists():
 	return render_template('youtube/playlists.html', channelId=channelId, playlists=playlists)
 
 def get_youtube_playlists(channel_id):
-	search = youtube.playlists().list(
+	search = youtube().playlists().list(
 		part = "snippet,contentDetails",
 		channelId = channel_id,
 		maxResults = 25).execute()
@@ -55,13 +56,13 @@ def get_youtube_playlists(channel_id):
 def youtube_playlistItems(playlist_id):
 
 	# Get playlist title
-	playlist = youtube.playlists().list(part = "snippet,contentDetails",
+	playlist = youtube().playlists().list(part = "snippet,contentDetails",
         id = playlist_id
     ).execute()
 	playlist_title = playlist['items'][0]['snippet']['title']
 
 	# Get playlist items
-	search = youtube.playlistItems().list(part = "snippet,contentDetails",
+	search = youtube().playlistItems().list(part = "snippet,contentDetails",
 		maxResults = 25,
 		playlistId = playlist_id).execute()
 	results = search.get("items", [])
