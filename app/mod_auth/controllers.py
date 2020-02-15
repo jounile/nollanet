@@ -130,31 +130,37 @@ def profile():
 
             form.user_id.data = user.user_id
             form.username.data = user.username
-            form.date.data = user.date
-            form.last_login.data = user.last_login
             form.name.data = user.name
-            form.email.data = user.email
-            form.location.data = user.location
-            form.address.data = user.address
-            form.postnumber.data = user.postnumber
             form.bornyear.data = user.bornyear
+            form.email.data = user.email
             form.email2.data = user.email2
             form.homepage.data = user.homepage
             form.info.data = user.info
+            form.location.data = user.location
+            form.date.data = user.date
             form.hobbies.data = user.hobbies
+            # open
             form.extrainfo.data = user.extrainfo
-            form.sukupuoli.data = user.sukupuoli
             form.sukupuoli.process_data(user.sukupuoli) #selected
             form.icq.data = user.icq
             form.apulainen.data = user.apulainen
+            form.last_login.data = user.last_login
             form.chat.data = user.chat
             form.oikeus.data = user.oikeus
-            form.lang_id.data = user.lang_id
             form.lang_id.process_data(user.lang_id) #selected
             form.login_count.data = user.login_count
+            # lastloginip
+            # lastloginclient
+            form.address.data = user.address
+            form.postnumber.data = user.postnumber
             form.emails.data = user.emails
             form.puhelin.data = user.puhelin
+            # kantaasiakasnro
+            # lamina_lisatieto
             form.blogs.data = user.blogs
+            # user_showid
+            # blog_level
+            # last_login2
             form.messenger.data = user.messenger
             form.myspace.data = user.myspace
             form.rss.data = user.rss
@@ -169,28 +175,39 @@ def profile():
         if request.method == 'POST':
             if form.validate_on_submit():
                 user = {
+                    'user_id': form.user_id.data,
                     'username': form.username.data,
                     'name': form.name.data,
-                    'email': form.email.data,
-                    'location': form.location.data,
-                    'address': form.address.data,
-                    'postnumber': form.postnumber.data,
                     'bornyear': form.bornyear.data,
+                    'email': form.email.data,
                     'email2': form.email2.data,
                     'homepage': form.homepage.data,
                     'info': form.info.data,
+                    'location': form.location.data,
+                    'date': form.date.data,
                     'hobbies': form.hobbies.data,
+                    # open
                     'extrainfo': form.extrainfo.data,
                     'sukupuoli': form.sukupuoli.data,
                     'icq': form.icq.data,
                     'apulainen': form.apulainen.data,
+                    'last_login': form.last_login.data,
                     'chat': form.chat.data,
                     'oikeus': form.oikeus.data,
                     'lang_id': form.lang_id.data,
                     'login_count': form.login_count.data,
+                    # lastloginip
+                    # lastloginclient
+                    'address': form.address.data,
+                    'postnumber': form.postnumber.data,
                     'emails': form.emails.data,
                     'puhelin': form.puhelin.data,
+                    # kantaasiakasnro
+                    # lamina_lisatieto
                     'blogs': form.blogs.data,
+                    # user_showid
+                    # blog_level
+                    # last_login2
                     'messenger': form.messenger.data,
                     'myspace': form.myspace.data,
                     'rss': form.rss.data,
@@ -201,9 +218,9 @@ def profile():
                     'flickr_username': form.flickr_username.data
                 }
                 form.update_details(user)
-
+                print("Form update details")
             else:
-                print("Form validation error")
+                print("Form validation error", form.errors)
             return redirect(url_for('auth.profile'))
 
 @mod_auth.route('/admin')
