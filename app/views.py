@@ -245,8 +245,21 @@ def view_video(media_id):
 
 @app.route("/logins/latest")
 def latest_logins():
-    latest_logins = dba.session.query(User).order_by(User.last_login.desc()).limit(10)
-    return render_template("views/admin/latest_logins.html", latest_logins=latest_logins)
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        latest_logins = dba.session.query(User).filter(User.last_login >= '2020-01-01').order_by(User.last_login.desc())
+        return render_template("views/admin/latest_logins.html", latest_logins=latest_logins)
+    else:
+        flash("Please login first")
+    return redirect(url_for("home"))
+
+@app.route("/users/newest")
+def newest_users():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        newest_users = dba.session.query(User).filter(User.date >= '2020-01-01').order_by(User.date.desc())
+        return render_template("views/admin/newest_users.html", newest_users=newest_users)
+    else:
+        flash("Please login first")
+    return redirect(url_for("home"))
 
 @app.route("/media/latest")
 def media_latest():

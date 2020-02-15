@@ -1,10 +1,10 @@
-<!-- last_logins.html -->
+<!-- newest_users.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
 
-<h1>Latest logins</h1>
-<div class="latest-logins-list">
+<h1>Newest users</h1>
+<div class="newest-users-list">
     <table width="100%" class="table table-bordered">
         <thead class="thead-dark">
         <tr>
@@ -12,17 +12,17 @@
             <th>User ID</th>
             <th>Username</th>
             <th>Name</th>
-            <th>Last login</th>
+            <th>Registered</th>
         </tr>
         </thead>
         <tbody>
-        {% for item in latest_logins %}
+        {% for item in newest_users %}
             <tr>
                 <td>{{ loop.revindex }}</td>
                 <td>{{ item.user_id }}</td>
                 <td>{{ item.username }}</td>
                 <td>{{ item.name }}</td>
-                <td>{{ item.last_login }}</td>
+                <td>{{ item.date }}</td>
             </tr>
         {% endfor %}
         </tbody>
