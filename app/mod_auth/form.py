@@ -1,7 +1,7 @@
 from flask import flash
 from flask_wtf import FlaskForm
 from flask_wtf import RecaptchaField
-from wtforms import TextField, PasswordField, TextAreaField, StringField, IntegerField, SelectField, HiddenField, SubmitField
+from wtforms import TextField, PasswordField, TextAreaField, StringField, IntegerField, DateField, SelectField, HiddenField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Optional
 
 from app import app, dba
@@ -21,29 +21,37 @@ class RegisterForm(FlaskForm):
 class ProfileForm(FlaskForm):
     user_id = HiddenField('User ID')
     username = HiddenField('Username')
-    date = HiddenField('Registered')
-    last_login = HiddenField('Last login')
     name = StringField('Name', [DataRequired(), Length(min=4)])
-    email = StringField('Email', [DataRequired()])
-    location = StringField('Location', [DataRequired()])
-    address = StringField('Address', [DataRequired()])
-    postnumber = StringField('Postnumber', [DataRequired()])
     bornyear = IntegerField('Born (year)')
+    email = StringField('Email', [DataRequired()])
     email2 = StringField('Email 2')
     homepage = StringField('Homepage')
     info = StringField('Info')
+    location = StringField('Location', [DataRequired()])
+    date = HiddenField('Registered')
     hobbies = StringField('Hobbies')
+    # open
     extrainfo = StringField('Extra info')
     sukupuoli = SelectField('Sex', choices=[('1', 'Male'), ('2', 'Female')])
     icq = StringField('ICQ')
-    apulainen = IntegerField('Helper')
+    apulainen = IntegerField('Helper', [Optional(strip_whitespace=True)])
+    last_login = HiddenField('Last login')
     chat = IntegerField('Chat', [Optional(strip_whitespace=True)])
     oikeus = IntegerField('Rights')
     lang_id = SelectField('Language ID', choices=[('1', 'English'), ('2', 'Finnish'), ('3', 'Swedish')])
     login_count = HiddenField('Login count', [Optional(strip_whitespace=True)])
-    emails = IntegerField('Emails')
+    # lastloginip
+    # lastloginclient
+    address = StringField('Address', [DataRequired()])
+    postnumber = StringField('Postnumber', [DataRequired()])
+    emails = IntegerField('Emails', [Optional(strip_whitespace=True)])
     puhelin = StringField('Telephone')
+    # kantaasiakasnro
+    # lamina_lisatieto
     blogs = IntegerField('Blogs', [Optional(strip_whitespace=True)])
+    # user_showid
+    # blog_level
+    # last_login2
     messenger = StringField('Messenger')
     myspace = StringField('Myspace')
     rss = StringField('RSS')
@@ -56,6 +64,7 @@ class ProfileForm(FlaskForm):
 
     def update_details(self, user):
         try:
+            #print("user", user)
             username = user['username']
             result = dba.session.query(User).filter(User.username == username).update(user, synchronize_session=False)
             dba.session.commit()
