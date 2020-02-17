@@ -68,3 +68,6 @@ class DefaultConfig(object):
     PAGE_TOKEN = 'None'
     FACEBOOK_PAGE_ID = os.getenv('FACEBOOK_PAGE_ID')
 
+    # SendGrid
+    SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+    NOLLANET_EMAIL = os.getenv("NOLLANET_EMAIL")

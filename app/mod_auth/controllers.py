@@ -1,10 +1,15 @@
 from datetime import datetime
+
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
-import requests, json
+import requests, json, uuid
+
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import (Mail, From, To)
+
 from app.mod_auth.form import RegisterForm, ProfileForm
 
 from app import app, dba
-from app.models import User
+from app.models import User, PwdRecover
 from app.mod_auth import bcrypt
 
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -232,21 +237,100 @@ def promote():
 
 @mod_auth.route('/pwdreset', methods=['GET','POST'])
 def pwdreset():
-    if session.get('logged_in'):
-        if request.method == 'GET':
-            return render_template('auth/pwdreset.html')
-        if request.method == 'POST':
-            username = session['username']
-            newpwd1 = request.form.get('newpwd1')
-            newpwd2 = request.form.get('newpwd2')
-            if newpwd1 == newpwd2:
+    if request.method == 'GET':
+        return render_template('auth/pwdreset.html')
+    if request.method == 'POST':
+
+        # Determine user type
+        if session.get('logged_in'): # logged in user
+            username = session.get('username')
+        else: # anonymous user
+            username = request.form.get('username')
+
+        newpwd1 = request.form.get('newpwd1')
+        newpwd2 = request.form.get('newpwd2')
+        if newpwd1 == newpwd2:
+            # Update password
+            try:
                 crypted_password = bcrypt.generate_password_hash(newpwd2)
                 User.query.filter_by(username=username).update({"password": crypted_password})
                 dba.session.commit()
-                flash('Your password was updated successfully.')
-                return redirect(url_for('home'))
+            except Exception as e:
+                print(str(e))
+
+            # Get token for user
+            pwdrecover = PwdRecover.query.filter_by(username=username).first()
+            if pwdrecover:
+                # Remove token from database
+                try:
+                    PwdRecover.query.filter_by(token=pwdrecover.token).delete()
+                    dba.session.commit()
+                except Exception as e:
+                    print(str(e))
             else:
-                return render_template('auth/pwdreset.html', error='You mistyped. Please try again.')
+                print("No token exists")
+
+            flash('Your password was updated successfully.')
+            return redirect(url_for('auth.logout'))
+        else:
+            return render_template('auth/pwdreset.html', error='You mistyped. Please try again.')
     else:
         flash('Please login first')
         return redirect(url_for('home'))
+
+@mod_auth.route('/pwdrecover', methods=['GET','POST'])
+def pwdrecover():
+    if request.method == 'GET':
+        return render_template('auth/pwdrecover.html')
+    if request.method == 'POST':
+
+        # Get entered username
+        username = request.form.get('username')
+
+        # Retrieve email address of the entered username
+        user = User.query.filter_by(username=username).first()
+        if user:
+            # Generate a unique token
+            token = str(uuid.uuid4())
+
+            # Save the email & token & timestamp into database table pwdrecover
+            try:
+                newPwdRecover = PwdRecover(username=username, email=user.email, token=token)
+                dba.session.add(newPwdRecover)
+                dba.session.commit()
+            except Exception as e:
+                print(str(e))
+
+            message = Mail(
+                from_email=app.config.get('NOLLANET_EMAIL'),
+                to_emails=user.email,
+                subject='nolla.net - Change your password',
+                html_content='Change your password <a href="' + request.url_root + 'auth/pwdchange/' + token + '" target="_blank">' + request.url_root + 'auth/pwdchange/' + token + '</a>')
+
+            try:
+                sg = SendGridAPIClient(app.config.get('SENDGRID_API_KEY'))
+                response = sg.send(message)
+                #print(response.status_code)
+                #print(response.body)
+                #print(response.headers)
+                #print('Password reset email was sent succesfully.')
+                flash('We have sent a temporary link to the email address defined in your user profile. Please follow the link and change your password.')
+            except Exception as e:
+                print(str(e))
+        else:
+            flash("Please try again.")
+
+        return redirect(url_for('home'))
+
+@mod_auth.route('/pwdchange/<token>', methods=['GET','POST'])
+def pwdchange(token):
+    if request.method == 'GET':
+        # Check token exists
+        pwdrecover = PwdRecover.query.filter_by(token=token).first()
+        if pwdrecover:
+            return render_template('auth/pwdreset.html', username=pwdrecover.username)
+        else:
+            flash('Token was not found in database')
+            return redirect(url_for('home'))
+
+    return redirect(url_for('home'))

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="">
+    <h2>Password recover</h2>
+    <p>
+        Please enter your username and recover your password. <br/>
+        We will send email to your registered address. The email will contain a link for password recovery<br/>
+        Follow the link and create a new password. Then you can login with your username and new password.
+    </p>
+    <form action="{{ url_for('auth.pwdrecover') }}" method="POST">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="username" name="username" placeholder="Username">
+        </div>
+        <button type="submit" class="btn btn-success">Recover</button>
+    </form>
+
+</div>
+
+{% endblock %}
