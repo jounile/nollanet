@@ -3,6 +3,9 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 import requests, json
 from app.mod_auth.form import RegisterForm, ProfileForm
 
+from flask_login import LoginManager, UserMixin, login_user, logout_user, current_user
+from app.mod_auth.oauth import OAuthSignIn
+
 from app import app, dba
 from app.models import User
 from app.mod_auth import bcrypt
@@ -218,7 +221,6 @@ def profile():
                     'flickr_username': form.flickr_username.data
                 }
                 form.update_details(user)
-                print("Form update details")
             else:
                 print("Form validation error", form.errors)
             return redirect(url_for('auth.profile'))
@@ -267,3 +269,54 @@ def pwdreset():
     else:
         flash('Please login first')
         return redirect(url_for('home'))
+
+# OAuth login
+
+lm = LoginManager(app)
+lm.login_view = 'index'
+
+@lm.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+@mod_auth.route('/index')
+def index():
+    return render_template('auth/index.html')
+
+@mod_auth.route('/oauthlogout')
+def oauthlogout():
+    logout_user()
+    return redirect(url_for('auth.index'))
+
+@mod_auth.route('/authorize/<provider>')
+def oauth_authorize(provider):
+    if not current_user.is_anonymous:
+        return redirect(url_for('auth.index'))
+    oauth = OAuthSignIn.get_provider(provider)
+    return oauth.authorize()
+
+@mod_auth.route('/callback/<provider>')
+def oauth_callback(provider):
+    if not current_user.is_anonymous:
+        return redirect(url_for('auth.index'))
+    oauth = OAuthSignIn.get_provider(provider)
+    social_id, username, email = oauth.callback()
+    print("social_id", social_id)
+    print("username", username)
+    print("email", email)
+    if social_id is None:
+        flash('Authentication failed.')
+        return redirect(url_for('auth.index'))
+    user = User.query.filter_by(messenger=social_id).first()
+    print("user", user)
+    if not user:
+        today = datetime.today().strftime("%Y-%m-%d")
+        try:
+            user = User(messenger=social_id, username=username, email=email, date=today,
+                        level=0, name="", location="", address="", postnumber="", bornyear="", sukupuoli="", oikeus="", lang_id=0)
+            dba.session.add(user)
+            dba.session.commit()
+            login_user(user, True)
+        except Exception as e:
+            print(e)
+    return redirect(url_for('auth.index'))

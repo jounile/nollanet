@@ -68,3 +68,9 @@ class DefaultConfig(object):
     PAGE_TOKEN = 'None'
     FACEBOOK_PAGE_ID = os.getenv('FACEBOOK_PAGE_ID')
 
+    OAUTH_CREDENTIALS = {
+        'facebook': {
+            'id': os.getenv('APP_ID'),
+            'secret': os.getenv('APP_SECRET')
+        }
+    }
