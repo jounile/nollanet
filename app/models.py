@@ -5,6 +5,14 @@ from hashlib import md5
 
 from . import dba
 
+class PwdRecover(dba.Model):
+    __tablename__ = 'pwdrecover'
+    id = dba.Column(dba.Integer, primary_key = True)
+    username = dba.Column(dba.String(50))
+    email = dba.Column(dba.String(50))
+    token = dba.Column(dba.String(50))
+    create_time = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
+
 class Uploads(dba.Model):
     __tablename__ = 'uploads'
     id = dba.Column(dba.Integer, primary_key = True)

@@ -58,6 +58,7 @@ requests==2.22.0
 requests-oauthlib==1.2.0
 rsa==4.0
 rstr==2.2.6
+sendgrid==6.1.1
 simplejson==3.16.0
 singledispatch==3.4.0.3
 six==1.12.0

@@ -74,3 +74,8 @@ class DefaultConfig(object):
             'secret': os.getenv('APP_SECRET')
         }
     }
+
+    # SendGrid
+    SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+    NOLLANET_EMAIL = os.getenv("NOLLANET_EMAIL")
+
