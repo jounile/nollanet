@@ -21,6 +21,7 @@ class RegisterForm(FlaskForm):
 
 class ProfileForm(FlaskForm):
     user_id = HiddenField('User ID')
+    level = HiddenField('Level')
     username = HiddenField('Username')
     name = StringField('Name', [DataRequired(), Length(min=4)])
     bornyear = IntegerField('Born (year)', [DataRequired()])

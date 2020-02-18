@@ -17,39 +17,49 @@
         {{ form.csrf_token }}
 
         <div class="form-group">
-            {{ form.user_id.label }}
+            {{ form.user_id.label }}:
             {{ form.user_id.data }}
             {{ form.user_id }}
         </div>
 
         <div class="form-group">
-            {{ form.username.label }}
+            {{ form.username.label }}:
             {{ form.username.data }}
             {{ form.username }}
         </div>
 
         <div class="form-group">
-            {{ form.date.label }}
+            {{ form.date.label }}:
             {{ form.date.data }}
             {{ form.date }}
         </div>
 
         <div class="form-group">
-            {{ form.last_login.label }}
+            {{ form.last_login.label }}:
             {{ form.last_login.data }}
             {{ form.last_login }}
         </div>
 
         <div class="form-group">
-            {{ form.login_count.label }}
+            {{ form.login_count.label }}:
             {{ form.login_count.data }}
             {{ form.login_count }}
         </div>
 
         <div class="form-group">
-            {{ form.last_profile_update.label }}
+            {{ form.last_profile_update.label }}:
             {{ form.last_profile_update.data }}
             {{ form.last_profile_update }}
+        </div>
+
+        <div class="form-group">
+            {{ form.level.label }}:
+            {% if form.level.data==0 %} Other {% endif %}
+            {% if form.level.data==1 %} Admin {% endif %}
+            {% if form.level.data==2 %} User2 {% endif %}
+            {% if form.level.data==3 %} Moderator {% endif %}
+            {% if form.level.data==4 %} Contributor {% endif %}
+            {% if form.level.data==5 %} User {% endif %}
         </div>
 
         <div class="form-group">

@@ -135,6 +135,7 @@ def profile():
             user = User.query.filter_by(username=username).first()
 
             form.user_id.data = user.user_id
+            form.level.data = user.level
             form.username.data = user.username
             form.name.data = user.name
             form.bornyear.data = user.bornyear
