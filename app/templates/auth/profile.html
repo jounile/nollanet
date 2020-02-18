@@ -54,12 +54,14 @@
 
         <div class="form-group">
             {{ form.level.label }}:
-            {% if form.level.data==0 %} Other {% endif %}
+            {% if form.level.data==0 %} Undefined {% endif %}
             {% if form.level.data==1 %} Admin {% endif %}
-            {% if form.level.data==2 %} User2 {% endif %}
             {% if form.level.data==3 %} Moderator {% endif %}
             {% if form.level.data==4 %} Contributor {% endif %}
             {% if form.level.data==5 %} User {% endif %}
+            {% if form.level.data==50 %} 50 {% endif %}
+            {% if form.level.data==99 %} 99 {% endif %}
+            {% if form.level.data==100 %} 100 {% endif %}
         </div>
 
         <div class="form-group">
