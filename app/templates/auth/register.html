@@ -11,17 +11,17 @@
 
         {{ form.name.label }}
         {{ form.name(class="form-control") }}
-        <ul> 
+        <ul>
             {% for error in form.name.error %}
-                <li style="coloured:red;">{{ error }}</li>
+                <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
         
         {{ form.username.label }}
         {{ form.username(class="form-control") }}
-        <ul> 
+        <ul>
             {% for error in form.username.error %}
-                <li style="coloured:red;">{{ error }}</li>
+                <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
 
@@ -29,39 +29,47 @@
         {{ form.password(class="form-control") }}
         <ul>
             {% for error in form.password.error %}
-                <li style="coloured:red;">{{ error }}</li>
+                <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
 
         {{ form.email.label }}
         {{ form.email(class="form-control") }}
-        <ul> 
+        <ul>
             {% for error in form.email.error %}
-                <li style="coloured:red;">{{ error }}</li> 
+                <li style="color:red;">{{ error }}</li>
+            {% endfor %}
+        </ul>
+
+        {{ form.bornyear.label }}
+        {{ form.bornyear(class="form-control") }}
+        <ul>
+            {% for error in form.bornyear.error %}
+                <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
 
         {{ form.location.label }}
         {{ form.location(class="form-control") }}
-        <ul> 
+        <ul>
             {% for error in form.location.error %}
-                <li style="coloured:red;">{{ error }}</li> 
+                <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
 
         {{ form.address.label }}
         {{ form.address(class="form-control") }}
-        <ul> 
+        <ul>
             {% for error in form.address.error %}
-                <li style="coloured:red;">{{ error }}</li> 
+                <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
 
         {{ form.postnumber.label }}
         {{ form.postnumber(class="form-control") }}
-        <ul> 
+        <ul>
             {% for error in form.postnumber.error %}
-                <li style="coloured:red;">{{ error }}</li> 
+                <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
 

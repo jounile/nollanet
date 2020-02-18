@@ -17,66 +17,67 @@ mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 @mod_auth.route('/register' , methods=['GET','POST'])
 def register():
     form = RegisterForm()
+    if request.method == 'GET':
+        return render_template('auth/register.html', form=form)
+    if request.method == 'POST':
+        if form.validate_on_submit():
 
-    if form.validate_on_submit():
+            username = form.username.data
+            password = form.password.data
 
-        username = form.username.data
-        password = form.password.data
+            # Check if user exists
+            user = User.query.filter_by(username=form.username.data).first()
 
-        # Check if user exists
-        user = User.query.filter_by(username=form.username.data).first()
+            if user:
+                flash("Username " + username + " exists already.")
+                return render_template('auth/register.html', form=form)
+            else:
+                crypted_password = bcrypt.generate_password_hash(password)
+                date = datetime.today().strftime('%Y-%m-%d')
+                login_count = 0
+                try:
+                    newUser = User(date=date,
+                        login_count=login_count,
+                        name=form.name.data,
+                        email=form.email.data,
+                        username=form.username.data,
+                        password=crypted_password,
+                        location=form.location.data,
+                        address=form.address.data,
+                        postnumber=form.postnumber.data,
+                        level=5,
+                        bornyear=form.bornyear.data,
+                        sukupuoli='',
+                        oikeus='',
+                        lang_id='',
+                        lastloginip='',
+                        lastloginclient='',
+                        emails='',
+                        puhelin='',
+                        kantaasiakasnro='',
+                        lamina_lisatieto='',
+                        blogs='',
+                        user_showid='',
+                        messenger='',
+                        myspace='',
+                        rss='',
+                        youtube='',
+                        ircgalleria='',
+                        last_profile_update='',
+                        avatar='',
+                        flickr_username=''
+                        )
 
-        if user:
-            flash("Username " + username + " exists already.")
-            return render_template('auth/register.html', form=form)
+                    dba.session.add(newUser)
+                    dba.session.commit()
+
+                    flash("User " + username + " has been registered.")
+                except Exception as e:
+                    print(e)
+                return redirect(url_for("home"))
         else:
-            crypted_password = bcrypt.generate_password_hash(password)
-            date = datetime.today().strftime('%Y-%m-%d')
-            login_count = 0
-            try:
-                newUser = User(date=date,
-                    login_count=login_count,
-                    name=form.name.data,
-                    email=form.email.data,
-                    username=form.username.data,
-                    password=crypted_password,
-                    location=form.location.data,
-                    address=form.address.data,
-                    postnumber=form.postnumber.data,
-                    level=2,
-                    bornyear='',
-                    sukupuoli='',
-                    oikeus='',
-                    lang_id='',
-                    lastloginip='',
-                    lastloginclient='',
-                    emails='',
-                    puhelin='',
-                    kantaasiakasnro='',
-                    lamina_lisatieto='',
-                    blogs='',
-                    user_showid='',
-                    messenger='',
-                    myspace='',
-                    rss='',
-                    youtube='',
-                    ircgalleria='',
-                    last_profile_update='',
-                    avatar='',
-                    flickr_username=''
-                    )
-
-                dba.session.add(newUser)
-                dba.session.commit()
-
-                flash("User " + username + " has been registered.")
-            except Exception as e:
-                print(e)
+            flash("Registration failed")
             return redirect(url_for("home"))
-    else:
-        print("Invalid form data")
-
-    return render_template('auth/register.html', form=form)
 
 @mod_auth.route('/login',methods=['GET','POST'])
 def login():
@@ -223,7 +224,6 @@ def profile():
                     'flickr_username': form.flickr_username.data
                 }
                 form.update_details(user)
-                print("Form update details")
             else:
                 print("Form validation error", form.errors)
             return redirect(url_for('auth.profile'))
