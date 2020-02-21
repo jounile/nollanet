@@ -226,6 +226,10 @@ footer {
     .mobile-hide{ display: none; }
 }
 
+.links-list {
+    min-width: 280px;
+}
+
 /* adjusting column width for mobile phones */
 .latest-news,
 .skateboarding-list,

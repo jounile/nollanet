@@ -5,9 +5,7 @@
 
 <h1>Links</h1>
 
-{%- for category in categories | batch(3, '&nbsp;') %}
 <div class="row">
-
     {% for category in categories %}
 
         <div class="col">
@@ -24,8 +22,6 @@
         </div>
 
     {% endfor %}
-
 </div>
-{% endfor %}
 
 {% endblock %}
