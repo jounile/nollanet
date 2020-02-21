@@ -1,0 +1,55 @@
+<!-- links.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Links</h1>
+
+<a class="btn btn-primary" role="button" href="{{ url_for('auth.newlink') }}">New link</a>
+<a class="btn btn-primary" role="button" href="{{ url_for('auth.newlinkcategory') }}">New link category</a>
+
+{% for category in categories %}
+
+    <table width="100%" class="table table-borderless">
+        <tr>
+            <td width="90%">
+                <h3>{{ category.name }}</h3>
+            </td>
+            <td>
+                <form action="/auth/linkcategory/delete" method="POST">
+                    <input type="hidden" name="id" value="{{ category.id }}" />
+                    <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <table width="100%" class="table table-bordered">
+                    {% for item in links if item.category == category.id %}
+                    <tr>
+                        <td width="90%">
+                            <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+                        </td>
+                        {% if session['logged_in'] and session['user_level'] == 1 %}
+                            <td>
+                                <form action="/auth/link/update/{{ item.id }}" method="GET">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                            </td>
+                            <td>
+                                <form action="/auth/link/delete" method="POST">
+                                    <input type="hidden" name="id" value="{{ item.id }}" />
+                                    <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                                </form>
+                            </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+            </td>
+        </tr>
+    </table>
+{% endfor %}
+
+{% endblock %}
+

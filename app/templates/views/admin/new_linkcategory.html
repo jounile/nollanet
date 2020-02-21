@@ -1,0 +1,18 @@
+<!-- new_linkcategory.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>New link category</h1>
+
+<form action="{{ url_for('auth.newlinkcategory') }}" method = "POST">
+
+    <div class="form-group">
+        <label for="category_name">Category name</label>
+        <input type="text" class="form-control" size="100" name="category_name" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+
+</form>
+{% endblock %}

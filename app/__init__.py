@@ -42,15 +42,11 @@ nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('News', 'news'),
     nav.Item('Youtube', 'youtube.youtube_playlists'),
-    #nav.Item('Podcast', 'soundcloud.soundcloud_playlists'),
-    #nav.Item('Facebook', 'facebook.facebook_info'),
     nav.Item('Media', 'view_media'),
-    #nav.Item('Stories', 'interviews', items=[
-        nav.Item('Interviews', 'interviews'),
-        nav.Item('Reviews', 'reviews'),
-        nav.Item('Spotchecks', 'spotchecks'),
-    #]),
-    #nav.Item('Guides', 'guides'),
+    nav.Item('Interviews', 'interviews'),
+    nav.Item('Reviews', 'reviews'),
+    nav.Item('Spotchecks', 'spotchecks'),
+    nav.Item('Links', 'links'),
 ])
 
 nav.Bar('user', [

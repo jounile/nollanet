@@ -9,9 +9,15 @@ from werkzeug import secure_filename
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Uploads, Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
+from app.models import Uploads, Media, Page, User, Comment, Storytype, Genre, Mediatype, Country, Links, LinkCategories
 
 from . import app, dba, utils, auto
+
+@app.route('/links')
+def links():
+    categories = LinkCategories.query.order_by(LinkCategories.create_time.desc())
+    links = Links.query.order_by(Links.create_time.desc())
+    return render_template("views/links.html", categories=categories, links=links)
 
 @app.route('/interviews')
 def interviews():

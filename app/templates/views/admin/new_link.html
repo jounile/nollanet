@@ -1,0 +1,33 @@
+<!-- new_link.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>New link</h1>
+
+<form action="{{ url_for('auth.newlink') }}" method = "POST">
+
+    <div class="form-group">
+        <label for="category">Category</label>
+        <select name="category" class="form-control">
+            {% for category in categories %}
+            <option value="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" size="100" name="name" />
+    </div>
+
+    <div class="form-group">
+        <label for="url">Url</label>
+        <input type="text" class="form-control" size="100" name="url" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    
+</form>
+
+{% endblock %}

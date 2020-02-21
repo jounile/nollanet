@@ -5,6 +5,22 @@ from hashlib import md5
 
 from . import dba
 
+class LinkCategories(dba.Model):
+    __tablename__ = 'link_categories'
+    id = dba.Column(dba.Integer, primary_key = True)
+    name = dba.Column(dba.String(255))
+    user_id = dba.Column(dba.Integer)
+    create_time = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
+
+class Links(dba.Model):
+    __tablename__ = 'links'
+    id = dba.Column(dba.Integer, primary_key = True)
+    name = dba.Column(dba.String(255))
+    url = dba.Column(dba.String(255))
+    category = dba.Column(dba.Integer)
+    user_id = dba.Column(dba.Integer)
+    create_time = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
+
 class PwdRecover(dba.Model):
     __tablename__ = 'pwdrecover'
     id = dba.Column(dba.Integer, primary_key = True)

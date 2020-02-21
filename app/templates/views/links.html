@@ -1,0 +1,31 @@
+<!-- links.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Links</h1>
+
+{%- for category in categories | batch(3, '&nbsp;') %}
+<div class="row">
+
+    {% for category in categories %}
+
+        <div class="col">
+            <div class="links-list">
+                <div class="module-title-wrap"><h4 class="module-title"><span>{{ category.name }}</span></h4></div>
+                <ul>
+                    {% for item in links if item.category == category.id %}
+                    <li>
+                        <a href="{{ item.url }}">{{ item.name }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    {% endfor %}
+
+</div>
+{% endfor %}
+
+{% endblock %}
