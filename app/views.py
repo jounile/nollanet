@@ -17,38 +17,33 @@ from . import app, dba, utils, auto
 @app.route('/spots')
 def spots():
 
-    selected_maa_id = None
+    selected_maa_id = 0
     if(request.args.get('maa_id')):
-        selected_maa_id = request.args.get('maa_id')
+        selected_maa_id = int(request.args.get('maa_id'))
 
-    selected_paikkakunta_id = None
+    selected_paikkakunta_id = 0
     if(request.args.get('paikkakunta_id')):
-        selected_paikkakunta_id = request.args.get('paikkakunta_id')
+        selected_paikkakunta_id = int(request.args.get('paikkakunta_id'))
 
-    selected_type_id = None
+    selected_type_id = 0
     if(request.args.get('type_id')):
-        selected_type_id = request.args.get('type_id')
+        selected_type_id = int(request.args.get('type_id'))
 
-    countries = MapCountry.query.order_by(
-                    MapCountry.id.desc()
-                )
-    towns = MapTown.query.filter(
-                    MapTown.maa_id==selected_maa_id
-                ).order_by(
-                    MapTown.id.desc()
-                )
-    types = MapType.query.order_by(
-                    MapType.id.desc()
-                )
-    spots = MapSpot.query.filter_by(
-                maa_id=selected_maa_id
-            ).filter_by(
-                paikkakunta_id=selected_paikkakunta_id
-            ).filter_by(
-                tyyppi=selected_type_id
-            ).order_by(
-                MapSpot.paivays.desc()
-            )
+
+    countries = MapCountry.query.order_by(MapCountry.id.desc())
+    towns = MapTown.query.filter(MapTown.maa_id==selected_maa_id).order_by(MapTown.id.desc())
+    types = MapType.query.order_by(MapType.id.desc())
+    spots = MapSpot.query.filter_by(maa_id=selected_maa_id).order_by(MapSpot.paivays.desc())
+
+    if selected_maa_id != 0:
+        spots = spots.filter_by(maa_id=selected_maa_id)
+
+    if selected_paikkakunta_id != 0:
+        spots = spots.filter_by(paikkakunta_id=selected_paikkakunta_id)
+
+    if selected_type_id != 0:
+        spots = spots.filter_by(tyyppi=selected_type_id)
+
     return render_template("views/spots.html", spots=spots, countries=countries, towns=towns, types=types, selected_maa_id=selected_maa_id, selected_paikkakunta_id=selected_paikkakunta_id, selected_type_id=selected_type_id)
 
 @app.route('/links')

@@ -4,7 +4,7 @@
 {% block content %}
 
 <h1>Spots</h1>
-
+Count: {{ spots.count() }}
 <form action="{{ url_for('spots') }}" method="GET">
     <div class="form-group">
         <label for="maa_id">Filter by country:</label>
@@ -56,7 +56,7 @@
     {% for spot in spots %}
         <tr>
             <!--<td>{{ spot.user_id }}</td>-->
-            <td><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></td>
+            <td>{{ spot.nimi }}</td>
             <td>{{ spot.info }}</td>
             <td>{{ spot.paivays }}</td>
             <td><a href="{{ spot.karttalinkki }}">{{ spot.karttalinkki }}</a></td>
