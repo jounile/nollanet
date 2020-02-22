@@ -1,0 +1,69 @@
+<!-- spots.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Spots</h1>
+
+<form action="{{ url_for('spots') }}" method="GET">
+    <div class="form-group">
+        <label for="maa_id">Filter by country:</label>
+        <select name="maa_id" class="form-control" onchange="this.form.submit()">
+            <option value="0">None</option>
+            {% for country in countries %}
+                <option value="{{ country.id }}"{% if country.id|int() == selected_maa_id|int() %} selected="selected"{% endif %}>{{ country.maa }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</form>
+
+<form action="{{ url_for('spots') }}" method="GET">
+    <div class="form-group">
+        <label for="paikkakunta_id">Filter by town:</label>
+        <select name="paikkakunta_id" class="form-control" onchange="this.form.submit()">
+            <option value="0">None</option>
+            {% for town in towns %}
+                <option value="{{ town.id }}"{% if town.id|int() == selected_paikkakunta_id|int() %} selected="selected"{% endif %}>{{ town.paikkakunta }}</option> 
+            {% endfor %}
+        </select>
+        <input type="hidden" name="maa_id" value="{{ selected_maa_id }}" />
+    </div>
+</form>
+
+<form action="{{ url_for('spots') }}" method="GET">
+    <div class="form-group">
+        <label for="type_id">Filter by type:</label>
+        <select name="type_id" class="form-control" onchange="this.form.submit()">
+            <option value="0">None</option>
+            {% for type in types %}
+                <option value="{{ type.id }}"{% if type.id|int() == selected_type_id|int() %} selected="selected"{% endif %}>{{ type.name }}</option> 
+            {% endfor %}
+        </select>
+        <input type="hidden" name="maa_id" value="{{ selected_maa_id }}" />
+        <input type="hidden" name="paikkakunta_id" value="{{ selected_paikkakunta_id }}" />
+    </div>
+</form>
+
+{% if spots.count() > 0 %}
+<table width="100%" class="table table-bordered">
+    <tr>
+        <!--<td>Publisher</td>-->
+        <td>Name</td>
+        <td>Info</td>
+        <td>Created</td>
+        <td>Link</td>
+    </tr>
+    {% for spot in spots %}
+        <tr>
+            <!--<td>{{ spot.user_id }}</td>-->
+            <td><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></td>
+            <td>{{ spot.info }}</td>
+            <td>{{ spot.paivays }}</td>
+            <td><a href="{{ spot.karttalinkki }}">{{ spot.karttalinkki }}</a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

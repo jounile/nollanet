@@ -5,6 +5,41 @@ from hashlib import md5
 
 from . import dba
 
+class MapType(dba.Model):
+    __tablename__ = 'kartta_type'
+    id = dba.Column(dba.Integer, primary_key = True)
+    name = dba.Column(dba.String(50))
+
+class MapTown(dba.Model):
+    __tablename__ = 'kartta_paikkakunta'
+    id = dba.Column(dba.Integer, primary_key = True)
+    paikkakunta = dba.Column(dba.String(40))
+    maa_id = dba.Column(dba.String(10))
+    lat = dba.Column(dba.String(50))
+    lon = dba.Column(dba.String(50))
+
+class MapCountry(dba.Model):
+    __tablename__ = 'kartta_maa'
+    id = dba.Column(dba.Integer, primary_key = True)
+    maa = dba.Column(dba.String(100))
+    lat = dba.Column(dba.String(50))
+    lon = dba.Column(dba.String(50))
+    koodi = dba.Column(dba.String(2))
+
+class MapSpot(dba.Model):
+    __tablename__ = 'kartta_tieto'
+    kartta_id = dba.Column(dba.Integer, primary_key = True)
+    paikkakunta_id = dba.Column(dba.Integer)
+    user_id = dba.Column(dba.Integer)
+    nimi = dba.Column(dba.String(200))
+    info = dba.Column(dba.String(255))
+    tyyppi = dba.Column(dba.Integer)
+    temp = dba.Column(dba.Integer)
+    paivays = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
+    karttalinkki = dba.Column(dba.String(200))
+    maa_id = dba.Column(dba.Integer)
+    latlon = dba.Column(dba.String(200))
+
 class LinkCategories(dba.Model):
     __tablename__ = 'link_categories'
     id = dba.Column(dba.Integer, primary_key = True)

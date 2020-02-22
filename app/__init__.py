@@ -45,7 +45,8 @@ nav.Bar('top', [
     nav.Item('Media', 'view_media'),
     nav.Item('Interviews', 'interviews'),
     nav.Item('Reviews', 'reviews'),
-    nav.Item('Spotchecks', 'spotchecks'),
+    #nav.Item('Spotchecks', 'spotchecks'),
+    nav.Item('Spots', 'spots'),
     nav.Item('Links', 'links'),
 ])
 
