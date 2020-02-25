@@ -161,7 +161,8 @@ def home():
     interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    #spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
 
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
 
@@ -174,12 +175,55 @@ def home():
         interviews=interviews, 
         news=news, 
         reviews=reviews,
-        spotchecks=spotchecks,
+        #spotchecks=spotchecks,
+        spots=spots,
         photos_skateboarding=photos_skateboarding,
         photos_snowboarding=photos_snowboarding,
         #photos_nollagang=photos_nollagang,
         #photos_snowskate=photos_snowskate
         )
+
+@app.route('/spot/<kartta_id>')
+def view_spot(kartta_id):
+    print("### kartta_id: ", kartta_id)
+    spots = dba.session.query(
+            MapSpot
+        ).filter_by(
+            kartta_id=kartta_id
+        ).join(
+            User, MapSpot.user_id == User.user_id
+        ).join(
+            MapCountry, MapSpot.maa_id == MapCountry.id
+        ).join(
+            MapTown, MapSpot.paikkakunta_id == MapTown.id
+        ).join(
+            MapType, MapSpot.tyyppi == MapType.id
+        ).add_columns(
+            (User.username).label("username"),
+            (MapSpot.nimi).label("name"),
+            (MapSpot.user_id).label("user_id"),
+            (MapSpot.info).label("info"),
+            (MapSpot.paivays).label("paivays"),
+            (MapSpot.karttalinkki).label("link"),
+            (MapCountry.maa).label("maa"),
+            (MapTown.paikkakunta).label("paikkakunta"),
+            (MapType.name).label("type")
+        ).limit(1)
+
+    for spot in spots:
+        spot = {
+            'username': spot.username,
+            'name': spot.name,
+            'user_id': spot.user_id,
+            'info': spot.info,
+            'paivays': spot.paivays,
+            'link': spot.link,
+            'maa': spot.maa,
+            'paikkakunta': spot.paikkakunta,
+            'type': spot.type,
+            }
+
+    return render_template('views/spot.html', spot=spot)
 
 @app.route('/guides')
 def guides():

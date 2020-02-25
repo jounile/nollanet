@@ -77,11 +77,11 @@
         </div>
     </div>
     <div class="col">
-        <div class="spotchecks-list">
-            <div class="module-title-wrap"><h4 class="module-title"><span>Spotchecks</span></h4></div>
+        <div class="spots-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Spots</span></h4></div>
             <ul>
-                {% for item in spotchecks %}
-                <li><a href="/spotcheck/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                {% for spot in spots %}
+                <li><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></li>
                 {% endfor %}
             </ul>
         </div>

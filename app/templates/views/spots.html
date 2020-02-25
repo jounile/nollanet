@@ -47,7 +47,6 @@ Count: {{ spots.count() }}
 {% if spots.count() > 0 %}
 <table width="100%" class="table table-bordered">
     <tr>
-        <!--<td>Publisher</td>-->
         <td>Name</td>
         <td>Info</td>
         <td>Created</td>
@@ -55,8 +54,7 @@ Count: {{ spots.count() }}
     </tr>
     {% for spot in spots %}
         <tr>
-            <!--<td>{{ spot.user_id }}</td>-->
-            <td>{{ spot.nimi }}</td>
+            <td><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></td>
             <td>{{ spot.info }}</td>
             <td>{{ spot.paivays }}</td>
             <td><a href="{{ spot.karttalinkki }}">{{ spot.karttalinkki }}</a></td>

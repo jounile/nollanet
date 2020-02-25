@@ -1,0 +1,24 @@
+<!-- spot.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="spot-title">
+
+    <h1>{{ spot.name }}</h1>
+    <div>Published: {{ spot.paivays }} by <a href="/user/{{ spot.username }}">{{ spot.username }}</a></div>
+    
+    <br />
+    <div>{{ spot.info|safe }}</div>
+    {% if spot.link %}
+        <div>Link: {{ spot.link }}</div>
+    {% endif %}
+
+    <br />
+    <div>Type: {{ spot.type }}</div>
+    <div>Country: {{ spot.maa }}</div>
+    <div>Town: {{ spot.paikkakunta }}</div>
+
+</div>
+
+{% endblock %}
