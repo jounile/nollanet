@@ -74,21 +74,3 @@ class ProfileForm(FlaskForm):
         except Exception as e:
             print("UPDATE failed")
             print(e)
-
-class NewSpotForm(FlaskForm):
-    country = SelectField('country', choices=[])
-    town = SelectField('town', choices=[])
-    tyyppi = SelectField('tyyppi', choices=[])
-    name = StringField('Name')
-    description = StringField('Description')
-    link = StringField('Link')
-    latlon = StringField('latlon')
-
-class UpdateSpotForm(FlaskForm):
-    country = SelectField('country', choices=[])
-    town = SelectField('town', choices=[])
-    tyyppi = SelectField('tyyppi', choices=[])
-    name = StringField('Name')
-    description = StringField('Description')
-    link = StringField('Link')
-    latlon = StringField('latlon')

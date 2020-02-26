@@ -5,7 +5,7 @@
 
 <h1>Spots</h1>
 Count: {{ spots.count() }}
-<form action="{{ url_for('spots') }}" method="GET">
+<form action="{{ url_for('spots.all') }}" method="GET">
     <div class="form-group">
         <label for="maa_id">Filter by country:</label>
         <select name="maa_id" class="form-control" onchange="this.form.submit()">
@@ -17,7 +17,7 @@ Count: {{ spots.count() }}
     </div>
 </form>
 
-<form action="{{ url_for('spots') }}" method="GET">
+<form action="{{ url_for('spots.all') }}" method="GET">
     <div class="form-group">
         <label for="paikkakunta_id">Filter by town:</label>
         <select name="paikkakunta_id" class="form-control" onchange="this.form.submit()">
@@ -30,7 +30,7 @@ Count: {{ spots.count() }}
     </div>
 </form>
 
-<form action="{{ url_for('spots') }}" method="GET">
+<form action="{{ url_for('spots.all') }}" method="GET">
     <div class="form-group">
         <label for="type_id">Filter by type:</label>
         <select name="type_id" class="form-control" onchange="this.form.submit()">
@@ -57,7 +57,7 @@ Count: {{ spots.count() }}
     </tr>
     {% for spot in spots %}
         <tr>
-            <td><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></td>
+            <td><a href="{{ url_for('spots.spot', kartta_id=spot.kartta_id) }}">{{ spot.nimi }}</a></td>
             <td>
                 {{ spot.info }}<br />
                 <!--<a href="{{ spot.karttalinkki }}">{{ spot.karttalinkki }}</a>-->
@@ -65,12 +65,12 @@ Count: {{ spots.count() }}
             <td>{{ spot.paivays }}</td>
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <td>
-                    <form action="/auth/spot/update/{{ spot.kartta_id }}" method="GET">
+                    <form action="{{ url_for('spots.update_spot', spot_id=spot.kartta_id) }}" method="GET">
                         <button type="submit" class="btn btn-primary">Edit</button>
                     </form>
                 </td>
                 <td>
-                    <form action="/auth/spot/delete" method="POST">
+                    <form action="{{ url_for('spots.delete_spot') }}" method="POST">
                         <input type="hidden" name="spot_id" value="{{ spot.kartta_id }}" />
                         <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                     </form>

@@ -9,41 +9,11 @@ from werkzeug import secure_filename
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Uploads, Media, Page, User, Comment, Storytype, Genre, Mediatype, Country, Links, LinkCategories, MapSpot, MapCountry, MapTown, MapType
+from app.models import Uploads, Media, Page, User, Comment, Storytype, Genre, Mediatype, Country, Links, LinkCategories
+from app.models import MapSpot, MapCountry, MapTown, MapType
 
 from . import app, dba, utils, auto
 
-
-@app.route('/spots')
-def spots():
-
-    selected_maa_id = 0
-    if(request.args.get('maa_id')):
-        selected_maa_id = int(request.args.get('maa_id'))
-
-    selected_paikkakunta_id = 0
-    if(request.args.get('paikkakunta_id')):
-        selected_paikkakunta_id = int(request.args.get('paikkakunta_id'))
-
-    selected_type_id = 0
-    if(request.args.get('type_id')):
-        selected_type_id = int(request.args.get('type_id'))
-
-    countries = MapCountry.query.order_by(MapCountry.maa.asc())
-    towns = MapTown.query.filter(MapTown.maa_id==selected_maa_id).order_by(MapTown.paikkakunta.asc())
-    types = MapType.query.order_by(MapType.name.asc())
-    spots = MapSpot.query.filter_by(maa_id=selected_maa_id).order_by(MapSpot.paivays.desc())
-
-    if selected_maa_id != 0:
-        spots = spots.filter_by(maa_id=selected_maa_id)
-
-    if selected_paikkakunta_id != 0:
-        spots = spots.filter_by(paikkakunta_id=selected_paikkakunta_id)
-
-    if selected_type_id != 0:
-        spots = spots.filter_by(tyyppi=selected_type_id)
-
-    return render_template("views/spots.html", spots=spots, countries=countries, towns=towns, types=types, selected_maa_id=selected_maa_id, selected_paikkakunta_id=selected_paikkakunta_id, selected_type_id=selected_type_id)
 
 @app.route('/links')
 def links():
@@ -191,35 +161,6 @@ def home():
         #photos_nollagang=photos_nollagang,
         #photos_snowskate=photos_snowskate
         )
-
-@app.route('/spot/<kartta_id>')
-def view_spot(kartta_id):
-
-    spot = dba.session.query(
-            MapSpot
-        ).filter_by(
-            kartta_id=kartta_id
-        ).join(
-            User, MapSpot.user_id == User.user_id
-        ).join(
-            MapCountry, MapSpot.maa_id == MapCountry.id
-        ).join(
-            MapTown, MapSpot.paikkakunta_id == MapTown.id
-        ).join(
-            MapType, MapSpot.tyyppi == MapType.id
-        ).add_columns(
-            (User.username).label("username"),
-            (MapSpot.nimi).label("name"),
-            (MapSpot.user_id).label("user_id"),
-            (MapSpot.info).label("info"),
-            (MapSpot.paivays).label("paivays"),
-            (MapSpot.karttalinkki).label("link"),
-            (MapCountry.maa).label("maa"),
-            (MapTown.paikkakunta).label("paikkakunta"),
-            (MapType.name).label("type")
-        ).first()
-
-    return render_template('views/spot.html', spot=spot)
 
 @app.route('/guides')
 def guides():

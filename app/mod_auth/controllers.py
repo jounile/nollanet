@@ -6,10 +6,10 @@ import requests, json, uuid
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import (Mail, From, To)
 
-from app.mod_auth.form import RegisterForm, ProfileForm, NewSpotForm, UpdateSpotForm
+from app.mod_auth.form import RegisterForm, ProfileForm
 
 from app import app, dba, utils
-from app.models import User, PwdRecover, Links, LinkCategories, MapSpot, MapCountry, MapTown, MapType
+from app.models import User, PwdRecover, Links, LinkCategories
 from app.mod_auth import bcrypt
 
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -445,126 +445,6 @@ def newlinkcategory():
             return redirect(url_for("auth.links"))
         if request.method == 'GET':
             return render_template("views/admin/new_linkcategory.html")
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
-
-@mod_auth.route("/spot/new", methods = ['POST', 'GET'])
-def new_spot():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        form = NewSpotForm()
-        if request.method == 'GET':
-            form.country.choices = [(country.id, country.maa) for country in MapCountry.query.order_by(MapCountry.maa.asc())]
-            form.town.choices = [(town.id, town.paikkakunta) for town in MapTown.query.filter_by(maa_id=1).order_by(MapTown.paikkakunta.asc())]
-            form.tyyppi.choices = [(tyyppi.id, tyyppi.name) for tyyppi in MapType.query.order_by(MapType.name.asc())]
-            return render_template("views/admin/new_spot.html", form=form)
-        if request.method == 'POST':
-            spot = MapSpot(maa_id = request.form.get('country'),
-                    paikkakunta_id = request.form.get('town'),
-                    tyyppi = request.form.get('tyyppi'),
-                    nimi = request.form.get('name'),
-                    info = request.form.get('description'),
-                    karttalinkki = request.form.get('link'),
-                    latlon = request.form.get('latlon'),
-                    temp = "",
-                    user_id = session['user_id']
-                )
-
-            dba.session.add(spot)
-            dba.session.commit()
-            flash("New spot created succesfully")
-            return redirect(url_for("spots"))
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
-
-@mod_auth.route("/town/<country>")
-def town(country):
-    towns = MapTown.query.filter_by(maa_id=country).all()
-    townArray = []
-    for town in towns:
-        townObj = {}
-        townObj['id'] = town.id
-        townObj['paikkakunta'] = town.paikkakunta
-        townArray.append(townObj)
-    return jsonify({'towns' : townArray})
-
-@mod_auth.route("/spot/update/<spot_id>", methods = ['POST', 'GET'])
-def update_spot(spot_id):
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        form = UpdateSpotForm()
-        if request.method == 'GET':
-            form.country.choices = [(country.id, country.maa) for country in MapCountry.query.order_by(MapCountry.maa.asc())]
-            form.town.choices = [(town.id, town.paikkakunta) for town in MapTown.query.filter_by(maa_id=MapCountry.id).order_by(MapTown.paikkakunta.asc())]
-            form.tyyppi.choices = [(tyyppi.id, tyyppi.name) for tyyppi in MapType.query.order_by(MapType.name.asc())]
-            spot = MapSpot.query.filter_by(kartta_id=spot_id).first()
-            form.country.default = spot.maa_id
-            form.town.default = spot.paikkakunta_id
-            form.tyyppi.default = spot.tyyppi
-            form.name.default = spot.nimi
-            form.description.default = spot.info
-            form.link.default = spot.karttalinkki
-            form.latlon.default = spot.latlon
-            form.process()
-            return render_template("views/admin/update_spot.html", form=form, spot=spot)
-        if request.method == 'POST':
-
-            spot = {
-                    'nimi': request.form.get('name'),
-                    'info': request.form.get('description'),
-                    'karttalinkki': request.form.get('link'),
-                    'latlon': request.form.get('latlon'),
-                    'temp': "",
-                    'maa_id': request.form.get('country'),
-                    'paikkakunta_id': request.form.get('town'),
-                    'tyyppi': request.form.get('tyyppi'),
-                    }
-
-            MapSpot.query.filter_by(kartta_id=spot_id).update(spot)
-            dba.session.commit()
-
-            flash("Updated spot with ID " + str(spot_id))
-            return redirect(url_for("spots"))
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
-
-@mod_auth.route("/spot/delete", methods = ['POST', 'GET'])
-def delete_spot():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        if request.method == 'POST':
-            spot_id = request.form.get('spot_id')
-            MapSpot.query.filter_by(kartta_id=spot_id).delete()
-            dba.session.commit()
-            flash("Spot " + spot_id + " was deleted succesfully by " + session['username'] + ".")
-            return redirect(url_for("spots"))
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
-
-@mod_auth.route("/spot/country/new", methods = ['POST', 'GET'])
-def new_spot_country():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        if request.method == 'GET':
-            return render_template("views/admin/new_spot_country.html")
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
-
-@mod_auth.route("/spot/town/new", methods = ['POST', 'GET'])
-def new_spot_town():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        if request.method == 'GET':
-            return render_template("views/admin/new_spot_town.html")
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
-
-@mod_auth.route("/spot/type/new", methods = ['POST', 'GET'])
-def new_spot_type():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        if request.method == 'GET':
-            return render_template("views/admin/new_spot_type.html")
     else:
         flash("Please login first")
         return redirect(url_for("home"))

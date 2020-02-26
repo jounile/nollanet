@@ -1,62 +1,63 @@
-<!-- update_spot.html -->
+<!-- new_spot.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
 
-<h1>Update spot</h1>
 
-<form action = "{{ url_for('auth.update_spot', spot_id=spot.kartta_id) }}" method = "POST">
-    
+<h1>New spot</h1>
+<!--
+<div class="float-right">
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_spot_country') }}">New country</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_spot_town') }}">New town</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_spot_type') }}">New type</a>
+</div>
+-->
+<br />
+
+<form action="{{ url_for('spots.new_spot') }}" method = "POST">
+
     {{ form.csrf_token }}
-
-    <input type="hidden" name="spot_id" value="{{ spot.kartta_id  }}" />
 
     <div class="form-group">
         <label for="country">Country</label>
         {{ form.country(class_="form-control") }}
     </div>
-
     <div class="form-group">
         <label for="town">Town</label>
         {{ form.town(class_="form-control") }}
     </div>
-
     <div class="form-group">
-        <label for="tyyppi">Type</label>
+        <label for="type">Type</label>
         {{ form.tyyppi(class_="form-control") }}
     </div>
-    
     <div class="form-group">
         <label for="name">Name</label>
         {{ form.name(class_="form-control") }}
     </div>
-
     <div class="form-group">
-        <label for="description">Desription</label>
+        <label for="description">Description</label>
         {{ form.description(class_="form-control") }}
     </div>
-
     <div class="form-group">
         <label for="link">Link</label>
         {{ form.link(class_="form-control") }}
     </div>
+    <div class="form-group">
+        <label for="latlon">Lat/Lon</label>
+        {{ form.latlon(class_="form-control") }}
+    </div>
 
-    <label for="user_id">User id</label>
-    <div>{{ spot.user_id }}</div>
+    <button type="submit" class="btn btn-primary">Create</button>
     
-    <label for="create_time">Created</label>
-    <div>{{ spot.paivays }}</div>
+</form>
 
-    <button type="submit" class="btn btn-primary">Update</button>
- </form>
-
- <script>
+<script>
     let country_select = document.getElementById('country');
     let town_select = document.getElementById('town');
 
     country_select.onchange = function(){
         country = country_select.value;
-        fetch('/auth/town/' + country).then(function(response) {
+        fetch('/spots/town/' + country).then(function(response) {
             response.json().then(function(data) {
                 let optionHTML = '';
 
@@ -71,4 +72,4 @@
 
 </script>
 
- {% endblock %}
+{% endblock %}
