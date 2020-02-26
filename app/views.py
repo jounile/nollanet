@@ -161,13 +161,22 @@ def home():
     interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    #spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
+    links = dba.session.query(Links).join(
+            LinkCategories, Links.category == LinkCategories.id
+        ).add_columns(
+            (LinkCategories.name).label("category_name"),
+            (Links.name).label("name"),
+            (Links.url).label("url")
+        ).order_by(
+            Links.create_time.desc()
+        ).limit(10)
 
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
 
     photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    #spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     #photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     #photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     
@@ -175,10 +184,11 @@ def home():
         interviews=interviews, 
         news=news, 
         reviews=reviews,
-        #spotchecks=spotchecks,
         spots=spots,
+        links=links,
         photos_skateboarding=photos_skateboarding,
         photos_snowboarding=photos_snowboarding,
+        #spotchecks=spotchecks,
         #photos_nollagang=photos_nollagang,
         #photos_snowskate=photos_snowskate
         )

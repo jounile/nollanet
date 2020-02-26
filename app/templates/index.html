@@ -49,7 +49,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Snowboarding</span></h4></div>
             <ul>
                 {% for item in photos_snowboarding %}
-                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                    <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -71,7 +71,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Reviews</span></h4></div>
             <ul>
                 {% for item in reviews %}
-                <li><a href="/review/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                    <li><a href="/review/{{ item.media_id }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -81,13 +81,20 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Spots</span></h4></div>
             <ul>
                 {% for spot in spots %}
-                <li><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></li>
+                    <li><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></li>
                 {% endfor %}
             </ul>
         </div>
     </div>
     <div class="col">
-
+        <div class="links-list">
+            <div class="module-title-wrap"><h4 class="module-title"><span>Links</span></h4></div>
+            <ul>
+                {% for link in links %}
+                    <li><a href="{{ link.url }}" target="_blank">{{ link.category_name }} - {{ link.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 <!--    
     <div class="col">
@@ -95,7 +102,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Nollagang</span></h4></div>
             <ul>
                 {% for item in photos_nollagang %}
-                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                    <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -106,7 +113,7 @@
         <div class="module-title-wrap"><h4 class="module-title"><span>Snowskate</span></h4></div>
         <ul>
             {% for item in photos_snowskate %}
-            <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
+                <li><a href="/photo/{{ item.media_id }}">{{ item.media_topic }}</a></li>
             {% endfor %}
         </ul>
     </div>
