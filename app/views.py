@@ -29,10 +29,9 @@ def spots():
     if(request.args.get('type_id')):
         selected_type_id = int(request.args.get('type_id'))
 
-
-    countries = MapCountry.query.order_by(MapCountry.id.desc())
-    towns = MapTown.query.filter(MapTown.maa_id==selected_maa_id).order_by(MapTown.id.desc())
-    types = MapType.query.order_by(MapType.id.desc())
+    countries = MapCountry.query.order_by(MapCountry.maa.asc())
+    towns = MapTown.query.filter(MapTown.maa_id==selected_maa_id).order_by(MapTown.paikkakunta.asc())
+    types = MapType.query.order_by(MapType.name.asc())
     spots = MapSpot.query.filter_by(maa_id=selected_maa_id).order_by(MapSpot.paivays.desc())
 
     if selected_maa_id != 0:
@@ -195,8 +194,8 @@ def home():
 
 @app.route('/spot/<kartta_id>')
 def view_spot(kartta_id):
-    print("### kartta_id: ", kartta_id)
-    spots = dba.session.query(
+
+    spot = dba.session.query(
             MapSpot
         ).filter_by(
             kartta_id=kartta_id
@@ -218,20 +217,7 @@ def view_spot(kartta_id):
             (MapCountry.maa).label("maa"),
             (MapTown.paikkakunta).label("paikkakunta"),
             (MapType.name).label("type")
-        ).limit(1)
-
-    for spot in spots:
-        spot = {
-            'username': spot.username,
-            'name': spot.name,
-            'user_id': spot.user_id,
-            'info': spot.info,
-            'paivays': spot.paivays,
-            'link': spot.link,
-            'maa': spot.maa,
-            'paikkakunta': spot.paikkakunta,
-            'type': spot.type,
-            }
+        ).first()
 
     return render_template('views/spot.html', spot=spot)
 

@@ -35,7 +35,7 @@ class MapSpot(dba.Model):
     info = dba.Column(dba.String(255))
     tyyppi = dba.Column(dba.Integer)
     temp = dba.Column(dba.Integer)
-    paivays = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
+    paivays = dba.Column(dba.DateTime, default=datetime.now)
     karttalinkki = dba.Column(dba.String(200))
     maa_id = dba.Column(dba.Integer)
     latlon = dba.Column(dba.String(200))
@@ -45,7 +45,7 @@ class LinkCategories(dba.Model):
     id = dba.Column(dba.Integer, primary_key = True)
     name = dba.Column(dba.String(255))
     user_id = dba.Column(dba.Integer)
-    create_time = dba.Column(dba.DateTime, default=datetime.now, onupdate=datetime.now)
+    create_time = dba.Column(dba.DateTime, default=datetime.now)
 
 class Links(dba.Model):
     __tablename__ = 'links'

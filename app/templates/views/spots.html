@@ -47,17 +47,35 @@ Count: {{ spots.count() }}
 {% if spots.count() > 0 %}
 <table width="100%" class="table table-bordered">
     <tr>
-        <td>Name</td>
+        <td width="200">Name</td>
         <td>Info</td>
-        <td>Created</td>
-        <td>Link</td>
+        <td width="100">Created</td>
+        {% if session['logged_in'] and session['user_level'] == 1 %}
+            <td></td>
+            <td></td>
+        {% endif %}
     </tr>
     {% for spot in spots %}
         <tr>
             <td><a href="/spot/{{ spot.kartta_id }}">{{ spot.nimi }}</a></td>
-            <td>{{ spot.info }}</td>
+            <td>
+                {{ spot.info }}<br />
+                <!--<a href="{{ spot.karttalinkki }}">{{ spot.karttalinkki }}</a>-->
+            </td>
             <td>{{ spot.paivays }}</td>
-            <td><a href="{{ spot.karttalinkki }}">{{ spot.karttalinkki }}</a></td>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <td>
+                    <form action="/auth/spot/update/{{ spot.kartta_id }}" method="GET">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="/auth/spot/delete" method="POST">
+                        <input type="hidden" name="spot_id" value="{{ spot.kartta_id }}" />
+                        <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                    </form>
+                </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>
