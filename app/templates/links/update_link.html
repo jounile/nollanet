@@ -5,7 +5,7 @@
 
 <h1>Update link</h1>
 
-<form action = "{{ url_for('auth.update_link', link_id=link.id) }}" method = "POST">
+<form action = "{{ url_for('links.update_link', link_id=link.id) }}" method = "POST">
     
     <input type="hidden" name="link_id" value="{{ link.id  }}" />
     
