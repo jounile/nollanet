@@ -4,17 +4,62 @@ from flask import Flask, request, flash, g, render_template, jsonify, session, r
 import requests, json
 from urllib.parse import urljoin # Python 3
 from flask_paginate import Pagination, get_page_args
-from werkzeug import secure_filename
 
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Uploads, Media, Page, User, Comment, Storytype, Genre, Mediatype, Country
+from app.models import Uploads, Media, Page, User, Storytype, Genre, Mediatype, Country
 from app.models import Links, LinkCategories
 from app.models import MapSpot, MapCountry, MapTown, MapType
 
 from . import app, dba, utils, auto
 
+
+@app.route("/newpost", methods = ['POST', 'GET'])
+def new_post():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'POST':
+
+            media = Media(media_type = request.form.get('media_type'),
+                        media_genre = request.form.get('media_genre'),
+                        country_id = request.form.get('country_id'),
+                        story_type = request.form.get('story_type'),
+                        media_topic = request.form.get('media_topic'),
+                        media_text = request.form.get('media_text'),
+                        media_desc = request.form.get('media_desc'),
+                        hidden = request.form.get('hidden') != None,
+                        owner = session['username'],
+                        create_time = utils.get_now(),
+                        lang_id = 2)
+
+            dba.session.add(media)
+            dba.session.commit()
+
+            flash("New post created with ID " + str(media.media_id))
+
+            if(media.media_type == "1"):
+                return redirect(url_for("photo", media_id=media.media_id))
+            elif(media.media_type == "6"):
+                if(media.story_type == "0"):
+                    return redirect(url_for("video", media_id=media.media_id))
+            elif(media.media_type == "5"):
+                if(media.story_type == "2"):
+                    return redirect(url_for("view_reviews_item", review_id=media.media_id))
+                elif(media.story_type == "3"):
+                    return redirect(url_for("view_interviews_item", interview_id=media.media_id))
+                elif(media.story_type == "4"):
+                    return redirect(url_for("view_news_item", news_id=media.media_id))
+            else:
+                return redirect(url_for("home"))
+        else:
+            my_uploads = dba.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
+            blobs = []
+            for blob in my_uploads:
+                blobs.append(blob)
+            return render_template("views/user/new_post.html", blobs=blobs)
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
 
 @app.route('/interviews')
 def interviews():
@@ -204,58 +249,6 @@ def view_spotcheck_item(media_id):
 def youtube():
     return redirect('playlists')
 
-@app.route('/media')
-def view_media():
-
-    selected_media_genre = 1 # skateboarding by default
-    if(request.args.get('media_genre')):
-        selected_media_genre = request.args.get('media_genre')
-
-    selected_media_type = 1 # photos by default
-    if(request.args.get('media_type')):
-        selected_media_type = request.args.get('media_type')
-
-    total = utils.get_count_by_genre_and_type(selected_media_genre, selected_media_type)
-    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    media = dba.session.query(
-            Media
-        ).join(Country
-        ).add_columns(
-            Media.media_id,
-            (Country.country_code).label("country_code"),
-            Media.media_topic,
-            Media.create_time,
-            Media.owner
-        ).filter(
-            Media.media_type==selected_media_type
-        ).filter(
-            Media.media_genre==selected_media_genre
-        ).filter(
-            Media.hidden==0
-        ).order_by(
-            Media.create_time.desc()
-        ).offset(
-            offset
-        ).limit(per_page)
-    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' media', format_total=True, format_number=True,)                                 
-    return render_template('views/media.html', media=media, pagination=pagination, selected_media_genre=selected_media_genre, selected_media_type=selected_media_type)
-
-@app.route('/photo/<media_id>')
-def view_photo(media_id):
-    photo = dba.session.query(Media).join(Country).add_columns(Media.media_id,
-        (Country.country_code).label("country_code"),
-        Media.media_topic,
-        Media.media_text,
-        Media.create_time,
-        Media.owner).filter(Media.media_id==media_id).first()
-    comments = Comment.query.filter_by(media_id=media_id).filter(Comment.user_id == User.user_id).order_by(Comment.id.desc()).limit(100)
-    return render_template('views/photo.html', photo=photo, comments=comments)
-
-@app.route('/video/<string:media_id>')
-def view_video(media_id):
-    video = Media.query.filter_by(media_id=media_id).first()
-    return render_template('views/video.html', video=video)
-
 """ Admin """
 
 @app.route("/logins/latest")
@@ -275,132 +268,6 @@ def newest_users():
     else:
         flash("Please login first")
     return redirect(url_for("home"))
-
-@app.route("/media/latest")
-def media_latest():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        latest = dba.session.query(
-                Media
-            ).join(Genre
-            ).join(Mediatype
-            ).join(Storytype
-            ).join(Country
-            ).add_columns(
-                Media.media_id,
-                (Genre.type_name).label("genre"),
-                (Mediatype.type_name).label("mediatype_name"),
-                (Storytype.type_name).label("storytype_name"),
-                (Country.country_code).label("country_code"),
-                Media.media_topic,
-                Media.media_desc,
-                Media.create_time,
-                Media.owner,
-                Media.hidden
-            ).order_by(
-                Media.create_time.desc()
-            ).limit(10)
-        return render_template("views/admin/latest_media.html", latest=latest)
-    else:
-        flash("Please login first")
-    return redirect(url_for("home"))
-
-@app.route('/media/delete', methods = ['POST'])
-def delete_media():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        if request.method == 'POST':
-            media_id = request.form.get('media_id')
-            Media.query.filter_by(media_id=media_id).delete()
-            dba.session.commit()
-            flash("Record " + media_id + " was deleted succesfully by " + session['username'] + ".")
-    else:
-        flash("Please login first")
-    return redirect(url_for("home"))
-
-
-""" User """
-
-@app.route('/media/<path:filename>', methods=['GET'])
-def media(filename):
-    static_url = app.config.get('AZURE_BLOB_URI')
-    if static_url:
-        return redirect(urljoin(static_url, filename))
-    return app.send_static_file(filename)
-
-@app.route("/media/update/<media_id>", methods = ['POST', 'GET'])
-def update_media(media_id):
-    if request.method == 'POST':
-
-        media = { 'media_id': request.form.get('media_id'),
-                'media_genre': request.form.get('media_genre'),
-                'media_type': request.form.get('media_type'),
-                'story_type': request.form.get('story_type'),
-                'media_topic': request.form.get('media_topic'),
-                'media_text': request.form.get('media_text'),
-                'media_desc': request.form.get('media_desc'),
-                'country_id': request.form.get('country_id'),
-                'hidden': request.form.get('hidden') }
-
-        if(session and session['logged_in'] and session['user_level'] == 1):
-            Media.query.filter_by(media_id=media_id).update(media)
-            dba.session.commit()
-            flash("Record " + media_id + " was updated by user " + session['username'])
-            return redirect(url_for("home"))
-        else:
-            flash("Please login first")
-            return redirect(url_for("home"))
-    else:
-        if(session and session['logged_in'] and session['user_level'] == 1):
-            result = Media.query.filter_by(media_id=media_id).first()
-            return render_template("views/user/update_media.html", result=result)
-        else:
-            flash("Please login first")
-            return redirect(url_for("home"))
-
-@app.route("/media/newpost", methods = ['POST', 'GET'])
-def new_post():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        if request.method == 'POST':
-
-            media = Media(media_type = request.form.get('media_type'), 
-                        media_genre = request.form.get('media_genre'),
-                        country_id = request.form.get('country_id'),
-                        story_type = request.form.get('story_type'),
-                        media_topic = request.form.get('media_topic'),
-                        media_text = request.form.get('media_text'),
-                        media_desc = request.form.get('media_desc'),
-                        hidden = request.form.get('hidden') != None,
-                        owner = session['username'],
-                        create_time = utils.get_now(),
-                        lang_id = 2)
-
-            dba.session.add(media)
-            dba.session.commit()
-
-            flash("New post created with ID " + str(media.media_id))
-
-            if(media.media_type == "1"):
-                return redirect(url_for("view_photo", media_id=media.media_id)) 
-            elif(media.media_type == "6"): 
-                if(media.story_type == "0"):
-                    return redirect(url_for("view_video", media_id=media.media_id))
-            elif(media.media_type == "5"):
-                if(media.story_type == "2"):
-                    return redirect(url_for("view_reviews_item", review_id=media.media_id))
-                elif(media.story_type == "3"):
-                    return redirect(url_for("view_interviews_item", interview_id=media.media_id))
-                elif(media.story_type == "4"):
-                    return redirect(url_for("view_news_item", news_id=media.media_id))
-            else:
-                return redirect(url_for("home"))
-        else:
-            my_uploads = dba.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
-            blobs = []
-            for blob in my_uploads:
-                blobs.append(blob)
-            return render_template("views/user/new_post.html", blobs=blobs)
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
 
 @app.route("/my/posts")
 def my_posts():
@@ -431,49 +298,6 @@ def my_posts():
     else:
         flash("Please login first")
         return redirect(url_for("home"))
-
-@app.route("/media/newupload", methods=['POST','GET'])
-def new_upload():
-    if request.method == 'POST':
-
-        # Crea a blob container with the users name
-        blob_service = utils.get_azure_blob_service()
-        container = ''
-        file_to_upload = request.files['file']
-        filename = secure_filename(file_to_upload.filename)
-
-        if(session and session['logged_in']):
-            container = session['username']
-            if not blob_service.exists(container):
-                blob_service.create_container(container)
-                blob_service.set_container_acl(container, public_access=PublicAccess.Blob)
-        else:
-            flash("Please login first")
-            return redirect(url_for("home"))
-
-        # Create Blob from stream
-        try:
-            blob_service.create_blob_from_stream(container, filename, file_to_upload)
-            flash("File " + filename + " was uploaded successfully")
-        except:
-            print("Something went wrong while uploading the files %s"%filename)
-            flash("Something went wrong while uploading the files %s"%filename)
-            pass
-
-        blob = app.config.get('AZURE_BLOB_URI')
-        path =  blob + '/' + container + '/' + filename
-
-        # Create a record in database
-        upload = Uploads(
-            user_id=session['user_id'],
-            create_time=datetime.datetime.now(),
-            path=path)
-        dba.session.add(upload)
-        dba.session.commit()
-        #print("Upload was inserted to database by user " + session['username'])
-
-        return redirect(url_for("my_uploads"))
-    return render_template("views/user/new_upload.html")
 
 @app.route("/my/uploads")
 def my_uploads():

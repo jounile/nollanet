@@ -24,6 +24,8 @@ sess = Session()
 from app.mod_auth.controllers import mod_auth as auth_module
 from app.mod_spots.controllers import mod_spots as spots_module
 from app.mod_links.controllers import mod_links as links_module
+from app.mod_media.controllers import mod_media as media_module
+
 from app.mod_youtube.controllers import mod_youtube as youtube_module
 from app.mod_soundcloud.controllers import mod_soundcloud as soundcloud_module
 from app.mod_facebook.controllers import mod_facebook as facebook_module
@@ -32,6 +34,8 @@ from app.mod_facebook.controllers import mod_facebook as facebook_module
 app.register_blueprint(auth_module)
 app.register_blueprint(spots_module)
 app.register_blueprint(links_module)
+app.register_blueprint(media_module)
+
 app.register_blueprint(youtube_module)
 app.register_blueprint(soundcloud_module)
 app.register_blueprint(facebook_module)
@@ -46,7 +50,7 @@ nav.Bar('top', [
     nav.Item('Home', 'home'),
     nav.Item('News', 'news'),
     nav.Item('Youtube', 'youtube.youtube_playlists'),
-    nav.Item('Media', 'view_media'),
+    nav.Item('Media', 'media.all'),
     nav.Item('Interviews', 'interviews'),
     nav.Item('Reviews', 'reviews'),
     #nav.Item('Spotchecks', 'spotchecks'),
