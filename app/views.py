@@ -60,18 +60,6 @@ def new_post():
         flash("Please login first")
         return redirect(url_for("home"))
 
-@app.route('/interviews')
-def interviews():
-    interviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(Mediatype).join(Storytype).join(Country).add_columns(Media.media_id,
-            (Genre.type_name).label("genre"),
-            (Mediatype.type_name).label("mediatype_name"),
-            (Storytype.type_name).label("storytype_name"),
-            (Country.country_code).label("country_code"),
-            Media.media_topic,
-            Media.create_time,
-            Media.owner).filter(Media.story_type==utils.get_story_type('interviews')).order_by(Media.create_time.desc())
-    return render_template("views/interviews.html", interviews=interviews)
-
 @app.route('/news')
 def news():
 
@@ -186,11 +174,6 @@ def about():
 def view_user_by_username(username):
     user = User.query.filter_by(username=username).first()
     return render_template('views/user.html', user=user)
-
-@app.route('/interview/<media_id>')
-def view_interviews_item(media_id):
-    interview = Media.query.filter_by(media_id=media_id).first()
-    return render_template('views/interview.html', interview=interview)
 
 @app.route('/news/<media_id>')
 def view_news_item(media_id):
