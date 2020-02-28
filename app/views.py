@@ -102,10 +102,6 @@ def home():
 def support():
     return render_template("views/support.html")
 
-@app.route("/about")
-def about():
-    return render_template("views/about.html")
-
 @app.route('/user/<username>', methods=['GET'])
 def view_user_by_username(username):
     user = User.query.filter_by(username=username).first()

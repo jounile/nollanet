@@ -103,9 +103,6 @@ def delete():
         flash("Please login first")
     return redirect(url_for("home"))
 
-
-""" User """
-
 @mod_media.route('/<path:filename>', methods=['GET'])
 def filename(filename):
     static_url = app.config.get('AZURE_BLOB_URI')
