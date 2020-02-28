@@ -98,32 +98,6 @@ def news():
 
     return render_template("views/news.html", news=news, pagination=pagination, selected_genre=selected_genre)
 
-@app.route('/reviews')
-def reviews():
-    reviews = dba.session.query(
-            Media.media_type.in_((4,5,))
-        ).join(Genre
-        ).join(Mediatype
-        ).join(Storytype
-        ).join(Country
-        ).add_columns(
-            Media.media_id,
-            (Genre.type_name).label("genre"),
-            (Mediatype.type_name).label("mediatype_name"),
-            (Storytype.type_name).label("storytype_name"),
-            (Country.country_code).label("country_code"),
-            Media.media_topic,
-            Media.create_time,
-            Media.owner
-        ).filter(
-            Media.story_type==utils.get_story_type('reviews')
-        ).filter(
-            Media.hidden==0
-        ).order_by(
-            Media.create_time.desc()
-        )
-    return render_template("views/reviews.html", reviews=reviews)
-
 @app.route('/')
 def home():
 
@@ -179,11 +153,6 @@ def view_user_by_username(username):
 def view_news_item(media_id):
     news_item = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/news_item.html', news_item=news_item)
-
-@app.route('/review/<media_id>')
-def view_review_item(media_id):
-    review = Media.query.filter_by(media_id=media_id).first()
-    return render_template('views/review.html', review=review)
 
 @app.route('/youtube')
 def youtube():
