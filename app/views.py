@@ -14,7 +14,6 @@ from app.models import MapSpot, MapCountry, MapTown, MapType
 
 from . import app, dba, utils, auto
 
-
 @app.route("/newpost", methods = ['POST', 'GET'])
 def new_post():
     if(session and session['logged_in'] and session['user_level'] == 1):
@@ -137,33 +136,6 @@ def reviews():
         )
     return render_template("views/reviews.html", reviews=reviews)
 
-@app.route('/spotchecks')
-def spotchecks():
-    spotchecks = Media.query.filter_by(
-            media_type=5
-        ).join(Genre
-        ).join(Mediatype
-        ).join(Storytype
-        ).join(Country
-        ).add_columns(
-            Media.media_id,
-            (Genre.type_name).label("genre"),
-            (Mediatype.type_name).label("mediatype_name"),
-            (Storytype.type_name).label("storytype_name"),
-            (Country.country_code).label("country_code"),
-            Media.media_topic,
-            Media.create_time,
-            Media.owner
-        ).filter(
-            Media.story_type==utils.get_story_type('spotchecks')
-        ).filter(
-            Media.hidden==0
-        ).order_by(
-            Media.create_time.desc()
-        )
-
-    return render_template("views/spotchecks.html", spotchecks=spotchecks)
-
 @app.route('/')
 def home():
 
@@ -239,11 +211,6 @@ def view_news_item(media_id):
 def view_review_item(media_id):
     review = Media.query.filter_by(media_id=media_id).first()
     return render_template('views/review.html', review=review)
-
-@app.route('/spotcheck/<media_id>')
-def view_spotcheck_item(media_id):
-    spotcheck = Media.query.filter_by(media_id=media_id).first()
-    return render_template('views/spotcheck.html', spotcheck=spotcheck)
 
 @app.route('/youtube')
 def youtube():
