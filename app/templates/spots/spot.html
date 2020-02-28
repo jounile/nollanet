@@ -6,7 +6,7 @@
 <div class="spot-title">
 
     <h1>{{ spot.name }}</h1>
-    <div>Published: {{ spot.paivays }} by <a href="/user/{{ spot.username }}">{{ spot.username }}</a></div>
+    <div>Published: {{ spot.paivays }} by <a href="{{ url_for('users.user', username=spot.username) }}">{{ spot.username }}</a></div>
     
     <br />
     <div>{{ spot.info|safe }}</div>

@@ -30,6 +30,7 @@ from app.mod_guides.controllers import mod_guides as guides_module
 from app.mod_interviews.controllers import mod_interviews as interviews_module
 from app.mod_reviews.controllers import mod_reviews as reviews_module
 from app.mod_news.controllers import mod_news as news_module
+from app.mod_users.controllers import mod_users as users_module
 
 from app.mod_youtube.controllers import mod_youtube as youtube_module
 from app.mod_soundcloud.controllers import mod_soundcloud as soundcloud_module
@@ -45,6 +46,7 @@ app.register_blueprint(guides_module)
 app.register_blueprint(interviews_module)
 app.register_blueprint(reviews_module)
 app.register_blueprint(news_module)
+app.register_blueprint(users_module)
 
 app.register_blueprint(youtube_module)
 app.register_blueprint(soundcloud_module)

@@ -11,7 +11,7 @@
     </div>
     <div class="col">
         ID: {{ photo.media_id }}<br>
-        Owner: <a href="/user/{{ photo.owner }}">{{ photo.owner }}</a><br>
+        Owner: <a href="{{ url_for('users.user', username=photo.owner) }}">{{ photo.owner }}</a><br>
         Country: {{ photo.country_code }}<br>
         Topic: {{ photo.media_topic }}<br>
         Text: {{ photo.media_text }}<br>

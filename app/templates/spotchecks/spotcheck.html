@@ -8,7 +8,7 @@
     <h1>{{ spotcheck.media_topic }}</h1>
     <h3>{{ spotcheck.media_desc|safe }}</h3>
     <div>{{ spotcheck.create_time }}</div>
-    <div>Published by: <a href="/user/{{ spotcheck.owner }}">{{ spotcheck.owner }}</a></div>
+    <div>Published by: <a href="{{ url_for('users.user', username=spotcheck.owner) }}">{{ spotcheck.owner }}</a></div>
     <div>{{ spotcheck.country_code }}</div>
     <div>{{ spotcheck.media_text|safe }}</div>
 

@@ -14,6 +14,48 @@ from app.models import MapSpot, MapCountry, MapTown, MapType
 
 from . import app, dba, utils, auto
 
+@app.route('/')
+def home():
+
+    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
+    links = dba.session.query(Links).join(
+            LinkCategories, Links.category == LinkCategories.id
+        ).add_columns(
+            (LinkCategories.name).label("category_name"),
+            (Links.name).label("name"),
+            (Links.url).label("url")
+        ).order_by(
+            Links.create_time.desc()
+        ).limit(10)
+
+    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
+
+    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    #spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    #photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    #photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    
+    return render_template('index.html', 
+        interviews=interviews, 
+        news=news, 
+        reviews=reviews,
+        spots=spots,
+        links=links,
+        photos_skateboarding=photos_skateboarding,
+        photos_snowboarding=photos_snowboarding,
+        #spotchecks=spotchecks,
+        #photos_nollagang=photos_nollagang,
+        #photos_snowskate=photos_snowskate
+        )
+
+@app.route("/support")
+def support():
+    return render_template("views/support.html")
+
 @app.route("/newpost", methods = ['POST', 'GET'])
 def new_post():
     if(session and session['logged_in'] and session['user_level'] == 1):
@@ -59,77 +101,6 @@ def new_post():
     else:
         flash("Please login first")
         return redirect(url_for("home"))
-
-@app.route('/')
-def home():
-
-    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
-    links = dba.session.query(Links).join(
-            LinkCategories, Links.category == LinkCategories.id
-        ).add_columns(
-            (LinkCategories.name).label("category_name"),
-            (Links.name).label("name"),
-            (Links.url).label("url")
-        ).order_by(
-            Links.create_time.desc()
-        ).limit(10)
-
-    page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-
-    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    #spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    #photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    #photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    
-    return render_template('index.html', 
-        interviews=interviews, 
-        news=news, 
-        reviews=reviews,
-        spots=spots,
-        links=links,
-        photos_skateboarding=photos_skateboarding,
-        photos_snowboarding=photos_snowboarding,
-        #spotchecks=spotchecks,
-        #photos_nollagang=photos_nollagang,
-        #photos_snowskate=photos_snowskate
-        )
-
-@app.route("/support")
-def support():
-    return render_template("views/support.html")
-
-@app.route('/user/<username>', methods=['GET'])
-def view_user_by_username(username):
-    user = User.query.filter_by(username=username).first()
-    return render_template('views/user.html', user=user)
-
-@app.route('/youtube')
-def youtube():
-    return redirect('playlists')
-
-""" Admin """
-
-@app.route("/logins/latest")
-def latest_logins():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        latest_logins = dba.session.query(User).filter(User.last_login >= '2020-01-01').order_by(User.last_login.desc())
-        return render_template("views/admin/latest_logins.html", latest_logins=latest_logins)
-    else:
-        flash("Please login first")
-    return redirect(url_for("home"))
-
-@app.route("/users/newest")
-def newest_users():
-    if(session and session['logged_in'] and session['user_level'] == 1):
-        newest_users = dba.session.query(User).filter(User.date >= '2020-01-01').order_by(User.date.desc())
-        return render_template("views/admin/newest_users.html", newest_users=newest_users)
-    else:
-        flash("Please login first")
-    return redirect(url_for("home"))
 
 @app.route("/my/posts")
 def my_posts():

@@ -16,7 +16,7 @@
                         {{ item.media_desc }}
                     </div>
                     <div class="news-date">
-                        {{ item.create_time }} published by: <a href="/user/{{ item.owner }}">{{ item.owner }}</a>
+                        {{ item.create_time }} published by: <a href="{{ url_for('users.user', username=item.owner) }}">{{ item.owner }}</a>
                     </div>
                 </div>
             </div>

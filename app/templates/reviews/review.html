@@ -8,7 +8,7 @@
     <h1>{{ review.media_topic }}</h1>
     <h3>{{ review.media_desc|safe }}</h3>
     <div>{{ review.create_time }}</div> 
-    <div>Published by: <a href="/user/{{ review.owner }}">{{ review.owner }}</a></div>
+    <div>Published by: <a href="{{ url_for('users.user', username=review.owner) }}">{{ review.owner }}</a></div>
     <div>{{ review.media_text|safe }}</div>
 
 </div>

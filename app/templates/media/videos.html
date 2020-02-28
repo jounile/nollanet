@@ -32,7 +32,7 @@
             </td>
             <td><a href="{{ url_for('media.video', media_id=item.media_id) }}">{{ item.media_topic }}</a></td>
             <td>{{ item.create_time }}</td>
-            <td><a href="/user/{{ item.owner }}">{{ item.owner }}</a></td>
+            <td><a href="{{ url_for('users.user', username=item.owner) }}">{{ item.owner }}</a></td>
             <td>{{ item.country_code }}</td>
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <td>
