@@ -29,6 +29,7 @@ from app.mod_spotchecks.controllers import mod_spotchecks as spotchecks_module
 from app.mod_guides.controllers import mod_guides as guides_module
 from app.mod_interviews.controllers import mod_interviews as interviews_module
 from app.mod_reviews.controllers import mod_reviews as reviews_module
+from app.mod_news.controllers import mod_news as news_module
 
 from app.mod_youtube.controllers import mod_youtube as youtube_module
 from app.mod_soundcloud.controllers import mod_soundcloud as soundcloud_module
@@ -43,6 +44,7 @@ app.register_blueprint(spotchecks_module)
 app.register_blueprint(guides_module)
 app.register_blueprint(interviews_module)
 app.register_blueprint(reviews_module)
+app.register_blueprint(news_module)
 
 app.register_blueprint(youtube_module)
 app.register_blueprint(soundcloud_module)
@@ -56,7 +58,7 @@ nav = Navigation(app)
 
 nav.Bar('top', [
     nav.Item('Home', 'home'),
-    nav.Item('News', 'news'),
+    nav.Item('News', 'news.all'),
     nav.Item('Youtube', 'youtube.youtube_playlists'),
     nav.Item('Media', 'media.all'),
     nav.Item('Interviews', 'interviews.all'),
