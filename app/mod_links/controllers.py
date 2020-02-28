@@ -4,8 +4,6 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 from app import app, dba, utils
 from app.models import User, Links, LinkCategories
 
-#from app.mod_links.form import 
-
 mod_links = Blueprint('links', __name__, url_prefix='/links')
 
 @mod_links.route('/all')

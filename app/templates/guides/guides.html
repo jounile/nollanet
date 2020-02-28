@@ -1,0 +1,30 @@
+<!-- guides.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Guides</h1>
+<table width="100%" class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Title</th>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <th></th>
+                <th></th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in guides %}
+        <tr>
+            <td><a href="{{ url_for('guides.page', page_id=item.page_id) }}">{{ item.header }}</a></td>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <td></td>
+                <td></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

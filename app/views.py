@@ -174,16 +174,6 @@ def home():
         #photos_snowskate=photos_snowskate
         )
 
-@app.route('/guides')
-def guides():
-    guides = Page.query.filter_by(lang_id=2)
-    return render_template("views/guides.html", guides=guides)
-
-@app.route('/guide/<page_id>')
-def view_guide(page_id):
-    guide = Page.query.filter_by(lang_id=2, page_id=page_id).first()
-    return render_template('views/guide.html', guide=guide)
-
 @app.route("/support")
 def support():
     return render_template("views/support.html")
