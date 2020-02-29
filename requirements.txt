@@ -26,6 +26,10 @@ Flask-Selfdoc==1.1.0
 Flask-Session==0.3.1
 Flask-SQLAlchemy==2.4.1
 Flask-WTF==0.14.2
+Flask-Migrate==2.5.2
+Mako==1.1.1
+alembic==1.4.0
+python-editor==1.0.4
 fudge==1.1.1
 gdata==2.0.18
 google-api-python-client==1.7.10

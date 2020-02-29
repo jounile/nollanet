@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
 from app import app, dba, utils
-from app.models import User, Media, Genre, Mediatype, Storytype, Country
+from app.models import User, Media, Genre, MediaType, StoryType, Country
 
 mod_reviews = Blueprint('reviews', __name__, url_prefix='/reviews')
 
@@ -11,14 +11,14 @@ def all():
     reviews = dba.session.query(
             Media.media_type.in_((4,5,))
         ).join(Genre
-        ).join(Mediatype
-        ).join(Storytype
+        ).join(MediaType
+        ).join(StoryType
         ).join(Country
         ).add_columns(
             Media.media_id,
             (Genre.type_name).label("genre"),
-            (Mediatype.type_name).label("mediatype_name"),
-            (Storytype.type_name).label("storytype_name"),
+            (MediaType.type_name).label("mediatype_name"),
+            (StoryType.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,

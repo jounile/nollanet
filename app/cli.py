@@ -10,7 +10,7 @@ from sqlalchemy import Table, Column, String, Integer, Float, Boolean, MetaData
 
 from .config import DefaultConfig
 
-from models import Storytype, Genre, Mediatype, Country
+from models import StoryType, Genre, MediaType, Country
 
 app = Flask(__name__, instance_relative_config=True)
 
@@ -41,11 +41,11 @@ def create_storytype():
 
 @app.cli.command("insert_storytypes")
 def insert_types():
-        model1 = Storytype(id=1, type_id=1, type_name='general')
-        model2 = Storytype(id=2, type_id=2, type_name='reviews')
-        model3 = Storytype(id=3, type_id=3, type_name='interviews')
-        model4 = Storytype(id=4, type_id=4, type_name='news')
-        model5 = Storytype(id=5, type_id=99, type_name='other')
+        model1 = StoryType(id=1, type_id=1, type_name='general')
+        model2 = StoryType(id=2, type_id=2, type_name='reviews')
+        model3 = StoryType(id=3, type_id=3, type_name='interviews')
+        model4 = StoryType(id=4, type_id=4, type_name='news')
+        model5 = StoryType(id=5, type_id=99, type_name='other')
         dba.session.add(model1)
         dba.session.add(model2)
         dba.session.add(model3)
@@ -89,12 +89,12 @@ def create_mediatype():
 
 @app.cli.command("insert_mediatypes")
 def insert_mediatypes():
-        model1 = Mediatype(id=1, type_id=1, type_name='photo')
-        model2 = Mediatype(id=2, type_id=2, type_name='mediatype2')
-        model3 = Mediatype(id=3, type_id=3, type_name='music')
-        model4 = Mediatype(id=4, type_id=4, type_name='movies')
-        model5 = Mediatype(id=5, type_id=5, type_name='stories') # interviews, reviews
-        model6 = Mediatype(id=6, type_id=6, type_name='video')
+        model1 = MediaType(id=1, type_id=1, type_name='photo')
+        model2 = MediaType(id=2, type_id=2, type_name='mediatype2')
+        model3 = MediaType(id=3, type_id=3, type_name='music')
+        model4 = MediaType(id=4, type_id=4, type_name='movies')
+        model5 = MediaType(id=5, type_id=5, type_name='stories') # interviews, reviews
+        model6 = MediaType(id=6, type_id=6, type_name='video')
         dba.session.add(model1)
         dba.session.add(model2)
         dba.session.add(model3)
