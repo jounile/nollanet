@@ -43,6 +43,10 @@ $ docker run --name myadmin -d -e PMA_HOST=docker.for.mac.localhost -e PMA_PORT=
 $ pip freeze > requirements.txt
 ```
 
+## Flask sqlacodegen
+```bash
+$ flask-sqlacodegen  mysql://nolla:nolla@localhost:3306/nollatest --flask
+```
 
 ## Flask CLI
 ```bash

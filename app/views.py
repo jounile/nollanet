@@ -8,7 +8,7 @@ from flask_paginate import Pagination, get_page_args
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Uploads, Media, Page, User, Storytype, Genre, Mediatype, Country
+from app.models import Uploads, Media, Page, User, StoryType, Genre, MediaType, Country
 from app.models import Links, LinkCategories
 from app.models import MapSpot, MapCountry, MapTown, MapType
 
@@ -109,14 +109,14 @@ def my_posts():
         posts = dba.session.query(
                 Media
             ).join(Genre
-            ).join(Mediatype
-            ).join(Storytype
+            ).join(MediaType
+            ).join(StoryType
             ).join(Country
             ).add_columns(
                 Media.media_id,
                 (Genre.type_name).label("genre"),
-                (Mediatype.type_name).label("mediatype_name"),
-                (Storytype.type_name).label("storytype_name"),
+                (MediaType.type_name).label("mediatype_name"),
+                (StoryType.type_name).label("storytype_name"),
                 (Country.country_code).label("country_code"),
                 Media.media_topic,
                 Media.create_time,
