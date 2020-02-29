@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from app import app, dba, utils
+from app import app, db, utils
 from app.models import User, Media, Genre, StoryType, MediaType, Country
 
 mod_news = Blueprint('news', __name__, url_prefix='/news')
@@ -14,7 +14,7 @@ def all():
 
     total = utils.get_total_news_count(selected_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    news = dba.session.query(
+    news = db.session.query(
             Media.media_type.in_((4,5,))
         ).join(Genre
         ).join(MediaType

@@ -4,7 +4,7 @@ from urllib.parse import urljoin # Python 3
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
 from werkzeug import secure_filename
 
-from app import app, dba, utils
+from app import app, db, utils
 from app.models import Uploads, User, Comment, Media, Country, Genre, MediaType, StoryType
 
 mod_media = Blueprint('media', __name__, url_prefix='/media')
@@ -23,7 +23,7 @@ def all():
 
     total = utils.get_count_by_genre_and_type(selected_media_genre, selected_media_type)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
-    media = dba.session.query(
+    media = db.session.query(
             Media
         ).join(Country
         ).add_columns(
@@ -48,7 +48,7 @@ def all():
 
 @mod_media.route('/photo/<media_id>')
 def photo(media_id):
-    photo = dba.session.query(Media).join(Country).add_columns(Media.media_id,
+    photo = db.session.query(Media).join(Country).add_columns(Media.media_id,
         (Country.country_code).label("country_code"),
         Media.media_topic,
         Media.media_text,
@@ -66,7 +66,7 @@ def video(media_id):
 @mod_media.route("/latest")
 def latest():
     if(session and session['logged_in'] and session['user_level'] == 1):
-        latest = dba.session.query(
+        latest = db.session.query(
                 Media
             ).join(Genre
             ).join(MediaType
@@ -97,7 +97,7 @@ def delete():
         if request.method == 'POST':
             media_id = request.form.get('media_id')
             Media.query.filter_by(media_id=media_id).delete()
-            dba.session.commit()
+            db.session.commit()
             flash("Record " + media_id + " was deleted succesfully by " + session['username'] + ".")
     else:
         flash("Please login first")
@@ -126,7 +126,7 @@ def update(media_id):
 
         if(session and session['logged_in'] and session['user_level'] == 1):
             Media.query.filter_by(media_id=media_id).update(media)
-            dba.session.commit()
+            db.session.commit()
             flash("Record " + media_id + " was updated by user " + session['username'])
             return redirect(url_for("home"))
         else:
@@ -176,8 +176,8 @@ def new_upload():
             user_id=session['user_id'],
             create_time=datetime.datetime.now(),
             path=path)
-        dba.session.add(upload)
-        dba.session.commit()
+        db.session.add(upload)
+        db.session.commit()
         #print("Upload was inserted to database by user " + session['username'])
 
         return redirect(url_for("my_uploads"))

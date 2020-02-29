@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from app import app, dba, utils
+from app import app, db, utils
 from app.models import User, Links, LinkCategories
 
 mod_links = Blueprint('links', __name__, url_prefix='/links')
@@ -36,8 +36,8 @@ def new_link():
                         create_time = utils.get_now()
                     )
 
-            dba.session.add(link)
-            dba.session.commit()
+            db.session.add(link)
+            db.session.commit()
 
             flash("New link created with ID " + str(link.id))
             return redirect(url_for("links.all"))
@@ -55,7 +55,7 @@ def update_link(link_id):
             link = { 'name': request.form.get('name'),
                     'url': request.form.get('url')}
             Links.query.filter_by(id=link_id).update(link)
-            dba.session.commit()
+            db.session.commit()
             flash("Link " + str(link_id) + " was updated by user " + session['username'])
             return redirect(url_for("links.all"))
     else:
@@ -68,7 +68,7 @@ def delete_link():
         if request.method == 'POST':
             id = request.form.get('id')
             Links.query.filter_by(id=id).delete()
-            dba.session.commit()
+            db.session.commit()
             flash("Link " + id + " was deleted succesfully by " + session['username'] + ".")
             return redirect(url_for("links.all"))
     else:
@@ -81,7 +81,7 @@ def delete_linkcategory():
         if request.method == 'POST':
             id = request.form.get('id')
             LinkCategories.query.filter_by(id=id).delete()
-            dba.session.commit()
+            db.session.commit()
             flash("Link category " + id + " was deleted succesfully by " + session['username'] + ".")
             return redirect(url_for("links.all"))
     else:
@@ -98,8 +98,8 @@ def new_category():
                         create_time = utils.get_now()
                     )
 
-            dba.session.add(category)
-            dba.session.commit()
+            db.session.add(category)
+            db.session.commit()
 
             flash("New link category created with ID " + str(category.id))
             return redirect(url_for("links.all"))
