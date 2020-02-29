@@ -16,10 +16,10 @@ app = Flask(__name__, instance_relative_config=True)
 app.config.from_object(DefaultConfig)
 
 # Database connection
-db = SQLAlchemy(app)
+dba = SQLAlchemy(app)
 
 # Database migration
-migrate = Migrate(app, db)
+migrate = Migrate(app, dba)
 
 # Login
 sess = Session()

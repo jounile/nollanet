@@ -8,7 +8,7 @@ from sendgrid.helpers.mail import (Mail, From, To)
 
 from app.mod_auth.form import RegisterForm, ProfileForm
 
-from app import app, db, utils
+from app import app, dba, utils
 from app.models import User, PwdRecover, Links, LinkCategories
 from app.mod_auth import bcrypt
 
@@ -68,8 +68,8 @@ def register():
                         flickr_username=''
                         )
 
-                    db.session.add(newUser)
-                    db.session.commit()
+                    dba.session.add(newUser)
+                    dba.session.commit()
 
                     flash("User " + username + " has been registered.")
                 except Exception as e:
@@ -104,8 +104,8 @@ def login():
             # Increment login_count by one
             login_count = user.login_count + 1
             try:
-                result = db.session.query(User).filter(User.username == username).update(dict(login_count=login_count), synchronize_session=False)
-                db.session.commit()
+                result = dba.session.query(User).filter(User.username == username).update(dict(login_count=login_count), synchronize_session=False)
+                dba.session.commit()
             except Exception as e:
                 print(e)
         else:
@@ -246,7 +246,7 @@ def promote():
             username = request.form.get('username')
             level = request.form.get('level')
             User.query.filter_by(username=username).update({"level": level})
-            db.session.commit()
+            dba.session.commit()
             flash('User '+ username + ' is now updated to level ' + level + '.')
             return redirect(url_for('home'))
     else:
@@ -272,7 +272,7 @@ def pwdreset():
             try:
                 crypted_password = bcrypt.generate_password_hash(newpwd2)
                 User.query.filter_by(username=username).update({"password": crypted_password})
-                db.session.commit()
+                dba.session.commit()
             except Exception as e:
                 print(str(e))
 
@@ -282,7 +282,7 @@ def pwdreset():
                 # Remove token from database
                 try:
                     PwdRecover.query.filter_by(token=pwdrecover.token).delete()
-                    db.session.commit()
+                    dba.session.commit()
                 except Exception as e:
                     print(str(e))
             else:
@@ -314,8 +314,8 @@ def pwdrecover():
             # Save the email & token & timestamp into database table pwdrecover
             try:
                 newPwdRecover = PwdRecover(username=username, email=user.email, token=token)
-                db.session.add(newPwdRecover)
-                db.session.commit()
+                dba.session.add(newPwdRecover)
+                dba.session.commit()
             except Exception as e:
                 print(str(e))
 

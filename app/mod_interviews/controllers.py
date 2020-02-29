@@ -1,14 +1,14 @@
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from app import app, db, utils
+from app import app, dba, utils
 from app.models import User, Page, Media, Country, StoryType, MediaType, Genre
 
 mod_interviews = Blueprint('interviews', __name__, url_prefix='/interviews')
 
 @mod_interviews.route('/all')
 def all():
-    interviews = db.session.query(Media.media_type.in_((4,5,))).join(Genre).join(MediaType).join(StoryType).join(Country).add_columns(Media.media_id,
+    interviews = dba.session.query(Media.media_type.in_((4,5,))).join(Genre).join(MediaType).join(StoryType).join(Country).add_columns(Media.media_id,
             (Genre.type_name).label("genre"),
             (MediaType.type_name).label("mediatype_name"),
             (StoryType.type_name).label("storytype_name"),

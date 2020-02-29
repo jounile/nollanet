@@ -3,7 +3,7 @@ from sqlalchemy import BigInteger, Column, Date, DateTime, Index, Integer, Small
 from sqlalchemy.schema import FetchedValue
 from flask_sqlalchemy import SQLAlchemy
 
-from app import app, db
+db = SQLAlchemy()
 
 class Country(db.Model):
     __tablename__ = 'countries'

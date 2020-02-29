@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from app import app, db, utils
+from app import app, dba, utils
 from app.models import User
 
 mod_users = Blueprint('users', __name__, url_prefix='/users')
@@ -14,7 +14,7 @@ def user(username):
 @mod_users.route("/newest")
 def newest():
     if(session and session['logged_in'] and session['user_level'] == 1):
-        newest_users = db.session.query(User).filter(User.date >= '2020-01-01').order_by(User.date.desc())
+        newest_users = dba.session.query(User).filter(User.date >= '2020-01-01').order_by(User.date.desc())
         return render_template("users/newest_users.html", newest_users=newest_users)
     else:
         flash("Please login first")
@@ -23,7 +23,7 @@ def newest():
 @mod_users.route("/logins/latest")
 def latest_logins():
     if(session and session['logged_in'] and session['user_level'] == 1):
-        latest_logins = db.session.query(User).filter(User.last_login >= '2020-01-01').order_by(User.last_login.desc())
+        latest_logins = dba.session.query(User).filter(User.last_login >= '2020-01-01').order_by(User.last_login.desc())
         return render_template("users/latest_logins.html", latest_logins=latest_logins)
     else:
         flash("Please login first")
