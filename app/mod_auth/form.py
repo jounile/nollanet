@@ -4,7 +4,7 @@ from flask_wtf import RecaptchaField
 from wtforms import TextField, PasswordField, TextAreaField, StringField, IntegerField, DateField, SelectField, HiddenField, SubmitField
 from wtforms.validators import DataRequired, Length, Email, Optional
 
-from app import app, dba
+from app import app, db
 from app.models import User
 
 class RegisterForm(FlaskForm):
@@ -68,8 +68,8 @@ class ProfileForm(FlaskForm):
         try:
             #print("user", user)
             username = user['username']
-            result = dba.session.query(User).filter(User.username == username).update(user, synchronize_session=False)
-            dba.session.commit()
+            result = db.session.query(User).filter(User.username == username).update(user, synchronize_session=False)
+            db.session.commit()
             flash("User details updated")
         except Exception as e:
             print("UPDATE failed")

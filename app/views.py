@@ -12,7 +12,7 @@ from app.models import Uploads, Media, Page, User, StoryType, Genre, MediaType, 
 from app.models import Links, LinkCategories
 from app.models import MapSpot, MapCountry, MapTown, MapType
 
-from . import app, dba, utils, auto
+from . import app, db, utils, auto
 
 @app.route('/')
 def home():
@@ -21,7 +21,7 @@ def home():
     news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
-    links = dba.session.query(Links).join(
+    links = db.session.query(Links).join(
             LinkCategories, Links.category == LinkCategories.id
         ).add_columns(
             (LinkCategories.name).label("category_name"),
@@ -73,8 +73,8 @@ def new_post():
                         create_time = utils.get_now(),
                         lang_id = 2)
 
-            dba.session.add(media)
-            dba.session.commit()
+            db.session.add(media)
+            db.session.commit()
 
             flash("New post created with ID " + str(media.media_id))
 
@@ -93,7 +93,7 @@ def new_post():
             else:
                 return redirect(url_for("home"))
         else:
-            my_uploads = dba.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
+            my_uploads = db.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
             blobs = []
             for blob in my_uploads:
                 blobs.append(blob)
@@ -106,7 +106,7 @@ def new_post():
 def my_posts():
     if(session and session['logged_in']):
         username = session['username']
-        posts = dba.session.query(
+        posts = db.session.query(
                 Media
             ).join(Genre
             ).join(MediaType
@@ -136,7 +136,7 @@ def my_posts():
 def my_uploads():
     if(session and session['logged_in']):
         # Get records from database
-        my_uploads = dba.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
+        my_uploads = db.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
         blobs = []
         for blob in my_uploads:
             blobs.append(blob)
@@ -159,7 +159,7 @@ def delete_blob():
             # Delete a record from database
             upload_id = request.form.get('upload_id')
             Uploads.query.filter_by(id=upload_id).delete()
-            dba.session.commit()
+            db.session.commit()
             flash("File " + blob_name + " was deleted successfully")
     else:
         flash("Please login first")

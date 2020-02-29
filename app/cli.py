@@ -21,7 +21,7 @@ app.config.from_object(DefaultConfig)
 app.config.from_pyfile('config.py')
 
 # Database connection
-dba = SQLAlchemy(app)
+db = SQLAlchemy(app)
 
 FlaskCLI(app)
 
@@ -36,7 +36,7 @@ def create_storytype():
                 Column('type_id', Integer()),
                 Column('type_name', String(50))
         )
-        metadata.create_all(dba.engine)
+        metadata.create_all(db.engine)
         print(repr(data))
 
 @app.cli.command("insert_storytypes")
@@ -46,12 +46,12 @@ def insert_types():
         model3 = StoryType(id=3, type_id=3, type_name='interviews')
         model4 = StoryType(id=4, type_id=4, type_name='news')
         model5 = StoryType(id=5, type_id=99, type_name='other')
-        dba.session.add(model1)
-        dba.session.add(model2)
-        dba.session.add(model3)
-        dba.session.add(model4)
-        dba.session.add(model5)
-        dba.session.commit()
+        db.session.add(model1)
+        db.session.add(model2)
+        db.session.add(model3)
+        db.session.add(model4)
+        db.session.add(model5)
+        db.session.commit()
 
 @app.cli.command("create_genre")
 def create_genre():
@@ -61,7 +61,7 @@ def create_genre():
                 Column('type_id', Integer()),
                 Column('type_name', String(50))
         )
-        metadata.create_all(dba.engine)
+        metadata.create_all(db.engine)
         print(repr(data))
 
 @app.cli.command("insert_genres")
@@ -70,11 +70,11 @@ def insert_types():
         model2 = Genre(id=2, type_id=2, type_name='snowboarding')
         model3 = Genre(id=3, type_id=3, type_name='nollagang')
         model4 = Genre(id=4, type_id=4, type_name='snowskate')
-        dba.session.add(model1)
-        dba.session.add(model2)
-        dba.session.add(model3)
-        dba.session.add(model4)
-        dba.session.commit()
+        db.session.add(model1)
+        db.session.add(model2)
+        db.session.add(model3)
+        db.session.add(model4)
+        db.session.commit()
 
 @app.cli.command("create_mediatype")
 def create_mediatype():
@@ -84,7 +84,7 @@ def create_mediatype():
                 Column('type_id', Integer()),
                 Column('type_name', String(50))
         )
-        metadata.create_all(dba.engine)
+        metadata.create_all(db.engine)
         print(repr(data))
 
 @app.cli.command("insert_mediatypes")
@@ -95,13 +95,13 @@ def insert_mediatypes():
         model4 = MediaType(id=4, type_id=4, type_name='movies')
         model5 = MediaType(id=5, type_id=5, type_name='stories') # interviews, reviews
         model6 = MediaType(id=6, type_id=6, type_name='video')
-        dba.session.add(model1)
-        dba.session.add(model2)
-        dba.session.add(model3)
-        dba.session.add(model4)
-        dba.session.add(model5)
-        dba.session.add(model6)
-        dba.session.commit()
+        db.session.add(model1)
+        db.session.add(model2)
+        db.session.add(model3)
+        db.session.add(model4)
+        db.session.add(model5)
+        db.session.add(model6)
+        db.session.commit()
 
 @app.cli.command("create_countries")
 def create_mediatype():
@@ -111,7 +111,7 @@ def create_mediatype():
                 Column('country_code', String(50)),
                 Column('country_name', String(50))
         )
-        metadata.create_all(dba.engine)
+        metadata.create_all(db.engine)
         print(repr(data))
 
 @app.cli.command("insert_countries")
@@ -121,12 +121,12 @@ def insert_mediatypes():
         model3 = Country(id=3, country_code='ee', country_name='Estonia')
         model4 = Country(id=4, country_code='dk', country_name='Denmark')
         model5 = Country(id=5, country_code='de', country_name='Germany')
-        dba.session.add(model1)
-        dba.session.add(model2)
-        dba.session.add(model3)
-        dba.session.add(model4)
-        dba.session.add(model5)
-        dba.session.commit()
+        db.session.add(model1)
+        db.session.add(model2)
+        db.session.add(model3)
+        db.session.add(model4)
+        db.session.add(model5)
+        db.session.commit()
 
 """
 @app.cli.command("alter_database")

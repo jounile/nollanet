@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from app import app, dba, utils
+from app import app, db, utils
 from app.models import User, MapSpot, MapCountry, MapTown, MapType
 
 from app.mod_spots.form import NewSpotForm, UpdateSpotForm
@@ -43,7 +43,7 @@ def all():
 @mod_spots.route('/spot/<kartta_id>')
 def spot(kartta_id):
 
-    spot = dba.session.query(
+    spot = db.session.query(
             MapSpot
         ).filter_by(
             kartta_id=kartta_id
@@ -90,8 +90,8 @@ def new_spot():
                     user_id = session['user_id']
                 )
 
-            dba.session.add(spot)
-            dba.session.commit()
+            db.session.add(spot)
+            db.session.commit()
             flash("New spot created succesfully")
             return redirect(url_for("spots.all"))
     else:
@@ -141,7 +141,7 @@ def update_spot(spot_id):
                     }
 
             MapSpot.query.filter_by(kartta_id=spot_id).update(spot)
-            dba.session.commit()
+            db.session.commit()
 
             flash("Updated spot with ID " + str(spot_id))
             return redirect(url_for("spots.all"))
@@ -155,7 +155,7 @@ def delete_spot():
         if request.method == 'POST':
             spot_id = request.form.get('spot_id')
             MapSpot.query.filter_by(kartta_id=spot_id).delete()
-            dba.session.commit()
+            db.session.commit()
             flash("Spot " + spot_id + " was deleted succesfully by " + session['username'] + ".")
             return redirect(url_for("spots.all"))
     else:

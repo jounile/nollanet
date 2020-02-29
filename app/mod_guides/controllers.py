@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from app import app, dba, utils
+from app import app, db, utils
 from app.models import User, Page
 
 mod_guides = Blueprint('guides', __name__, url_prefix='/guides')
