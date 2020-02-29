@@ -2,7 +2,7 @@ from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
 from app import app, dba, utils
-from app.models import User, Media, Genre, StoryType, MediaType, Country
+from app.models import User, Media, Genre, Storytype, Mediatype, Country
 
 mod_news = Blueprint('news', __name__, url_prefix='/news')
 
@@ -17,13 +17,13 @@ def all():
     news = dba.session.query(
             Media.media_type.in_((4,5,))
         ).join(Genre
-        ).join(MediaType
-        ).join(StoryType
+        ).join(Mediatype
+        ).join(Storytype
         ).join(Country
         ).add_columns(
             Media.media_id,
-            (MediaType.type_name).label("mediatype_name"),
-            (StoryType.type_name).label("storytype_name"),
+            (Mediatype.type_name).label("mediatype_name"),
+            (Storytype.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Media.hidden,
             Media.media_topic,

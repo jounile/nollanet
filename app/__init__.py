@@ -5,7 +5,6 @@ from flask_login import LoginManager, login_user , logout_user , current_user , 
 from flask_selfdoc import Autodoc
 from flask_navigation import Navigation
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 
 from .config import DefaultConfig
 
@@ -17,9 +16,6 @@ app.config.from_object(DefaultConfig)
 
 # Database connection
 dba = SQLAlchemy(app)
-
-# Database migration
-migrate = Migrate(app, dba)
 
 # Login
 sess = Session()

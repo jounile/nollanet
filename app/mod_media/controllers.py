@@ -5,7 +5,7 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 from werkzeug import secure_filename
 
 from app import app, dba, utils
-from app.models import Uploads, User, Comment, Media, Country, Genre, MediaType, StoryType
+from app.models import Uploads, User, Comment, Media, Country, Genre, Mediatype, Storytype
 
 mod_media = Blueprint('media', __name__, url_prefix='/media')
 
@@ -69,14 +69,14 @@ def latest():
         latest = dba.session.query(
                 Media
             ).join(Genre
-            ).join(MediaType
-            ).join(StoryType
+            ).join(Mediatype
+            ).join(Storytype
             ).join(Country
             ).add_columns(
                 Media.media_id,
                 (Genre.type_name).label("genre"),
-                (MediaType.type_name).label("mediatype_name"),
-                (StoryType.type_name).label("storytype_name"),
+                (Mediatype.type_name).label("mediatype_name"),
+                (Storytype.type_name).label("storytype_name"),
                 (Country.country_code).label("country_code"),
                 Media.media_topic,
                 Media.media_desc,
