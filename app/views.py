@@ -17,6 +17,10 @@ from . import app, db, utils, auto
 @app.route('/')
 def home():
 
+    #app.logger.warning('A warning occurred (%d apples)', 42)
+    #app.logger.error('An error occurred')
+    app.logger.info('Navigated to home() route')
+
     interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
