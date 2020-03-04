@@ -6,6 +6,7 @@ from flask_selfdoc import Autodoc
 from flask_navigation import Navigation
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from applicationinsights.flask.ext import AppInsights
 
 from .config import DefaultConfig
 
@@ -14,6 +15,9 @@ app = Flask(__name__, instance_relative_config=True)
 
 # DefaultConfig
 app.config.from_object(DefaultConfig)
+
+# Azure Application Insights
+appinsights = AppInsights(app)
 
 # Database connection
 db = SQLAlchemy(app)
