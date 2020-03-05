@@ -11,7 +11,7 @@
     <br />
     <div>{{ spot.info|safe }}</div>
     {% if spot.link %}
-        <div>Link: {{ spot.link }}</div>
+        <div>Link: <a href="{{ spot.link }}" target="_blank">{{ spot.link }}</a></div>
     {% endif %}
     {% if spot.temp %}
         <div>Temp: {{ spot.temp }}</div>
