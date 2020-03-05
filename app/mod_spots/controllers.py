@@ -138,7 +138,7 @@ def update_spot(spot_id):
                     'tyyppi': request.form.get('tyyppi'),
                     'nimi': request.form.get('name'),
                     'info': request.form.get('description'),
-                    'temp': request.form.get('temp'),
+                    'temp': 0,
                     'karttalinkki': request.form.get('link'),
                     'latlon': request.form.get('latlon'),
                     }
