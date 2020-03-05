@@ -71,3 +71,5 @@ class DefaultConfig(object):
     # SendGrid
     SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
     NOLLANET_EMAIL = os.getenv("NOLLANET_EMAIL")
+
+    APPINSIGHTS_INSTRUMENTATIONKEY = os.getenv("APPINSIGHTS_INSTRUMENTATIONKEY")

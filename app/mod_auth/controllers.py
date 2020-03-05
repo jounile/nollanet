@@ -70,10 +70,10 @@ def register():
 
                     db.session.add(newUser)
                     db.session.commit()
-
+                    app.logger.info("User " + username + " was registered successfully")
                     flash("User " + username + " has been registered.")
                 except Exception as e:
-                    print(e)
+                    app.logger.error('Registering user ' + username + ' failed')
                 return redirect(url_for("home"))
         else:
             flash("Registration failed")
@@ -100,14 +100,16 @@ def login():
             session['username'] = user.username
             session['user_id'] = user.user_id
             session['user_level'] = user.level
+            app.logger.info('User ' + user.username + ' logged in.')
 
             # Increment login_count by one
             login_count = user.login_count + 1
             try:
                 result = db.session.query(User).filter(User.username == username).update(dict(login_count=login_count), synchronize_session=False)
                 db.session.commit()
+                app.logger.info("Incrementing login_count by one was successful")
             except Exception as e:
-                print(e)
+                app.logger.error("Incrementing login_count failed")
         else:
             flash("Wrong credentials!")
 
@@ -116,6 +118,7 @@ def login():
 @mod_auth.route('/logout')
 def logout():
     if session.get('logged_in'):
+        app.logger.info('Logout user ' +  session.get('username') + '.')
         session['logged_in'] = False
         session.pop('username')
         session.pop('user_id')
@@ -225,8 +228,9 @@ def profile():
                     'flickr_username': form.flickr_username.data
                 }
                 form.update_details(user)
+                app.logger.info('Updated user profile')
             else:
-                print("Form validation error", form.errors)
+                app.logger.error("Form validation error")
             return redirect(url_for('auth.profile'))
 
 @mod_auth.route('/admin')
@@ -274,7 +278,7 @@ def pwdreset():
                 User.query.filter_by(username=username).update({"password": crypted_password})
                 db.session.commit()
             except Exception as e:
-                print(str(e))
+                app.logger.error("Password update failed.")
 
             # Get token for user
             pwdrecover = PwdRecover.query.filter_by(username=username).first()
@@ -284,9 +288,9 @@ def pwdreset():
                     PwdRecover.query.filter_by(token=pwdrecover.token).delete()
                     db.session.commit()
                 except Exception as e:
-                    print(str(e))
+                    app.logger.error("Failed to remove token from database.")
             else:
-                print("No token exists")
+                app.logger.info("No token exists")
 
             flash('Your password was updated successfully.')
             return redirect(url_for('auth.logout'))
@@ -317,7 +321,7 @@ def pwdrecover():
                 db.session.add(newPwdRecover)
                 db.session.commit()
             except Exception as e:
-                print(str(e))
+                app.logger.error("Failed to save email, token and timestamp.")
 
             message = Mail(
                 from_email=app.config.get('NOLLANET_EMAIL'),
@@ -334,7 +338,7 @@ def pwdrecover():
                 #print('Password reset email was sent succesfully.')
                 flash('We have sent a temporary link to the email address defined in your user profile. Please follow the link and change your password.')
             except Exception as e:
-                print(str(e))
+                app.logger.error("Failed to send a temporary link via email")
         else:
             flash("Please try again.")
 
