@@ -88,7 +88,7 @@ def new_spot():
                     info = request.form.get('description'),
                     karttalinkki = request.form.get('link'),
                     latlon = request.form.get('latlon'),
-                    temp = "",
+                    temp = 0,
                     user_id = session['user_id']
                 )
 

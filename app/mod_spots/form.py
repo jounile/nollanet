@@ -18,6 +18,6 @@ class UpdateSpotForm(FlaskForm):
     tyyppi = SelectField('tyyppi', choices=[])
     name = StringField('Name')
     description = TextAreaField('Description')
-    temp = StringField('Temp')
+    temp = IntegerField('Temp')
     link = StringField('Link')
     latlon = StringField('latlon')
