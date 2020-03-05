@@ -33,7 +33,12 @@
 
     <div class="form-group">
         <label for="description">Desription</label>
-        {{ form.description(class_="form-control") }}
+        {{ form.description(class_="form-control", rows="10", cols="100") }}
+    </div>
+
+    <div class="form-group">
+        <label for="temp">Temp</label>
+        {{ form.temp(class_="form-control") }}
     </div>
 
     <div class="form-group">
@@ -41,9 +46,14 @@
         {{ form.link(class_="form-control") }}
     </div>
 
+    <div class="form-group">
+        <label for="latlon">Map</label>
+        {{ form.latlon(class_="form-control") }}
+    </div>
+
     <label for="user_id">User id</label>
     <div>{{ spot.user_id }}</div>
-    
+
     <label for="create_time">Created</label>
     <div>{{ spot.paivays }}</div>
 

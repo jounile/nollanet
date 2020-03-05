@@ -59,12 +59,14 @@ def spot(kartta_id):
             (User.username).label("username"),
             (MapSpot.nimi).label("name"),
             (MapSpot.user_id).label("user_id"),
+            (MapCountry.maa).label("maa"),
+            (MapTown.paikkakunta).label("paikkakunta"),
+            (MapType.name).label("type"),
             (MapSpot.info).label("info"),
             (MapSpot.paivays).label("paivays"),
             (MapSpot.karttalinkki).label("link"),
-            (MapCountry.maa).label("maa"),
-            (MapTown.paikkakunta).label("paikkakunta"),
-            (MapType.name).label("type")
+            (MapSpot.temp).label("temp"),
+            (MapSpot.latlon).label("latlon"),
         ).first()
 
     return render_template('spots/spot.html', spot=spot)
@@ -123,6 +125,7 @@ def update_spot(spot_id):
             form.tyyppi.default = spot.tyyppi
             form.name.default = spot.nimi
             form.description.default = spot.info
+            form.temp.default = spot.temp
             form.link.default = spot.karttalinkki
             form.latlon.default = spot.latlon
             form.process()
@@ -130,14 +133,14 @@ def update_spot(spot_id):
         if request.method == 'POST':
 
             spot = {
-                    'nimi': request.form.get('name'),
-                    'info': request.form.get('description'),
-                    'karttalinkki': request.form.get('link'),
-                    'latlon': request.form.get('latlon'),
-                    'temp': "",
                     'maa_id': request.form.get('country'),
                     'paikkakunta_id': request.form.get('town'),
                     'tyyppi': request.form.get('tyyppi'),
+                    'nimi': request.form.get('name'),
+                    'info': request.form.get('description'),
+                    'temp': request.form.get('temp'),
+                    'karttalinkki': request.form.get('link'),
+                    'latlon': request.form.get('latlon'),
                     }
 
             MapSpot.query.filter_by(kartta_id=spot_id).update(spot)

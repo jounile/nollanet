@@ -8,6 +8,7 @@ class NewSpotForm(FlaskForm):
     tyyppi = SelectField('tyyppi', choices=[])
     name = StringField('Name')
     description = StringField('Description')
+    temp = StringField('Temp')
     link = StringField('Link')
     latlon = StringField('latlon')
 
@@ -16,6 +17,7 @@ class UpdateSpotForm(FlaskForm):
     town = SelectField('town', choices=[])
     tyyppi = SelectField('tyyppi', choices=[])
     name = StringField('Name')
-    description = StringField('Description')
+    description = TextAreaField('Description')
+    temp = StringField('Temp')
     link = StringField('Link')
     latlon = StringField('latlon')

@@ -13,6 +13,12 @@
     {% if spot.link %}
         <div>Link: {{ spot.link }}</div>
     {% endif %}
+    {% if spot.temp %}
+        <div>Temp: {{ spot.temp }}</div>
+    {% endif %}
+    {% if spot.latlon %}
+        <div>Map: {{ spot.latlon }}</div>
+    {% endif %}
 
     <br />
     <div>Type: {{ spot.type }}</div>
