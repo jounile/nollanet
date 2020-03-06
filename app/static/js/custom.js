@@ -26,11 +26,6 @@ function addImageTagToTextarea(param){
 
 $(document).ready(function() {
 
-    /*
-        FB comments page url
-    */
-    $(".fb-comments").attr("data-href", window.location.href.split('?')[0]);
-
     /* 
         Show file preview when a file is selected
     */
