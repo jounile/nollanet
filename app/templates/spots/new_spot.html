@@ -5,13 +5,13 @@
 
 
 <h1>New spot</h1>
-<!--
+
 <div class="float-right">
-    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_spot_country') }}">New country</a>
-    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_spot_town') }}">New town</a>
-    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_spot_type') }}">New type</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.countries') }}">Countries</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.towns') }}">Towns</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.types') }}">Types</a>
 </div>
--->
+
 <br />
 
 <form action="{{ url_for('spots.new_spot') }}" method = "POST">

@@ -1,0 +1,37 @@
+<!-- new_town.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+<h1>New town</h1>
+
+<form action="{{ url_for('spots.new_town') }}" method = "POST">
+
+    {{ form.csrf_token }}
+
+    <div class="form-group">
+        <label for="maa_id">Country</label>
+        {{ form.maa_id(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="paikkakunta">Town</label>
+        {{ form.paikkakunta(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="lat">Latitude</label>
+        {{ form.lat(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="lon">Longitude</label>
+        {{ form.lon(class_="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    
+</form>
+
+{% endblock %}

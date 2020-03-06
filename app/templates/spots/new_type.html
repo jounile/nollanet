@@ -1,0 +1,22 @@
+<!-- new_type.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+
+<h1>New type</h1>
+
+<form action="{{ url_for('spots.new_type') }}" method = "POST">
+
+    {{ form.csrf_token }}
+
+    <div class="form-group">
+        <label for="name">Type</label>
+        {{ form.name(class_="form-control") }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    
+</form>
+
+{% endblock %}

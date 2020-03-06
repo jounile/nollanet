@@ -1,0 +1,35 @@
+<!-- towns.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="float-right">
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_town') }}">New town</a>
+</div>
+
+<h1>Towns</h1>
+Count: {{ towns.count() }}
+        
+<table width="100%" class="table table-bordered">
+    <tr>
+        <td width="90%">Name</td>
+        {% if session['logged_in'] and session['user_level'] == 1 %}
+            <td></td>
+        {% endif %}
+    </tr>
+    {% for town in towns %}
+        <tr>
+            <td>{{ town.paikkakunta }}</a></td>
+            {% if session['logged_in'] and session['user_level'] == 1 %}   
+                <td>
+                    <form action="{{ url_for('spots.delete_town') }}" method="POST">
+                        <input type="hidden" name="id" value="{{ town.id }}" />
+                        <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                    </form>
+                </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

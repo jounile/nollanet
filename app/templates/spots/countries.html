@@ -1,0 +1,35 @@
+<!-- countries.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<div class="float-right">
+    <a class="btn btn-primary" role="button" href="{{ url_for('spots.new_country') }}">New country</a>
+</div>
+
+<h1>Countries</h1>
+Count: {{ countries.count() }}
+        
+<table width="100%" class="table table-bordered">
+    <tr>
+        <td width="90%">Name</td>
+        {% if session['logged_in'] and session['user_level'] == 1 %}
+            <td></td>
+        {% endif %}
+    </tr>
+    {% for country in countries %}
+        <tr>
+            <td>{{ country.maa }}</a></td>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <td>
+                    <form action="{{ url_for('spots.delete_country') }}" method="POST">
+                        <input type="hidden" name="id" value="{{ country.id }}" />
+                        <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                    </form>
+                </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

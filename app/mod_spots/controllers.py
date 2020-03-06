@@ -4,7 +4,7 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 from app import app, db, utils
 from app.models import User, MapSpot, MapCountry, MapTown, MapType
 
-from app.mod_spots.form import NewSpotForm, UpdateSpotForm
+from app.mod_spots.form import NewSpotForm, UpdateSpotForm, NewCountryForm, NewTownForm, NewTypeForm
 
 mod_spots = Blueprint('spots', __name__, url_prefix='/spots')
 
@@ -89,6 +89,7 @@ def new_spot():
                     karttalinkki = request.form.get('link'),
                     latlon = request.form.get('latlon'),
                     temp = 0,
+                    paivays = datetime.now(),
                     user_id = session['user_id']
                 )
 
@@ -165,29 +166,129 @@ def delete_spot():
         flash("Please login first")
         return redirect(url_for("home"))
 
+@mod_spots.route('/countries')
+def countries():
+    if(session and session['logged_in']):
+        countries = MapCountry.query.order_by(MapCountry.maa.asc())
+        return render_template("spots/countries.html", countries=countries)
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
+@mod_spots.route('/towns')
+def towns():
+    if(session and session['logged_in']):
+        towns = MapTown.query.order_by(MapTown.paikkakunta.asc())
+        return render_template("spots/towns.html", towns=towns)
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
+@mod_spots.route('/types')
+def types():
+    if(session and session['logged_in']):
+        types = MapType.query.order_by(MapType.name.asc())
+        return render_template("spots/types.html", types=types)
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
 @mod_spots.route("/country/new", methods = ['POST', 'GET'])
-def new_spot_country():
-    if(session and session['logged_in'] and session['user_level'] == 1):
+def new_country():
+    if(session and session['logged_in']):
+        form = NewCountryForm()
         if request.method == 'GET':
-            return render_template("spots/new_spot_country.html")
+            return render_template("spots/new_country.html", form=form)
+        if request.method == 'POST':
+            country = MapCountry(id = request.form.get('id'),
+                    maa = request.form.get('maa'),
+                    lat = request.form.get('lat'),
+                    lon = request.form.get('lon'),
+                    koodi = request.form.get('koodi')
+                )
+            db.session.add(country)
+            db.session.commit()
+            flash("New country created succesfully")
+            return redirect(url_for("spots.countries"))
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
+@mod_spots.route("/country/delete", methods = ['POST'])
+def delete_country():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'POST':
+            id = request.form.get('id')
+            MapCountry.query.filter_by(id=id).delete()
+            db.session.commit()
+            flash("Country " + id + " was deleted succesfully by " + session['username'] + ".")
+            return redirect(url_for("spots.countries"))
     else:
         flash("Please login first")
         return redirect(url_for("home"))
 
 @mod_spots.route("/town/new", methods = ['POST', 'GET'])
-def new_spot_town():
-    if(session and session['logged_in'] and session['user_level'] == 1):
+def new_town():
+    if(session and session['logged_in']):
+        form = NewTownForm()
         if request.method == 'GET':
-            return render_template("spots/new_spot_town.html")
+            form.maa_id.choices = [(country.id, country.maa) for country in MapCountry.query.order_by(MapCountry.maa.asc())]
+            return render_template("spots/new_town.html", form=form)
+        if request.method == 'POST':
+            town = MapTown(id = request.form.get('id'),
+                    paikkakunta = request.form.get('paikkakunta'),
+                    maa_id = request.form.get('maa_id'),
+                    lat = request.form.get('lat'),
+                    lon = request.form.get('lon')
+                )
+            db.session.add(town)
+            db.session.commit()
+            flash("New town created succesfully")
+            return redirect(url_for("spots.towns"))
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
+@mod_spots.route("/town/delete", methods = ['POST'])
+def delete_town():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'POST':
+            id = request.form.get('id')
+            MapTown.query.filter_by(id=id).delete()
+            db.session.commit()
+            flash("Town " + id + " was deleted succesfully by " + session['username'] + ".")
+            return redirect(url_for("spots.towns"))
     else:
         flash("Please login first")
         return redirect(url_for("home"))
 
 @mod_spots.route("/type/new", methods = ['POST', 'GET'])
-def new_spot_type():
-    if(session and session['logged_in'] and session['user_level'] == 1):
+def new_type():
+    if(session and session['logged_in']):
+        form = NewTypeForm()
         if request.method == 'GET':
-            return render_template("spots/new_spot_type.html")
+            return render_template("spots/new_type.html", form=form)
+        if request.method == 'POST':
+            maptype = MapType(id = request.form.get('id'),
+                    name = request.form.get('name')
+                )
+            db.session.add(maptype)
+            db.session.commit()
+            flash("New type created succesfully")
+            return redirect(url_for("spots.types"))
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
+@mod_spots.route("/type/delete", methods = ['POST'])
+def delete_type():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'POST':
+            id = request.form.get('id')
+            MapType.query.filter_by(id=id).delete()
+            db.session.commit()
+            flash("Town " + id + " was deleted succesfully by " + session['username'] + ".")
+            return redirect(url_for("spots.types"))
     else:
         flash("Please login first")
         return redirect(url_for("home"))
