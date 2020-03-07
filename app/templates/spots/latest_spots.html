@@ -1,0 +1,62 @@
+<!-- latest_spots.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Latest spots</h1>
+<div class="spots-list">
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Town ID</th>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Info</th>
+            <th>Type</th>
+            <th>Temp</th>
+            <th>Date</th>
+            <th>Link</th>
+            <th>Country ID</th>
+            <th>Lat/Lon</th>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <th></th>
+                <th></th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for spot in spots %}
+            <tr>
+                <td>{{ spot.kartta_id }}</td>
+                <td>{{ spot.paikkakunta_id }}</td>
+                <td>{{ spot.user_id }}</td>
+                <td>{{ spot.nimi }}</td>
+                <td>{{ spot.info[:80] }}</td>
+                <td>{{ spot.tyyppi }}</td>
+                <td>{{ spot.temp }}</td>
+                <td>{{ spot.paivays }}</td>
+                <td>{{ spot.karttalinkki }}</td>
+                <td>{{ spot.maa_id }}</td>
+                <td>{{ spot.latlon }}</td>
+                {% if session['logged_in'] and session['user_level'] == 1 %}
+                    <td>
+                        <form action="{{ url_for('spots.update_spot', spot_id=spot.kartta_id) }}" method="GET">
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('spots.delete_spot') }}" method="POST">
+                            <input type="hidden" name="spot_id" value="{{ spot.kartta_id }}" />
+                            <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

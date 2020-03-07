@@ -292,3 +292,12 @@ def delete_type():
     else:
         flash("Please login first")
         return redirect(url_for("home"))
+
+@mod_spots.route("/latest")
+def latest():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        spots = db.session.query(MapSpot).filter(MapSpot.paivays >= '2020-01-01').order_by(MapSpot.paivays.desc())
+        return render_template("spots/latest_spots.html", spots=spots)
+    else:
+        flash("Please login first")
+    return redirect(url_for("home"))

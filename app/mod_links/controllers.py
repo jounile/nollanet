@@ -108,3 +108,12 @@ def new_category():
     else:
         flash("Please login first")
         return redirect(url_for("home"))
+
+@mod_links.route("/latest")
+def latest():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        links = db.session.query(Links).order_by(Links.create_time.desc()).limit(10)
+        return render_template("links/latest_links.html", links=links)
+    else:
+        flash("Please login first")
+    return redirect(url_for("home"))
