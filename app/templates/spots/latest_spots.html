@@ -8,8 +8,9 @@
     <table width="100%" class="table table-bordered">
         <thead class="thead-dark">
         <tr>
-            <th>ID</th>
-            <th>Town ID</th>
+            <th>#</th>
+            <th>Country</th>
+            <th>Town</th>
             <th>User ID</th>
             <th>Name</th>
             <th>Info</th>
@@ -17,7 +18,6 @@
             <th>Temp</th>
             <th>Date</th>
             <th>Link</th>
-            <th>Country ID</th>
             <th>Lat/Lon</th>
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <th></th>
@@ -28,16 +28,16 @@
         <tbody>
         {% for spot in spots %}
             <tr>
-                <td>{{ spot.kartta_id }}</td>
-                <td>{{ spot.paikkakunta_id }}</td>
-                <td>{{ spot.user_id }}</td>
-                <td>{{ spot.nimi }}</td>
+                <td>{{ loop.revindex }}</td>
+                <td>{{ spot.maa }}</td>
+                <td>{{ spot.paikkakunta }}</td>
+                <td>{{ spot.username }}</td>
+                <td>{{ spot.name }}</td>
                 <td>{{ spot.info[:80] }}</td>
-                <td>{{ spot.tyyppi }}</td>
+                <td>{{ spot.type }}</td>
                 <td>{{ spot.temp }}</td>
                 <td>{{ spot.paivays }}</td>
-                <td>{{ spot.karttalinkki }}</td>
-                <td>{{ spot.maa_id }}</td>
+                <td>{{ spot.link }}</td>
                 <td>{{ spot.latlon }}</td>
                 {% if session['logged_in'] and session['user_level'] == 1 %}
                     <td>

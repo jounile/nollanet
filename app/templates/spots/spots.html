@@ -60,7 +60,6 @@ Count: {{ spots.count() }}
             <td><a href="{{ url_for('spots.spot', kartta_id=spot.kartta_id) }}">{{ spot.nimi }}</a></td>
             <td>
                 {{ spot.info }}<br />
-                <!--<a href="{{ spot.karttalinkki }}">{{ spot.karttalinkki }}</a>-->
             </td>
             <td>{{ spot.paivays }}</td>
             {% if session['logged_in'] and session['user_level'] == 1 %}

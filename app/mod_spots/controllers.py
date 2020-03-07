@@ -296,7 +296,34 @@ def delete_type():
 @mod_spots.route("/latest")
 def latest():
     if(session and session['logged_in'] and session['user_level'] == 1):
-        spots = db.session.query(MapSpot).filter(MapSpot.paivays >= '2020-01-01').order_by(MapSpot.paivays.desc())
+        spots = db.session.query(
+            MapSpot
+        ).filter(
+            MapSpot.paivays >= '2020-01-01'
+        ).join(
+            User, MapSpot.user_id == User.user_id
+        ).join(
+            MapCountry, MapSpot.maa_id == MapCountry.id
+        ).join(
+            MapTown, MapSpot.paikkakunta_id == MapTown.id
+        ).join(
+            MapType, MapSpot.tyyppi == MapType.id
+        ).add_columns(
+            (User.username).label("username"),
+            (MapSpot.nimi).label("name"),
+            (MapSpot.user_id).label("user_id"),
+            (MapCountry.maa).label("maa"),
+            (MapTown.paikkakunta).label("paikkakunta"),
+            (MapType.name).label("type"),
+            (MapSpot.info).label("info"),
+            (MapSpot.paivays).label("paivays"),
+            (MapSpot.karttalinkki).label("link"),
+            (MapSpot.temp).label("temp"),
+            (MapSpot.latlon).label("latlon"),
+        ).order_by(
+            MapSpot.paivays.desc()
+        )
+
         return render_template("spots/latest_spots.html", spots=spots)
     else:
         flash("Please login first")

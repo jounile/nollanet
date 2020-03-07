@@ -8,7 +8,7 @@
 <form action = "{{ url_for('media.update', media_id=result.media_id) }}" method = "POST">
     
     <input type="hidden" name="media_id" value="{{ result.media_id  }}" />
-    
+
     <div class="form-group">
         <label for="media_topic">Title</label>
         <input type="text" name="media_topic" class="form-control" size="100" value="{{ result.media_topic }}" />

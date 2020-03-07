@@ -16,7 +16,7 @@
                 <h3>{{ category.name }}</h3>
             </td>
             <td>
-                <form action="{{ url_for('links.delete_linkcategory') }}" method="POST">
+                <form action="{{ url_for('links.delete_category') }}" method="POST">
                     <input type="hidden" name="id" value="{{ category.id }}" />
                     <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                 </form>

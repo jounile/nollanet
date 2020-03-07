@@ -13,7 +13,7 @@ def all():
     return render_template("links/links.html", categories=categories, links=links)
 
 
-@mod_links.route('/links/edit')
+@mod_links.route('/edit')
 def edit_links():
     if session.get('logged_in') and session.get('user_level') == 1:
         categories = LinkCategories.query.order_by(LinkCategories.create_time.desc())
@@ -21,7 +21,7 @@ def edit_links():
         return render_template("links/edit_links.html", categories=categories, links=links)
 
 
-@mod_links.route("/newlink", methods = ['POST', 'GET'])
+@mod_links.route("/new", methods = ['POST', 'GET'])
 def new_link():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'GET':
