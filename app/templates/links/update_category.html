@@ -1,0 +1,27 @@
+<!-- update_category.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Update category</h1>
+
+<form action = "{{ url_for('links.update_category', category_id=category.id) }}" method = "POST">
+    
+    <input type="hidden" name="category_id" value="{{ category.id  }}" />
+    
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="name" class="form-control" size="100" value="{{ category.name }}" />
+    </div>
+
+    <label for="user_id">User id</label>
+    <div>{{ category.user_id }}</div>
+    
+    <label for="create_time">Created</label>
+    <div>{{ category.create_time }}</div>
+
+    <button type="submit" class="btn btn-primary">Update</button>
+ </form>
+
+
+ {% endblock %}

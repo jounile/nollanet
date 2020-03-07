@@ -31,14 +31,10 @@
             <a class="btn btn-primary" role="button" href="{{ url_for('links.latest') }}">Latest links</a><br /><br />
             <a class="btn btn-primary" role="button" href="{{ url_for('links.new_link') }}">New link</a>
             <a class="btn btn-primary" role="button" href="{{ url_for('links.edit_links') }}">Links</a><br /><br />
-        </div>
-        <div class="col">
-            
+            <a class="btn btn-primary" role="button" href="{{ url_for('links.new_category') }}">New category</a>
+            <a class="btn btn-primary" role="button" href="{{ url_for('links.categories') }}">Categories</a><br /><br />
         </div>
     </div>
-
-   
-
 </div>
 
 {% endblock %}

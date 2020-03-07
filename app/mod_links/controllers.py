@@ -75,8 +75,24 @@ def delete_link():
         flash("Please login first")
         return redirect(url_for("home"))
 
-@mod_links.route('/linkcategory/delete', methods = ['POST'])
-def delete_linkcategory():
+@mod_links.route("/category/update/<category_id>", methods = ['POST', 'GET'])
+def update_category(category_id):
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'GET':
+            category = LinkCategories.query.filter_by(id=category_id).first()
+            return render_template("links/update_category.html", category=category)
+        if request.method == 'POST':
+            category = { 'name': request.form.get('name') }
+            LinkCategories.query.filter_by(id=category_id).update(category)
+            db.session.commit()
+            flash("Category " + str(category_id) + " was updated by user " + session['username'])
+            return redirect(url_for("links.categories"))
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
+@mod_links.route('/category/delete', methods = ['POST'])
+def delete_category():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
             id = request.form.get('id')
@@ -88,7 +104,7 @@ def delete_linkcategory():
         flash("Please login first")
         return redirect(url_for("home"))
 
-@mod_links.route("/newcategory", methods = ['POST', 'GET'])
+@mod_links.route("/category/new", methods = ['POST', 'GET'])
 def new_category():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
@@ -104,7 +120,7 @@ def new_category():
             flash("New link category created with ID " + str(category.id))
             return redirect(url_for("links.all"))
         if request.method == 'GET':
-            return render_template("links/new_linkcategory.html")
+            return render_template("links/new_category.html")
     else:
         flash("Please login first")
         return redirect(url_for("home"))
@@ -114,6 +130,15 @@ def latest():
     if(session and session['logged_in'] and session['user_level'] == 1):
         links = db.session.query(Links).order_by(Links.create_time.desc()).limit(10)
         return render_template("links/latest_links.html", links=links)
+    else:
+        flash("Please login first")
+    return redirect(url_for("home"))
+
+@mod_links.route("/categories")
+def categories():
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        categories = db.session.query(LinkCategories).order_by(LinkCategories.create_time.desc())
+        return render_template("links/categories.html", categories=categories)
     else:
         flash("Please login first")
     return redirect(url_for("home"))
