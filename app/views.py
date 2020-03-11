@@ -8,7 +8,7 @@ from flask_paginate import Pagination, get_page_args
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Uploads, Media, Page, User, StoryType, Genre, MediaType, Country
+from app.models import Uploads, Media, Page, User, LoggedInUser, StoryType, Genre, MediaType, Country
 from app.models import Links, LinkCategories
 from app.models import MapSpot, MapCountry, MapTown, MapType
 
@@ -39,6 +39,7 @@ def home():
 
     photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    logged_in_users = LoggedInUser.query.count()
     #spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     #photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     #photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
@@ -51,6 +52,7 @@ def home():
         links=links,
         photos_skateboarding=photos_skateboarding,
         photos_snowboarding=photos_snowboarding,
+        loggend_in_users=logged_in_users,
         #spotchecks=spotchecks,
         #photos_nollagang=photos_nollagang,
         #photos_snowskate=photos_snowskate

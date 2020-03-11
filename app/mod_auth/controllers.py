@@ -9,7 +9,7 @@ from sendgrid.helpers.mail import (Mail, From, To)
 from app.mod_auth.form import RegisterForm, ProfileForm
 
 from app import app, db, utils
-from app.models import User, PwdRecover, Links, LinkCategories
+from app.models import User, LoggedInUser, PwdRecover, Links, LinkCategories
 from app.mod_auth import bcrypt
 
 mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
@@ -110,6 +110,18 @@ def login():
                 app.logger.info("Incrementing login_count by one was successful")
             except Exception as e:
                 app.logger.error("Incrementing login_count failed")
+
+            # Add user to user_online table
+            try:
+                loggedInUser = LoggedInUser(user_id=user.user_id,
+                            username=user.username,
+                            created_time=datetime.now()
+                        )
+                db.session.add(loggedInUser)
+                db.session.commit()
+                app.logger.info("Adding to user_online table was successful")
+            except Exception as e:
+                app.logger.error("Adding to user_online table failed")
         else:
             flash("Wrong credentials!")
 
@@ -119,10 +131,20 @@ def login():
 def logout():
     if session.get('logged_in'):
         app.logger.info('Logout user ' +  session.get('username') + '.')
+        # Delete user from user_online table
+        try:
+            LoggedInUser.query.filter_by(username=session.get('username')).delete()
+            db.session.commit()
+            app.logger.info("Removing user from user_online table was successful")
+        except Exception as e:
+            app.logger.error("Removing user from user_online table failed")
+
+        # Logout by deleting session data
         session['logged_in'] = False
         session.pop('username')
         session.pop('user_id')
         session.pop('user_level')
+
     return redirect(url_for('home'))
 
 @mod_auth.route('/profile', methods=['GET','POST'])

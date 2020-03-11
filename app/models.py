@@ -182,3 +182,10 @@ class User(db.Model):
     last_profile_update = db.Column(db.DateTime)
     avatar = db.Column(db.String(100))
     flickr_username = db.Column(db.String)
+
+class LoggedInUser(db.Model):
+    __tablename__ = 'user_online'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(20), nullable=False, index=True, server_default=db.FetchedValue())
+    created_time = db.Column(db.Date, nullable=False, server_default=db.FetchedValue())
