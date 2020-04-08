@@ -23,7 +23,7 @@ class Page(db.Model):
 class Genre(db.Model):
     __tablename__ = 'genre'
     id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.media_genre'))
+    type_id = db.Column(db.Integer, db.ForeignKey('media.media_id'))
     type_name = db.Column(db.String(50))
 
 class MapCountry(db.Model):
@@ -48,13 +48,13 @@ class MapSpot(db.Model):
     paikkakunta_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     user_id = db.Column(db.Integer, nullable=False, index=True, server_default=db.FetchedValue())
     nimi = db.Column(db.String(200), nullable=False, server_default=db.FetchedValue())
-    info = db.Column(db.String, nullable=False)
+    info = db.Column(db.String(512), nullable=False)
     tyyppi = db.Column(db.SmallInteger, nullable=False, server_default=db.FetchedValue())
     temp = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     paivays = db.Column(db.Date, nullable=False, server_default=db.FetchedValue())
     karttalinkki = db.Column(db.String(200))
     maa_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
-    latlon = db.Column(db.String)
+    latlon = db.Column(db.String(512))
 
 class MapType(db.Model):
     __tablename__ = 'map_type'
@@ -64,12 +64,12 @@ class MapType(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comment'
     __table_args__ = (
-        db.Index('id', 'id', 'user_id', 'media_id', 'comment_user_id', 'youtube_id'),
+        db.Index('user_id', 'media_id', 'comment_user_id', 'youtube_id'),
     )
     id = db.Column(db.BigInteger, primary_key=True, unique=True)
     user_id = db.Column(db.BigInteger, nullable=False, server_default=db.FetchedValue())
     header = db.Column(db.String(250))
-    comment = db.Column(db.String)
+    comment = db.Column(db.String(2048))
     media_id = db.Column(db.BigInteger)
     comment_user_id = db.Column(db.BigInteger)
     youtube_id = db.Column(db.BigInteger)
@@ -107,13 +107,13 @@ class Media(db.Model):
     create_time = db.Column(db.String(50))
     owner = db.Column(db.String(50))
     lang_id = db.Column(db.Integer)
-    country_id = db.Column(db.Integer)
+    country_id = db.Column(db.Integer, index=True)
     hidden = db.Column(db.Integer)
 
 class MediaType(db.Model):
     __tablename__ = 'media_type'
     id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.media_type'))
+    type_id = db.Column(db.Integer, db.ForeignKey('media.media_id'))
     type_name = db.Column(db.String(50))
 
 class PwdRecover(db.Model):
@@ -127,7 +127,7 @@ class PwdRecover(db.Model):
 class StoryType(db.Model):
     __tablename__ = 'story_type'
     id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.story_type'))
+    type_id = db.Column(db.Integer, db.ForeignKey('media.media_id'))
     type_name = db.Column(db.String(50))
 
 class Uploads(db.Model):
@@ -143,17 +143,17 @@ class User(db.Model):
     level = db.Column(db.Integer, nullable=False, index=True, server_default=db.FetchedValue())
     username = db.Column(db.String(20), nullable=False, index=True, server_default=db.FetchedValue())
     password = db.Column(db.String(60), index=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String(128), nullable=False)
     bornyear = db.Column(db.SmallInteger, nullable=False, server_default=db.FetchedValue())
-    email = db.Column(db.String, nullable=False)
-    email2 = db.Column(db.String)
-    homepage = db.Column(db.String)
-    info = db.Column(db.String)
-    location = db.Column(db.String, nullable=False)
+    email = db.Column(db.String(512), nullable=False)
+    email2 = db.Column(db.String(512))
+    homepage = db.Column(db.String(1024))
+    info = db.Column(db.String(2048))
+    location = db.Column(db.String(2048), nullable=False)
     date = db.Column(db.Date, nullable=False, server_default=db.FetchedValue())
     hobbies = db.Column(db.Text)
     open = db.Column(db.Integer, nullable=False, index=True, server_default=db.FetchedValue())
-    extrainfo = db.Column(db.String)
+    extrainfo = db.Column(db.String(2048))
     sukupuoli = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     icq = db.Column(db.String(15))
     apulainen = db.Column(db.Integer, server_default=db.FetchedValue())
@@ -162,14 +162,14 @@ class User(db.Model):
     oikeus = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     lang_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     login_count = db.Column(db.BigInteger)
-    lastloginip = db.Column(db.String)
-    lastloginclient = db.Column(db.String)
+    lastloginip = db.Column(db.String(128))
+    lastloginclient = db.Column(db.String(128))
     address = db.Column(db.Text, nullable=False)
-    postnumber = db.Column(db.String, nullable=False)
+    postnumber = db.Column(db.String(16), nullable=False)
     emails = db.Column(db.Integer, server_default=db.FetchedValue())
-    puhelin = db.Column(db.String)
-    kantaasiakasnro = db.Column(db.String)
-    lamina_lisatieto = db.Column(db.String)
+    puhelin = db.Column(db.String(16))
+    kantaasiakasnro = db.Column(db.String(32))
+    lamina_lisatieto = db.Column(db.String(256))
     blogs = db.Column(db.BigInteger)
     user_showid = db.Column(db.BigInteger)
     blog_level = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
@@ -181,7 +181,7 @@ class User(db.Model):
     ircgalleria = db.Column(db.String(50))
     last_profile_update = db.Column(db.DateTime)
     avatar = db.Column(db.String(100))
-    flickr_username = db.Column(db.String)
+    flickr_username = db.Column(db.String(256))
 
 class LoggedInUser(db.Model):
     __tablename__ = 'user_online'
