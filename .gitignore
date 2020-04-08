@@ -76,3 +76,4 @@ db_dumps/*
 
 # environment vars
 env.sh
+.env.dev
