@@ -32,12 +32,6 @@ mysql>SHOW TABLES;
 mysql>SELECT * FROM users;
 ```
 
-## phpMyAdmin in Docker
-```bash
-$ docker pull phpmyadmin/phpmyadmin
-$ docker run --name myadmin -d -e PMA_HOST=docker.for.mac.localhost -e PMA_PORT=3306 -p 8001:80 phpmyadmin/phpmyadmin
-```
-
 ## Store new packages in requirements.txt
 ```bash
 $ pip freeze > requirements.txt

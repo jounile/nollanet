@@ -74,6 +74,9 @@ app/static/tn/*
 # db_dumps
 db_dumps/*
 
+# pytest
+.pytest_cache
+
 # environment vars
 env.sh
 .env.dev
