@@ -41,7 +41,6 @@ from app.mod_news.controllers import mod_news as news_module
 from app.mod_users.controllers import mod_users as users_module
 
 from app.mod_youtube.controllers import mod_youtube as youtube_module
-from app.mod_soundcloud.controllers import mod_soundcloud as soundcloud_module
 from app.mod_facebook.controllers import mod_facebook as facebook_module
 
 # Register blueprint(s)
@@ -57,7 +56,6 @@ app.register_blueprint(news_module)
 app.register_blueprint(users_module)
 
 app.register_blueprint(youtube_module)
-app.register_blueprint(soundcloud_module)
 app.register_blueprint(facebook_module)
 
 # Flask-Selfdoc
@@ -75,8 +73,6 @@ nav.Bar('top', [
     nav.Item('Reviews', 'reviews.all'),
     nav.Item('Spots', 'spots.all'),
     nav.Item('Links', 'links.all'),
-    #nav.Item('Spotchecks', 'spotchecks.all'),
-    #nav.Item('Guides', 'guides.all'),
 ])
 
 nav.Bar('user', [
