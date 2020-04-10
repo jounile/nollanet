@@ -78,5 +78,4 @@ db_dumps/*
 .pytest_cache
 
 # environment vars
-env.sh
-.env.dev
+.env.prod
