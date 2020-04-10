@@ -23,7 +23,7 @@ class Page(db.Model):
 class Genre(db.Model):
     __tablename__ = 'genre'
     id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.media_id'))
+    type_id = db.Column(db.Integer, db.ForeignKey('media.media_genre'))
     type_name = db.Column(db.String(50))
 
 class MapCountry(db.Model):
@@ -64,7 +64,7 @@ class MapType(db.Model):
 class Comment(db.Model):
     __tablename__ = 'comment'
     __table_args__ = (
-        db.Index('user_id', 'media_id', 'comment_user_id', 'youtube_id'),
+        db.Index('id', 'id', 'user_id', 'media_id', 'comment_user_id', 'youtube_id'),
     )
     id = db.Column(db.BigInteger, primary_key=True, unique=True)
     user_id = db.Column(db.BigInteger, nullable=False, server_default=db.FetchedValue())
@@ -113,7 +113,7 @@ class Media(db.Model):
 class MediaType(db.Model):
     __tablename__ = 'media_type'
     id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.media_id'))
+    type_id = db.Column(db.Integer, db.ForeignKey('media.media_type'))
     type_name = db.Column(db.String(50))
 
 class PwdRecover(db.Model):
@@ -127,7 +127,7 @@ class PwdRecover(db.Model):
 class StoryType(db.Model):
     __tablename__ = 'story_type'
     id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.media_id'))
+    type_id = db.Column(db.Integer, db.ForeignKey('media.story_type'))
     type_name = db.Column(db.String(50))
 
 class Uploads(db.Model):
