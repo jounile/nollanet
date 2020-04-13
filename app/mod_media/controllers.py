@@ -5,7 +5,7 @@ from flask import Blueprint, request, render_template, flash, g, session, redire
 from werkzeug import secure_filename
 
 from app import app, db, utils
-from app.models import Uploads, User, Comment, Media, Country, Genre, MediaType, StoryType
+from app.models import Uploads, User, Comment, Media, Country, Genre, StoryType, MediaType
 
 mod_media = Blueprint('media', __name__, url_prefix='/media')
 
@@ -13,29 +13,29 @@ mod_media = Blueprint('media', __name__, url_prefix='/media')
 @mod_media.route('/all')
 def all():
 
-    selected_media_genre = 1 # skateboarding by default
-    if(request.args.get('media_genre')):
-        selected_media_genre = request.args.get('media_genre')
+    selected_genre_id = 1 # skateboarding by default
+    if(request.args.get('genre_id')):
+        selected_genre_id = request.args.get('genre_id')
 
-    selected_media_type = 1 # photos by default
-    if(request.args.get('media_type')):
-        selected_media_type = request.args.get('media_type')
+    selected_mediatype_id = 1 # photos by default
+    if(request.args.get('mediatype_id')):
+        selected_mediatype_id = request.args.get('mediatype_id')
 
-    total = utils.get_count_by_genre_and_type(selected_media_genre, selected_media_type)
+    total = utils.get_count_by_genre_and_type(selected_genre_id, selected_mediatype_id)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
     media = db.session.query(
             Media
         ).join(Country
         ).add_columns(
-            Media.media_id,
+            Media.id,
             (Country.country_code).label("country_code"),
             Media.media_topic,
             Media.create_time,
             Media.owner
         ).filter(
-            Media.media_type==selected_media_type
+            Media.mediatype_id==selected_mediatype_id
         ).filter(
-            Media.media_genre==selected_media_genre
+            Media.genre_id==selected_genre_id
         ).filter(
             Media.hidden==0
         ).order_by(
@@ -43,23 +43,24 @@ def all():
         ).offset(
             offset
         ).limit(per_page)
-    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' media', format_total=True, format_number=True,)                                 
-    return render_template('media/media.html', media=media, pagination=pagination, selected_media_genre=selected_media_genre, selected_media_type=selected_media_type)
 
-@mod_media.route('/photo/<media_id>')
-def photo(media_id):
-    photo = db.session.query(Media).join(Country).add_columns(Media.media_id,
+    pagination = utils.get_pagination(page=page, per_page=per_page, total=total, record_name=' media', format_total=True, format_number=True,)                                 
+    return render_template('media/media.html', media=media, pagination=pagination, selected_genre_id=selected_genre_id, selected_mediatype_id=selected_mediatype_id)
+
+@mod_media.route('/photo/<id>')
+def photo(id):
+    photo = db.session.query(Media).join(Country).add_columns(Media.id,
         (Country.country_code).label("country_code"),
         Media.media_topic,
         Media.media_text,
         Media.create_time,
-        Media.owner).filter(Media.media_id==media_id).first()
-    comments = Comment.query.filter_by(media_id=media_id).filter(Comment.user_id == User.user_id).order_by(Comment.id.desc()).limit(100)
+        Media.owner).filter(Media.id==id).first()
+    comments = Comment.query.filter_by(media_id=id).filter(Comment.user_id == User.user_id).order_by(Comment.id.desc()).limit(100)
     return render_template('media/photo.html', photo=photo, comments=comments)
 
-@mod_media.route('/video/<string:media_id>')
-def video(media_id):
-    video = Media.query.filter_by(media_id=media_id).first()
+@mod_media.route('/video/<string:id>')
+def video(id):
+    video = Media.query.filter_by(id=id).first()
     return render_template('media/video.html', video=video)
 
 
@@ -73,7 +74,7 @@ def latest():
             ).join(StoryType
             ).join(Country
             ).add_columns(
-                Media.media_id,
+                Media.id,
                 (Genre.type_name).label("genre"),
                 (MediaType.type_name).label("mediatype_name"),
                 (StoryType.type_name).label("storytype_name"),
@@ -95,10 +96,10 @@ def latest():
 def delete():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
-            media_id = request.form.get('media_id')
-            Media.query.filter_by(media_id=media_id).delete()
+            id = request.form.get('id')
+            Media.query.filter_by(id=id).delete()
             db.session.commit()
-            flash("Record " + media_id + " was deleted succesfully by " + session['username'] + ".")
+            flash("Record " + id + " was deleted succesfully by " + session['username'] + ".")
     else:
         flash("Please login first")
     return redirect(url_for("home"))
@@ -110,14 +111,14 @@ def filename(filename):
         return redirect(urljoin(static_url, filename))
     return app.send_static_file(filename)
 
-@mod_media.route("/update/<media_id>", methods = ['POST', 'GET'])
-def update(media_id):
+@mod_media.route("/update/<id>", methods = ['POST', 'GET'])
+def update(id):
     if request.method == 'POST':
 
-        media = { 'media_id': request.form.get('media_id'),
-                'media_genre': request.form.get('media_genre'),
-                'media_type': request.form.get('media_type'),
-                'story_type': request.form.get('story_type'),
+        media = { 'id': request.form.get('id'),
+                'genre_id': request.form.get('genre_id'),
+                'mediatype_id': request.form.get('mediatype_id'),
+                'storytype_id': request.form.get('storytype_id'),
                 'media_topic': request.form.get('media_topic'),
                 'media_text': request.form.get('media_text'),
                 'media_desc': request.form.get('media_desc'),
@@ -125,16 +126,16 @@ def update(media_id):
                 'hidden': request.form.get('hidden') }
 
         if(session and session['logged_in'] and session['user_level'] == 1):
-            Media.query.filter_by(media_id=media_id).update(media)
+            Media.query.filter_by(id=id).update(media)
             db.session.commit()
-            flash("Record " + media_id + " was updated by user " + session['username'])
+            flash("Record " + id + " was updated by user " + session['username'])
             return redirect(url_for("home"))
         else:
             flash("Please login first")
             return redirect(url_for("home"))
     else:
         if(session and session['logged_in'] and session['user_level'] == 1):
-            result = Media.query.filter_by(media_id=media_id).first()
+            result = Media.query.filter_by(id=id).first()
             return render_template("views/user/update_media.html", result=result)
         else:
             flash("Please login first")

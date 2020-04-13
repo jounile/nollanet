@@ -9,13 +9,13 @@ mod_reviews = Blueprint('reviews', __name__, url_prefix='/reviews')
 @mod_reviews.route('/all')
 def all():
     reviews = db.session.query(
-            Media.media_type.in_((4,5,))
+            Media.mediatype_id.in_((4,5,))
         ).join(Genre
         ).join(MediaType
         ).join(StoryType
         ).join(Country
         ).add_columns(
-            Media.media_id,
+            Media.id,
             (Genre.type_name).label("genre"),
             (MediaType.type_name).label("mediatype_name"),
             (StoryType.type_name).label("storytype_name"),
@@ -24,7 +24,7 @@ def all():
             Media.create_time,
             Media.owner
         ).filter(
-            Media.story_type==utils.get_story_type('reviews')
+            Media.storytype_id==utils.get_storytype_id('reviews')
         ).filter(
             Media.hidden==0
         ).order_by(
@@ -33,7 +33,7 @@ def all():
     return render_template("reviews/reviews.html", reviews=reviews)
 
 
-@mod_reviews.route('/review/<media_id>')
-def review(media_id):
-    review = Media.query.filter_by(media_id=media_id).first()
+@mod_reviews.route('/review/<id>')
+def review(id):
+    review = Media.query.filter_by(id=id).first()
     return render_template('reviews/review.html', review=review)

@@ -10,7 +10,7 @@
             <div class="row news-item">
                 <div class="news-details">
                     <div class="news-title">
-                        <a href="{{ url_for('news.item', media_id=item.media_id) }}">{{ item.media_topic }}</a>
+                        <a href="{{ url_for('news.item', id=item.id) }}">{{ item.media_topic }}</a>
                     </div>
                     <div class="news-desc">
                         {{ item.media_desc }}
@@ -39,7 +39,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Skateboarding</span></h4></div>
             <ul>
                 {% for item in photos_skateboarding %}
-                    <li><a href="{{ url_for('media.photo', media_id=item.media_id) }}">{{ item.media_topic }}</a></li>
+                    <li><a href="{{ url_for('media.photo', id=item.id) }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -49,7 +49,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Snowboarding</span></h4></div>
             <ul>
                 {% for item in photos_snowboarding %}
-                    <li><a href="{{ url_for('media.photo', media_id=item.media_id) }}">{{ item.media_topic }}</a></li>
+                    <li><a href="{{ url_for('media.photo', id=item.id) }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -59,7 +59,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Interviews</span></h4></div>
             <ul>
                 {% for item in interviews %}
-                    <li><a href="{{ url_for('interviews.interview', media_id=item.media_id) }}">{{ item.media_topic }}</a></li>
+                    <li><a href="{{ url_for('interviews.interview', id=item.id) }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -71,7 +71,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Reviews</span></h4></div>
             <ul>
                 {% for item in reviews %}
-                    <li><a href="{{ url_for('reviews.review', media_id=item.media_id) }}">{{ item.media_topic }}</a></li>
+                    <li><a href="{{ url_for('reviews.review', id=item.id) }}">{{ item.media_topic }}</a></li>
                 {% endfor %}
             </ul>
         </div>

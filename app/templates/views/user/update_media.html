@@ -5,9 +5,9 @@
 
 <h1>Update post</h1>
 
-<form action = "{{ url_for('media.update', media_id=result.media_id) }}" method = "POST">
+<form action = "{{ url_for('media.update', id=result.id) }}" method = "POST">
     
-    <input type="hidden" name="media_id" value="{{ result.media_id  }}" />
+    <input type="hidden" name="id" value="{{ result.id  }}" />
 
     <div class="form-group">
         <label for="media_topic">Title</label>
@@ -42,36 +42,36 @@
     </div>
  
     <div class="form-group">
-        <label for="media_genre">Media genre</label>
-        <select name="media_genre" class="form-control">
-            <option value="1"{% if result.media_genre==1 %} selected="selected" {% endif %}>Skateboarding</option>
-            <option value="2"{% if result.media_genre==2 %} selected="selected" {% endif %}>Snowboarding</option>
+        <label for="genre_id">Media genre</label>
+        <select name="genre_id" class="form-control">
+            <option value="1"{% if result.genre_id==1 %} selected="selected" {% endif %}>Skateboarding</option>
+            <option value="2"{% if result.genre_id==2 %} selected="selected" {% endif %}>Snowboarding</option>
             <!--
-            <option value="10"{% if result.media_genre==10 %} selected="selected" {% endif %}>Nollagang</option>
-            <option value="11"{% if result.media_genre==11 %} selected="selected" {% endif %}>Snowskate</option>
+            <option value="10"{% if result.genre_id==10 %} selected="selected" {% endif %}>Nollagang</option>
+            <option value="11"{% if result.genre_id==11 %} selected="selected" {% endif %}>Snowskate</option>
             -->
-            <option value="0"{% if result.media_genre==0 %} selected="selected" {% endif %}>None</option>
+            <option value="0"{% if result.genre_id==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 
     <div class="form-group">
-        <label for="media_type">Media type</label>
-        <select name="media_type" class="form-control" id="media_type_selector">
-            <option value="1"{% if result.media_type==1 %} selected="selected" {% endif %}>Photo</option>
-            <option value="6"{% if result.media_type==6 %} selected="selected" {% endif %}>Video</option>
-            <option value="5"{% if result.media_type==5 %} selected="selected" {% endif %}>Stories</option>
-            <option value="0"{% if result.media_type==0 %} selected="selected" {% endif %}>None</option>
+        <label for="mediatype_id">Media type</label>
+        <select name="mediatype_id" class="form-control" id="mediatype_id_selector">
+            <option value="1"{% if result.mediatype_id==1 %} selected="selected" {% endif %}>Photo</option>
+            <option value="6"{% if result.mediatype_id==6 %} selected="selected" {% endif %}>Video</option>
+            <option value="5"{% if result.mediatype_id==5 %} selected="selected" {% endif %}>Stories</option>
+            <option value="0"{% if result.mediatype_id==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 
-    <div class="form-group" id="story_type_form_group">
-        <label for="story_type">Story type</label>
-        <select name="story_type" class="form-control">
-            <option value="5"{% if result.story_type==5 %} selected="selected" {% endif %}>Spotcheck</option>
-            <option value="4"{% if result.story_type==4 %} selected="selected" {% endif %}>News</option>
-            <option value="3"{% if result.story_type==3 %} selected="selected" {% endif %}>Interview</option>
-            <option value="2"{% if result.story_type==2 %} selected="selected" {% endif %}>Review</option>
-            <option value="0"{% if result.story_type==0 %} selected="selected" {% endif %}>None</option>
+    <div class="form-group" id="storytype_id_form_group">
+        <label for="storytype_id">Story type</label>
+        <select name="storytype_id" class="form-control">
+            <option value="5"{% if result.storytype_id==5 %} selected="selected" {% endif %}>Spotcheck</option>
+            <option value="4"{% if result.storytype_id==4 %} selected="selected" {% endif %}>News</option>
+            <option value="3"{% if result.storytype_id==3 %} selected="selected" {% endif %}>Interview</option>
+            <option value="2"{% if result.storytype_id==2 %} selected="selected" {% endif %}>Review</option>
+            <option value="0"{% if result.storytype_id==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 

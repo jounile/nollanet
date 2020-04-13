@@ -34,15 +34,15 @@ $(document).ready(function() {
     });
 
     /* 
-        Show story_type selection depending when media_type is 5 (Stories)
+        Show storytype_id selection depending when mediatype_id is 5 (Stories)
     */
-    $("#story_type_form_group").hide();
-    $("#media_type_selector").change(function() {
-        var selectedMediaType = $("#media_type_selector option:selected").val();
+    $("#storytype_id_form_group").hide();
+    $("#mediatype_id_selector").change(function() {
+        var selectedMediaType = $("#mediatype_id_selector option:selected").val();
         if(selectedMediaType == 5){
-            $("#story_type_form_group").show();
+            $("#storytype_id_form_group").show();
         } else {
-            $("#story_type_form_group").hide();
+            $("#storytype_id_form_group").hide();
         }
     });
 

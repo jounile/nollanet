@@ -21,9 +21,9 @@ def home():
     #app.logger.error('An error occurred')
     #app.logger.info('Navigated to home() route')
 
-    interviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    news = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    reviews = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    interviews = Media.query.filter(Media.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    news = Media.query.filter(Media.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    reviews = Media.query.filter(Media.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
     spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
     links = db.session.query(Links).join(
             LinkCategories, Links.category == LinkCategories.id
@@ -37,13 +37,10 @@ def home():
 
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
 
-    photos_skateboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    photos_snowboarding = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_skateboarding = Media.query.filter_by(mediatype_id=1).filter_by(genre_id=utils.get_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
+    photos_snowboarding = Media.query.filter_by(mediatype_id=1).filter_by(genre_id=utils.get_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     logged_in_users = LoggedInUser.query.count()
-    #spotchecks = Media.query.filter(Media.media_type.in_((4,5,))).filter_by(story_type=utils.get_story_type('spotchecks')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    #photos_nollagang = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('nollagang')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    #photos_snowskate = Media.query.filter_by(media_type=1).filter_by(media_genre=utils.get_media_genre_id('snowskate')).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    
+     
     return render_template('index.html', 
         interviews=interviews, 
         news=news, 
@@ -67,10 +64,10 @@ def new_post():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
 
-            media = Media(media_type = request.form.get('media_type'),
-                        media_genre = request.form.get('media_genre'),
+            media = Media(mediatype_id = request.form.get('mediatype_id'),
+                        genre_id = request.form.get('genre_id'),
                         country_id = request.form.get('country_id'),
-                        story_type = request.form.get('story_type'),
+                        storytype_id = request.form.get('storytype_id'),
                         media_topic = request.form.get('media_topic'),
                         media_text = request.form.get('media_text'),
                         media_desc = request.form.get('media_desc'),
@@ -82,20 +79,20 @@ def new_post():
             db.session.add(media)
             db.session.commit()
 
-            flash("New post created with ID " + str(media.media_id))
+            flash("New post created with ID " + str(media.id))
 
-            if(media.media_type == "1"):
-                return redirect(url_for("photo", media_id=media.media_id))
-            elif(media.media_type == "6"):
-                if(media.story_type == "0"):
-                    return redirect(url_for("video", media_id=media.media_id))
-            elif(media.media_type == "5"):
-                if(media.story_type == "2"):
-                    return redirect(url_for("view_reviews_item", review_id=media.media_id))
-                elif(media.story_type == "3"):
-                    return redirect(url_for("view_interviews_item", interview_id=media.media_id))
-                elif(media.story_type == "4"):
-                    return redirect(url_for("view_news_item", news_id=media.media_id))
+            if(media.mediatype_id == "1"):
+                return redirect(url_for("photo", id=media.id))
+            elif(media.mediatype_id == "6"):
+                if(media.storytype_id == "0"):
+                    return redirect(url_for("video", id=media.id))
+            elif(media.mediatype_id == "5"):
+                if(media.storytype_id == "2"):
+                    return redirect(url_for("view_reviews_item", review_id=media.id))
+                elif(media.storytype_id == "3"):
+                    return redirect(url_for("view_interviews_item", interview_id=media.id))
+                elif(media.storytype_id == "4"):
+                    return redirect(url_for("view_news_item", news_id=media.id))
             else:
                 return redirect(url_for("home"))
         else:
@@ -119,7 +116,7 @@ def my_posts():
             ).join(StoryType
             ).join(Country
             ).add_columns(
-                Media.media_id,
+                Media.id,
                 (Genre.type_name).label("genre"),
                 (MediaType.type_name).label("mediatype_name"),
                 (StoryType.type_name).label("storytype_name"),

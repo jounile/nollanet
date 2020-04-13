@@ -1,15 +1,57 @@
 # coding: utf-8
 from sqlalchemy import BigInteger, Column, Date, DateTime, Index, Integer, SmallInteger, String, Table, Text
 from sqlalchemy.schema import FetchedValue
+from sqlalchemy.orm import relationship
 from flask_sqlalchemy import SQLAlchemy
 
 from app import app, db
 
+class MediaType(db.Model):
+    __tablename__ = 'mediatype'
+    id = db.Column(db.Integer, primary_key=True)
+    #type_id = db.Column(db.Integer)
+    type_name = db.Column(db.String(50))
+    media_rel = relationship("Media", back_populates="mediatype_rel")
+
+class Genre(db.Model):
+    __tablename__ = 'genre'
+    id = db.Column(db.Integer, primary_key=True)
+    #type_id = db.Column(db.Integer)
+    type_name = db.Column(db.String(50))
+    media_rel = relationship("Media", back_populates="genre_rel")
+
+class StoryType(db.Model):
+    __tablename__ = 'storytype'
+    id = db.Column(db.Integer, primary_key=True)
+    #type_id = db.Column(db.Integer)
+    type_name = db.Column(db.String(50))
+    media_rel = relationship("Media", back_populates="storytype_rel")
+
 class Country(db.Model):
-    __tablename__ = 'countries'
-    id = db.Column(db.Integer, db.ForeignKey('media.country_id'), primary_key= True)
+    __tablename__ = 'country'
+    id = db.Column(db.Integer, primary_key=True)
     country_code = db.Column(db.String(50))
     country_name = db.Column(db.String(50))
+    media_rel = relationship("Media", back_populates="country_rel")
+
+class Media(db.Model):
+    __tablename__ = 'media'
+    id = db.Column(db.Integer, primary_key=True)
+    media_topic = db.Column(db.String(50))
+    media_desc = db.Column(db.String(50))
+    media_text = db.Column(db.String(50))
+    mediatype_id = db.Column(db.Integer, db.ForeignKey('mediatype.id'))
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
+    storytype_id = db.Column(db.Integer, db.ForeignKey('storytype.id'))
+    create_time = db.Column(db.DateTime, nullable=False, server_default=db.FetchedValue())
+    owner = db.Column(db.String(50))
+    lang_id = db.Column(db.Integer)
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'), index=True)
+    hidden = db.Column(db.Integer)
+    country_rel = relationship("Country", back_populates="media_rel")
+    mediatype_rel = relationship("MediaType", back_populates="media_rel")
+    genre_rel = relationship("Genre", back_populates="media_rel")
+    storytype_rel = relationship("StoryType", back_populates="media_rel")
 
 class Page(db.Model):
     __tablename__ = 'page'
@@ -19,12 +61,6 @@ class Page(db.Model):
     text = db.Column(db.Text)
     info = db.Column(db.Text)
     lang_id = db.Column(db.SmallInteger)
-
-class Genre(db.Model):
-    __tablename__ = 'genre'
-    id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.media_genre'))
-    type_name = db.Column(db.String(50))
 
 class MapCountry(db.Model):
     __tablename__ = 'map_country'
@@ -63,9 +99,6 @@ class MapType(db.Model):
 
 class Comment(db.Model):
     __tablename__ = 'comment'
-    __table_args__ = (
-        db.Index('id', 'id', 'user_id', 'media_id', 'comment_user_id', 'youtube_id'),
-    )
     id = db.Column(db.BigInteger, primary_key=True, unique=True)
     user_id = db.Column(db.BigInteger, nullable=False, server_default=db.FetchedValue())
     header = db.Column(db.String(250))
@@ -95,27 +128,6 @@ class Links(db.Model):
     user_id = db.Column(db.Integer)
     create_time = db.Column(db.DateTime, server_default=db.FetchedValue())
 
-class Media(db.Model):
-    __tablename__ = 'media'
-    media_id = db.Column(db.Integer, primary_key = True)
-    media_topic = db.Column(db.String(50))
-    media_desc = db.Column(db.String(50))
-    media_text = db.Column(db.String(50))
-    media_type = db.Column(db.String(50))
-    media_genre = db.Column(db.String(50))
-    story_type = db.Column(db.String(50))
-    create_time = db.Column(db.String(50))
-    owner = db.Column(db.String(50))
-    lang_id = db.Column(db.Integer)
-    country_id = db.Column(db.Integer, index=True)
-    hidden = db.Column(db.Integer)
-
-class MediaType(db.Model):
-    __tablename__ = 'media_type'
-    id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.media_type'))
-    type_name = db.Column(db.String(50))
-
 class PwdRecover(db.Model):
     __tablename__ = 'pwdrecover'
     id = db.Column(db.Integer, primary_key=True)
@@ -123,12 +135,6 @@ class PwdRecover(db.Model):
     email = db.Column(db.String(255), nullable=False)
     token = db.Column(db.String(255), nullable=False)
     create_time = db.Column(db.DateTime, server_default=db.FetchedValue())
-
-class StoryType(db.Model):
-    __tablename__ = 'story_type'
-    id = db.Column(db.Integer, primary_key=True)
-    type_id = db.Column(db.Integer, db.ForeignKey('media.story_type'))
-    type_name = db.Column(db.String(50))
 
 class Uploads(db.Model):
     __tablename__ = 'uploads'

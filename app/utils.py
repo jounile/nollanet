@@ -43,46 +43,67 @@ def get_pagination(**kwargs):
                       **kwargs
                       )
 
-def get_media_genre_id(genre):
+def get_genre_id(genre):
     if(genre == "skateboarding"):
-        media_genre = 1
+        genre_id = 1
     if(genre == "snowboarding"):
-        media_genre = 2
+        genre_id = 2
     if(genre == "nollagang"):
-        media_genre = 10
+        genre_id = 3
     if(genre == "snowskate"):
-        media_genre = 11
-    return media_genre
+        genre_id = 4
+    if(genre == "none"):
+        genre_id = 5
+    return genre_id
 
-def get_count_by_genre_and_type(selected_media_genre, selected_media_type):
+def get_mediatype_id(mediatype):
+    if(mediatype == "photo"):
+        mediatype_id = 1
+    if(mediatype == "mediatype2"):
+        mediatype_id = 2
+    if(mediatype == "music"):
+        mediatype_id = 3
+    if(mediatype == "movies"):
+        mediatype_id = 4
+    if(mediatype == "stories"):
+        mediatype_id = 5
+    if(mediatype == "video"):
+        mediatype_id = 6
+    if(mediatype == "none"):
+        mediatype_id = 7
+    return mediatype_id
+
+def get_count_by_genre_and_type(selected_genre_id, selected_mediatype_id):
     return Media.query.filter_by(
-            media_genre=selected_media_genre
+            genre_id=selected_genre_id
         ).filter_by(
-            media_type=selected_media_type
+            mediatype_id=selected_mediatype_id
         ).filter_by(
             hidden=0
         ).count()
 
 def get_total_news_count(selected_genre):
-    return Media.query.filter(Media.media_type.in_((4,5,))).filter(Media.media_genre==selected_genre).filter_by(story_type=4).filter_by(lang_id=2).filter_by(hidden=0).count()
+    return Media.query.filter(Media.mediatype_id.in_((4,5,))).filter(Media.genre_id==selected_genre).filter_by(storytype_id=4).filter_by(lang_id=2).filter_by(hidden=0).count()
 
 def write_file(data, filename):
     with open(filename, 'wb') as f:
         f.write(data)
 
-def get_story_type(story_type):
-    if(story_type == "general"):
+def get_storytype_id(storytype_id):
+    if(storytype_id == "general"):
         type_id = 1
-    if(story_type == "reviews"):
+    if(storytype_id == "reviews"):
         type_id = 2
-    if(story_type == "interviews"):
+    if(storytype_id == "interviews"):
         type_id = 3
-    if(story_type == "news"):
+    if(storytype_id == "news"):
         type_id = 4
-    if(story_type == "spotchecks"):
+    if(storytype_id == "other"):
         type_id = 5
-    if(story_type == "other"):
-        type_id = 99
+    if(storytype_id == "spotchecks"):
+        type_id = 6
+    if(storytype_id == "none"):
+        type_id = 7
     return type_id
 
 def convertDateTime(datetimestr):

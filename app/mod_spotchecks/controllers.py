@@ -6,21 +6,21 @@ from app.models import User, Media, Genre, MediaType, StoryType, Country
 
 mod_spotchecks = Blueprint('spotchecks', __name__, url_prefix='/spotchecks')
 
-@mod_spotchecks.route('/spot/<media_id>')
-def spot(media_id):
-    spotcheck = Media.query.filter_by(media_id=media_id).first()
+@mod_spotchecks.route('/spot/<id>')
+def spot(id):
+    spotcheck = Media.query.filter_by(id=id).first()
     return render_template('spotchecks/spotcheck.html', spotcheck=spotcheck)
 
 @mod_spotchecks.route('/all')
 def all():
     spotchecks = Media.query.filter_by(
-            media_type=5
+            mediatype_id=5
         ).join(Genre
         ).join(MediaType
         ).join(StoryType
         ).join(Country
         ).add_columns(
-            Media.media_id,
+            Media.id,
             (Genre.type_name).label("genre"),
             (MediaType.type_name).label("mediatype_name"),
             (StoryType.type_name).label("storytype_name"),
@@ -29,7 +29,7 @@ def all():
             Media.create_time,
             Media.owner
         ).filter(
-            Media.story_type==utils.get_story_type('spotchecks')
+            Media.storytype_id==utils.get_storytype_id('spotchecks')
         ).filter(
             Media.hidden==0
         ).order_by(

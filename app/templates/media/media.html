@@ -7,17 +7,17 @@
 
 <form action="{{ url_for('media.all') }}" method="GET">
     <div class="form-group">
-        <label for="media_genre">Filter by genre</label>
-        <select name="media_genre" class="form-control" onchange="this.form.submit()">
-            <option value="1"{% if selected_media_genre=='1' %} selected="selected" {% endif %}>Skateboarding</option>
-            <option value="2"{% if selected_media_genre=='2' %} selected="selected" {% endif %}>Snowboarding</option>
+        <label for="genre_id">Filter by genre</label>
+        <select name="genre_id" class="form-control" onchange="this.form.submit()">
+            <option value="1"{% if selected_genre_id=='1' %} selected="selected" {% endif %}>Skateboarding</option>
+            <option value="2"{% if selected_genre_id=='2' %} selected="selected" {% endif %}>Snowboarding</option>
         </select>
     </div>
     <div class="form-group">
-        <label for="media_type">Filter by media type</label>
-        <select name="media_type" class="form-control" onchange="this.form.submit()">
-            <option value="1"{% if selected_media_type=='1' %} selected="selected" {% endif %}>Photos</option>
-            <option value="6"{% if selected_media_type=='6' %} selected="selected" {% endif %}>Video</option>
+        <label for="mediatype_id">Filter by media type</label>
+        <select name="mediatype_id" class="form-control" onchange="this.form.submit()">
+            <option value="1"{% if selected_mediatype_id=='1' %} selected="selected" {% endif %}>Photos</option>
+            <option value="6"{% if selected_mediatype_id=='6' %} selected="selected" {% endif %}>Video</option>
         </select>
     </div>
 </form>
@@ -43,17 +43,17 @@
     <tr>
         <td>{{ loop.index + pagination.skip }}</td>
         <td>
-            {% if selected_media_type=='6' %}
-            <a href="{{ url_for('media.video', media_id=item.media_id) }}"><img src="{{ url_for('media.filename', filename='thumbs/' + item['media_id']|string + '_50.jpg') }}" /></a>
+            {% if selected_mediatype_id=='6' %}
+            <a href="{{ url_for('media.video', id=item.id) }}"><img src="{{ url_for('media.filename', filename='thumbs/' + item['id']|string + '_50.jpg') }}" /></a>
             {% else %}
-            <a href="{{ url_for('media.photo', media_id=item.media_id) }}"><img src="{{ url_for('media.filename', filename='thumbs/' + item['media_id']|string + '_50.jpg') }}" /></a>
+            <a href="{{ url_for('media.photo', id=item.id) }}"><img src="{{ url_for('media.filename', filename='thumbs/' + item['id']|string + '_50.jpg') }}" /></a>
             {% endif %}
         </td>
         <td>
-            {% if selected_media_type=='6' %}
-            <a href="{{ url_for('media.video', media_id=item.media_id) }}">{{ item.media_topic }}</a>
+            {% if selected_mediatype_id=='6' %}
+            <a href="{{ url_for('media.video', id=item.id) }}">{{ item.media_topic }}</a>
             {% else %}
-            <a href="{{ url_for('media.photo', media_id=item.media_id) }}">{{ item.media_topic }}</a>
+            <a href="{{ url_for('media.photo', id=item.id) }}">{{ item.media_topic }}</a>
             {% endif %}
         </td>
         <td>{{ item.create_time }}</td>
@@ -61,13 +61,13 @@
         <td>{{ item.country_code }}</td>
         {% if session['logged_in'] and session['user_level'] == 1 %}
             <td>
-                <form action="{{ url_for('media.update', media_id=item.media_id) }}" method="GET">
+                <form action="{{ url_for('media.update', id=item.id) }}" method="GET">
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </form>
             </td>
             <td>
                 <form action="{{ url_for('media.delete') }}" method="POST">
-                    <input type="hidden" name="media_id" value="{{ item.media_id }}" />
+                    <input type="hidden" name="id" value="{{ item.id }}" />
                     <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                 </form>
             </td>

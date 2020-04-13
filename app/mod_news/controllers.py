@@ -15,13 +15,13 @@ def all():
     total = utils.get_total_news_count(selected_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
     news = db.session.query(
-            Media.media_type.in_((4,5,))
+            Media.mediatype_id.in_((4,5,))
         ).join(Genre
         ).join(MediaType
         ).join(StoryType
         ).join(Country
         ).add_columns(
-            Media.media_id,
+            Media.id,
             (MediaType.type_name).label("mediatype_name"),
             (StoryType.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
@@ -30,9 +30,9 @@ def all():
             Media.create_time,
             Media.owner
         ).filter(
-            Media.media_genre==selected_genre
+            Media.genre_id==selected_genre
         ).filter(
-            Media.story_type==utils.get_story_type('news')
+            Media.storytype_id==utils.get_storytype_id('news')
         ).filter(
             Media.hidden==0
         ).order_by(
@@ -43,7 +43,7 @@ def all():
 
     return render_template("news/news.html", news=news, pagination=pagination, selected_genre=selected_genre)
 
-@mod_news.route('/item/<media_id>')
-def item(media_id):
-    news_item = Media.query.filter_by(media_id=media_id).first()
+@mod_news.route('/item/<id>')
+def item(id):
+    news_item = Media.query.filter_by(id=id).first()
     return render_template('news/news_item.html', news_item=news_item)

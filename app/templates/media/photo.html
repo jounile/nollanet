@@ -6,11 +6,11 @@
 <div class="row">
     <div class="col">
         <div class="photo">
-            <img src="{{ url_for('media.filename', filename='thumbs/' + photo['media_id']|string + '_400.jpg') }}" />
+            <img src="{{ url_for('media.filename', filename='thumbs/' + photo['id']|string + '_400.jpg') }}" />
         </div>
     </div>
     <div class="col">
-        ID: {{ photo.media_id }}<br>
+        ID: {{ photo.id }}<br>
         Owner: <a href="{{ url_for('users.user', username=photo.owner) }}">{{ photo.owner }}</a><br>
         Country: {{ photo.country_code }}<br>
         Topic: {{ photo.media_topic }}<br>

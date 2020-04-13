@@ -8,7 +8,7 @@
 
 <form action="{{ url_for('news.all') }}" method="GET">
     <div class="form-group">
-        <label for="media_genre">Filter by</label>
+        <label for="genre_id">Filter by</label>
         <select name="genre" class="form-control" onchange="this.form.submit()">
             <option value="1"{% if selected_genre=='1' %} selected="selected" {% endif %}>Skateboarding</option>
             <option value="2"{% if selected_genre=='2' %} selected="selected" {% endif %}>Snowboarding</option>
@@ -35,19 +35,19 @@
     {% for item in news %}
         <tr>
             <td>{{ loop.index + pagination.skip }}</td>
-            <td><a href="{{ url_for('news.item', media_id=item.media_id) }}">{{ item.media_topic }}</a></td>
+            <td><a href="{{ url_for('news.item', id=item.id) }}">{{ item.media_topic }}</a></td>
             <td>{{ item.create_time }}</td>
             <td><a href="{{ url_for('users.user', username=item.owner) }}">{{ item.owner }}</a></td>
             <td>{{ item.country_code }}</td>
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <td>
-                    <form action="{{ url_for('media.update', media_id=item.media_id) }}" method="GET">
+                    <form action="{{ url_for('media.update', id=item.id) }}" method="GET">
                         <button type="submit" class="btn btn-primary">Edit</button>
                     </form>
                 </td>
                 <td>
                     <form action="{{ url_for('media.delete') }}" method="POST">
-                        <input type="hidden" name="media_id" value="{{ item.media_id }}" />
+                        <input type="hidden" name="id" value="{{ item.id }}" />
                         <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                     </form>
                 </td>

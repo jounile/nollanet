@@ -5,7 +5,7 @@
 
 <div class="page-title">
 {% for item in story %}
-    <div>media_id: {{ item.media_id }}</div>
+    <div>id: {{ item.id }}</div>
     <div>owner: <a href="{{ url_for('users.user', username=item.owner) }}">{{ item.owner }}</a></div>
     <div>create_time: {{ item.create_time }}</div>
     <div>{{ item.media_topic }}</div>
