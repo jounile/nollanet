@@ -103,31 +103,31 @@ def seed_db():
         db.session.add(Country(id=5, country_code='de', country_name='Germany'))
 
         # MapType
-        db.session.add(MapType(id=1, name="Type 1"))
-        db.session.add(MapType(id=2, name="Type 2"))
-        db.session.add(MapType(id=3, name="Type 3"))
-        db.session.add(MapType(id=4, name="Type 4"))
+        db.session.add(MapType(id=1, name="Outdoor"))
+        db.session.add(MapType(id=2, name="Indoor"))
+        db.session.add(MapType(id=3, name="Handrail"))
+        db.session.add(MapType(id=4, name="Shop"))
 
-        # MapCountry
-        db.session.add(MapCountry(id=1, maa="Country 1", lat="", lon="", koodi=""))
-        db.session.add(MapCountry(id=2, maa="Country 2", lat="", lon="", koodi=""))
-        db.session.add(MapCountry(id=3, maa="Country 3", lat="", lon="", koodi=""))
-        db.session.add(MapCountry(id=4, maa="Country 4", lat="", lon="", koodi=""))
+        # MapCountry 
+        db.session.add(MapCountry(id=1, maa="Finland", lat="61.938205", lon="26.315953", koodi=""))
+        db.session.add(MapCountry(id=2, maa="Sweden", lat="62.905199", lon="17.051174", koodi=""))
+        db.session.add(MapCountry(id=3, maa="USA", lat="39.607428", lon="-99.134190", koodi=""))
+        db.session.add(MapCountry(id=4, maa="Germany", lat="51.076102", lon="10.252248", koodi=""))
 
         # MapTown (country 1)
-        db.session.add(MapTown(id=1, paikkakunta="Paikkakunta 1", maa_id=1, lat="", lon=""))
+        db.session.add(MapTown(id=1, paikkakunta="Helsinki", maa_id=1, lat="60.186427", lon="24.933512"))
         db.session.add(MapTown(id=2, paikkakunta="Paikkakunta 2", maa_id=1, lat="", lon=""))
         db.session.add(MapTown(id=3, paikkakunta="Paikkakunta 3", maa_id=1, lat="", lon=""))
         db.session.add(MapTown(id=4, paikkakunta="Paikkakunta 4", maa_id=1, lat="", lon=""))
 
         # MapTown (country 2)
-        db.session.add(MapTown(id=5, paikkakunta="Paikkakunta 5", maa_id=2, lat="", lon=""))
+        db.session.add(MapTown(id=5, paikkakunta="Stockholm", maa_id=2, lat="59.339025", lon="18.068564"))
         db.session.add(MapTown(id=6, paikkakunta="Paikkakunta 6", maa_id=2, lat="", lon=""))
         db.session.add(MapTown(id=7, paikkakunta="Paikkakunta 7", maa_id=2, lat="", lon=""))
         db.session.add(MapTown(id=8, paikkakunta="Paikkakunta 8", maa_id=2, lat="", lon=""))
 
         # MapTown (country 3)
-        db.session.add(MapTown(id=9, paikkakunta="Paikkakunta 9", maa_id=3, lat="", lon=""))
+        db.session.add(MapTown(id=9, paikkakunta="San Francisco", maa_id=3, lat="37.774235", lon="-122.409450"))
         db.session.add(MapTown(id=10, paikkakunta="Paikkakunta 10", maa_id=3, lat="", lon=""))
         db.session.add(MapTown(id=11, paikkakunta="Paikkakunta 11", maa_id=3, lat="", lon=""))
         db.session.add(MapTown(id=12, paikkakunta="Paikkakunta 12", maa_id=3, lat="", lon=""))
@@ -139,10 +139,10 @@ def seed_db():
         db.session.add(MapTown(id=16, paikkakunta="Paikkakunta 16", maa_id=4, lat="", lon=""))
 
         # Spots
-        db.session.add(MapSpot(kartta_id=1, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 1, Spot 1", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
-        db.session.add(MapSpot(kartta_id=2, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 2, Spot 2", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
-        db.session.add(MapSpot(kartta_id=3, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 3, Spot 3", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
-        db.session.add(MapSpot(kartta_id=4, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 4, Spot 4", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=1, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 1, Spot 1", info="Micropolis Skateboard Park", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.193521, 24.928171"))
+        db.session.add(MapSpot(kartta_id=2, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 2, Spot 2", info="Kontulan skeittihalli", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.236949, 25.086057"))
+        db.session.add(MapSpot(kartta_id=3, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 3, Spot 3", info="Kaivopuiston hänkkä", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.156616, 24.957480"))
+        db.session.add(MapSpot(kartta_id=4, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 4, Spot 4", info="Ponke's The Shop", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.169810, 24.937334"))
 
         db.session.add(MapSpot(kartta_id=5, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 1, Spot 5", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
         db.session.add(MapSpot(kartta_id=6, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 2, Spot 6", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))

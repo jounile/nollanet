@@ -1,6 +1,9 @@
+import os
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
+from flask_googlemaps import GoogleMaps
+from flask_googlemaps import Map
 from app import app, db, utils
 from app.models import User, MapSpot, MapCountry, MapTown, MapType
 
@@ -8,6 +11,7 @@ from app.mod_spots.form import NewSpotForm, UpdateSpotForm, NewCountryForm, NewT
 
 mod_spots = Blueprint('spots', __name__, url_prefix='/spots')
 
+GoogleMaps(app, key=os.getenv('GOOGLE_API_KEY'))
 
 @mod_spots.route('/all')
 def all():
@@ -29,16 +33,46 @@ def all():
     types = MapType.query.order_by(MapType.name.asc())
     spots = MapSpot.query.filter_by(maa_id=selected_maa_id).order_by(MapSpot.paivays.desc())
 
+    map_center_lat = None
+    map_center_lon = None
+    map_zoom_level = None
+
     if selected_maa_id != 0:
+        country = MapCountry.query.filter_by(id=selected_maa_id).first()
+        map_center_lat = country.lat
+        map_center_lon = country.lon
+        map_zoom_level = 3
         spots = spots.filter_by(maa_id=selected_maa_id)
 
     if selected_paikkakunta_id != 0:
+        town = MapTown.query.filter_by(id=selected_paikkakunta_id).first()
+        map_center_lat = town.lat
+        map_center_lon = town.lon
+        map_zoom_level = 11
         spots = spots.filter_by(paikkakunta_id=selected_paikkakunta_id)
 
     if selected_type_id != 0:
         spots = spots.filter_by(tyyppi=selected_type_id)
 
-    return render_template("spots/spots.html", spots=spots, countries=countries, towns=towns, types=types, selected_maa_id=selected_maa_id, selected_paikkakunta_id=selected_paikkakunta_id, selected_type_id=selected_type_id)
+    # spot markers
+    markers = []
+    for spot in spots:
+        if(spot.latlon):
+            lat_lon = (spot.latlon).split(",")
+            marker = (lat_lon[0], lat_lon[1])
+            markers.append(marker)
+
+    # creating a map in the view
+    mymap = Map(
+        identifier="view-side",
+        style="height:400px;width:1170px;margin:0;",
+        zoom=map_zoom_level,
+        lat=map_center_lat,
+        lng=map_center_lon,
+        markers=markers
+    )
+
+    return render_template("spots/spots.html", mymap=mymap, spots=spots, countries=countries, towns=towns, types=types, selected_maa_id=selected_maa_id, selected_paikkakunta_id=selected_paikkakunta_id, selected_type_id=selected_type_id)
 
 @mod_spots.route('/spot/<kartta_id>')
 def spot(kartta_id):
