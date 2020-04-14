@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 from app import app, db
-from app.models import Links, LinkCategories, StoryType, MediaType, Country, Genre, Media, MapSpot, User
+from app.models import Links, LinkCategories, StoryType, MediaType, Country, Genre, Media, MapType, MapCountry, MapTown, MapSpot, User
 from app.mod_auth import bcrypt
 
 def create_db():
@@ -28,6 +28,9 @@ def seed_db():
         db.session.add(Links(id=4, name="Link 4", url="http://example.com", category=2, user_id=1, create_time=datetime.now()))
         db.session.add(Links(id=5, name="Link 5", url="http://example.com", category=2, user_id=1, create_time=datetime.now()))
         db.session.add(Links(id=6, name="Link 6", url="http://example.com", category=2, user_id=1, create_time=datetime.now()))
+        db.session.add(Links(id=7, name="Link 7", url="http://example.com", category=3, user_id=1, create_time=datetime.now()))
+        db.session.add(Links(id=8, name="Link 8", url="http://example.com", category=3, user_id=1, create_time=datetime.now()))
+        db.session.add(Links(id=9, name="Link 9", url="http://example.com", category=3, user_id=1, create_time=datetime.now()))
 
         # Genre
         db.session.add(Genre(id=1, type_name='skateboarding'))
@@ -67,7 +70,6 @@ def seed_db():
         db.session.add(Media(id=15, media_topic="Snowboading video 3", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
         db.session.add(Media(id=16, media_topic="Snowboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
 
-
         # Reviews
         db.session.add(Media(id=17, media_topic="Review 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=2, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
         db.session.add(Media(id=18, media_topic="Review 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=2, storytype_id=2, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
@@ -100,11 +102,122 @@ def seed_db():
         db.session.add(Country(id=4, country_code='dk', country_name='Denmark'))
         db.session.add(Country(id=5, country_code='de', country_name='Germany'))
 
+        # MapType
+        db.session.add(MapType(id=1, name="Type 1"))
+        db.session.add(MapType(id=2, name="Type 2"))
+        db.session.add(MapType(id=3, name="Type 3"))
+        db.session.add(MapType(id=4, name="Type 4"))
+
+        # MapCountry
+        db.session.add(MapCountry(id=1, maa="Country 1", lat="", lon="", koodi=""))
+        db.session.add(MapCountry(id=2, maa="Country 2", lat="", lon="", koodi=""))
+        db.session.add(MapCountry(id=3, maa="Country 3", lat="", lon="", koodi=""))
+        db.session.add(MapCountry(id=4, maa="Country 4", lat="", lon="", koodi=""))
+
+        # MapTown (country 1)
+        db.session.add(MapTown(id=1, paikkakunta="Paikkakunta 1", maa_id=1, lat="", lon=""))
+        db.session.add(MapTown(id=2, paikkakunta="Paikkakunta 2", maa_id=1, lat="", lon=""))
+        db.session.add(MapTown(id=3, paikkakunta="Paikkakunta 3", maa_id=1, lat="", lon=""))
+        db.session.add(MapTown(id=4, paikkakunta="Paikkakunta 4", maa_id=1, lat="", lon=""))
+
+        # MapTown (country 2)
+        db.session.add(MapTown(id=5, paikkakunta="Paikkakunta 5", maa_id=2, lat="", lon=""))
+        db.session.add(MapTown(id=6, paikkakunta="Paikkakunta 6", maa_id=2, lat="", lon=""))
+        db.session.add(MapTown(id=7, paikkakunta="Paikkakunta 7", maa_id=2, lat="", lon=""))
+        db.session.add(MapTown(id=8, paikkakunta="Paikkakunta 8", maa_id=2, lat="", lon=""))
+
+        # MapTown (country 3)
+        db.session.add(MapTown(id=9, paikkakunta="Paikkakunta 9", maa_id=3, lat="", lon=""))
+        db.session.add(MapTown(id=10, paikkakunta="Paikkakunta 10", maa_id=3, lat="", lon=""))
+        db.session.add(MapTown(id=11, paikkakunta="Paikkakunta 11", maa_id=3, lat="", lon=""))
+        db.session.add(MapTown(id=12, paikkakunta="Paikkakunta 12", maa_id=3, lat="", lon=""))
+
+        # MapTown (country 4)
+        db.session.add(MapTown(id=13, paikkakunta="Paikkakunta 13", maa_id=4, lat="", lon=""))
+        db.session.add(MapTown(id=14, paikkakunta="Paikkakunta 14", maa_id=4, lat="", lon=""))
+        db.session.add(MapTown(id=15, paikkakunta="Paikkakunta 15", maa_id=4, lat="", lon=""))
+        db.session.add(MapTown(id=16, paikkakunta="Paikkakunta 16", maa_id=4, lat="", lon=""))
+
         # Spots
-        db.session.add(MapSpot(kartta_id=1, paikkakunta_id=1, user_id=1, nimi="Spot 1", info="desc", tyyppi=1, temp=1, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=1))
-        db.session.add(MapSpot(kartta_id=2, paikkakunta_id=1, user_id=1, nimi="Spot 2", info="desc", tyyppi=1, temp=2, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=1))
-        db.session.add(MapSpot(kartta_id=3, paikkakunta_id=1, user_id=1, nimi="Spot 3", info="desc", tyyppi=1, temp=3, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=1))
-        db.session.add(MapSpot(kartta_id=4, paikkakunta_id=1, user_id=1, nimi="Spot 4", info="desc", tyyppi=1, temp=4, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=1))
+        db.session.add(MapSpot(kartta_id=1, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 1, Spot 1", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=2, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 2, Spot 2", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=3, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 3, Spot 3", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=4, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 4, Spot 4", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=5, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 1, Spot 5", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=6, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 2, Spot 6", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=7, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 3, Spot 7", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=8, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 4, Spot 8", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=9, paikkakunta_id=3, user_id=1, nimi="Country 1, Town 3, Type 1, Spot 9", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=10, paikkakunta_id=3, user_id=1, nimi="Country 1, Town 3, Type 2, Spot 10", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=11, paikkakunta_id=3, user_id=1, nimi="Country 1, Town 3, Type 3, Spot 11", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=12, paikkakunta_id=3, user_id=1, nimi="Country 1, Town 3, Type 4, Spot 12", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=13, paikkakunta_id=4, user_id=1, nimi="Country 1, Town 4, Type 1, Spot 13", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=14, paikkakunta_id=4, user_id=1, nimi="Country 1, Town 4, Type 2, Spot 14", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=15, paikkakunta_id=4, user_id=1, nimi="Country 1, Town 4, Type 3, Spot 15", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+        db.session.add(MapSpot(kartta_id=16, paikkakunta_id=4, user_id=1, nimi="Country 1, Town 4, Type 4, Spot 16", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=17, paikkakunta_id=5, user_id=1, nimi="Country 2, Town 5, Type 1, Spot 17", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=18, paikkakunta_id=5, user_id=1, nimi="Country 2, Town 5, Type 2, Spot 18", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=19, paikkakunta_id=5, user_id=1, nimi="Country 2, Town 5, Type 3, Spot 19", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=20, paikkakunta_id=5, user_id=1, nimi="Country 2, Town 5, Type 4, Spot 20", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=21, paikkakunta_id=6, user_id=1, nimi="Country 2, Town 6, Type 1, Spot 21", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=22, paikkakunta_id=6, user_id=1, nimi="Country 2, Town 6, Type 2, Spot 22", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=23, paikkakunta_id=6, user_id=1, nimi="Country 2, Town 6, Type 3, Spot 23", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=24, paikkakunta_id=6, user_id=1, nimi="Country 2, Town 6, Type 4, Spot 24", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=25, paikkakunta_id=7, user_id=1, nimi="Country 2, Town 7, Type 1, Spot 25", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=26, paikkakunta_id=7, user_id=1, nimi="Country 2, Town 7, Type 2, Spot 26", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=27, paikkakunta_id=7, user_id=1, nimi="Country 2, Town 7, Type 3, Spot 27", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=28, paikkakunta_id=7, user_id=1, nimi="Country 2, Town 7, Type 4, Spot 28", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=29, paikkakunta_id=8, user_id=1, nimi="Country 2, Town 8, Type 1, Spot 29", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=30, paikkakunta_id=8, user_id=1, nimi="Country 2, Town 8, Type 2, Spot 30", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=31, paikkakunta_id=8, user_id=1, nimi="Country 2, Town 8, Type 3, Spot 31", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+        db.session.add(MapSpot(kartta_id=32, paikkakunta_id=8, user_id=1, nimi="Country 2, Town 8, Type 4, Spot 32", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=2, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=33, paikkakunta_id=9, user_id=1, nimi="Country 3, Town 9, Type 1, Spot 33", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=34, paikkakunta_id=9, user_id=1, nimi="Country 3, Town 9, Type 2, Spot 34", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=35, paikkakunta_id=9, user_id=1, nimi="Country 3, Town 9, Type 3, Spot 35", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=36, paikkakunta_id=9, user_id=1, nimi="Country 3, Town 9, Type 4, Spot 36", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=37, paikkakunta_id=10, user_id=1, nimi="Country 3, Town 10, Type 1, Spot 37", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=38, paikkakunta_id=10, user_id=1, nimi="Country 3, Town 10, Type 2, Spot 38", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=39, paikkakunta_id=10, user_id=1, nimi="Country 3, Town 10, Type 3, Spot 39", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=40, paikkakunta_id=10, user_id=1, nimi="Country 3, Town 10, Type 4, Spot 40", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=41, paikkakunta_id=11, user_id=1, nimi="Country 3, Town 11, Type 1, Spot 41", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=42, paikkakunta_id=11, user_id=1, nimi="Country 3, Town 11, Type 2, Spot 42", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=43, paikkakunta_id=11, user_id=1, nimi="Country 3, Town 11, Type 3, Spot 43", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=44, paikkakunta_id=11, user_id=1, nimi="Country 3, Town 11, Type 4, Spot 44", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=45, paikkakunta_id=12, user_id=1, nimi="Country 3, Town 12, Type 1, Spot 45", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=46, paikkakunta_id=12, user_id=1, nimi="Country 3, Town 12, Type 2, Spot 46", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=47, paikkakunta_id=12, user_id=1, nimi="Country 3, Town 12, Type 3, Spot 47", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+        db.session.add(MapSpot(kartta_id=48, paikkakunta_id=12, user_id=1, nimi="Country 3, Town 12, Type 4, Spot 48", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=3, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=49, paikkakunta_id=13, user_id=1, nimi="Country 4, Town 13, Type 1, Spot 49", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=50, paikkakunta_id=13, user_id=1, nimi="Country 4, Town 13, Type 2, Spot 50", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=51, paikkakunta_id=13, user_id=1, nimi="Country 4, Town 13, Type 3, Spot 51", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=52, paikkakunta_id=13, user_id=1, nimi="Country 4, Town 13, Type 4, Spot 52", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=53, paikkakunta_id=14, user_id=1, nimi="Country 4, Town 14, Type 1, Spot 53", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=54, paikkakunta_id=14, user_id=1, nimi="Country 4, Town 14, Type 2, Spot 54", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=55, paikkakunta_id=14, user_id=1, nimi="Country 4, Town 14, Type 3, Spot 55", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=56, paikkakunta_id=14, user_id=1, nimi="Country 4, Town 14, Type 4, Spot 56", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=57, paikkakunta_id=15, user_id=1, nimi="Country 4, Town 15, Type 1, Spot 57", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=58, paikkakunta_id=15, user_id=1, nimi="Country 4, Town 15, Type 2, Spot 58", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=59, paikkakunta_id=15, user_id=1, nimi="Country 4, Town 15, Type 3, Spot 59", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=60, paikkakunta_id=15, user_id=1, nimi="Country 4, Town 15, Type 4, Spot 60", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+
+        db.session.add(MapSpot(kartta_id=61, paikkakunta_id=16, user_id=1, nimi="Country 4, Town 12, Type 1, Spot 61", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=62, paikkakunta_id=16, user_id=1, nimi="Country 4, Town 12, Type 2, Spot 62", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=63, paikkakunta_id=16, user_id=1, nimi="Country 4, Town 12, Type 3, Spot 63", info="desc", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
+        db.session.add(MapSpot(kartta_id=64, paikkakunta_id=16, user_id=1, nimi="Country 4, Town 12, Type 4, Spot 64", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
 
         # Users
         db.session.add(User(user_id=1, level=1, username="tester", password=bcrypt.generate_password_hash("tester"), name="Sir Tester", bornyear=2010, email="tester@example.com", email2="", info="", location="", date=datetime.now(), hobbies="", open=1, extrainfo="", sukupuoli=1, icq="", apulainen=1, last_login=datetime.now(), chat=1, oikeus=1, lang_id=1, login_count=1, lastloginip="", lastloginclient="", address="", postnumber="", emails=1, puhelin="", kantaasiakasnro="", lamina_lisatieto="", blogs=1, user_showid=1, blog_level=1, last_login2=datetime.now(), messenger="", myspace="", rss="", youtube="", ircgalleria="", last_profile_update=datetime.now(), avatar="", flickr_username=""))
