@@ -3,6 +3,8 @@
 
 {% block content %}
 
+{{mymap.js}}
+
 <h1>Spots</h1>
 Count: {{ spots.count() }}
 <form action="{{ url_for('spots.all') }}" method="GET">
