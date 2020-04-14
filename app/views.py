@@ -39,7 +39,6 @@ def home():
 
     photos_skateboarding = Media.query.filter_by(mediatype_id=1).filter_by(genre_id=utils.get_genre_id('skateboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
     photos_snowboarding = Media.query.filter_by(mediatype_id=1).filter_by(genre_id=utils.get_genre_id('snowboarding')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(offset).limit(per_page)
-    logged_in_users = LoggedInUser.query.count()
      
     return render_template('index.html', 
         interviews=interviews, 
@@ -49,11 +48,15 @@ def home():
         links=links,
         photos_skateboarding=photos_skateboarding,
         photos_snowboarding=photos_snowboarding,
-        loggend_in_users=logged_in_users,
         #spotchecks=spotchecks,
         #photos_nollagang=photos_nollagang,
         #photos_snowskate=photos_snowskate
         )
+
+@app.route("/online")
+def online():
+    logged_in_users = LoggedInUser.query.count()
+    return render_template("views/online.html", loggend_in_users=logged_in_users)
 
 @app.route("/support")
 def support():
