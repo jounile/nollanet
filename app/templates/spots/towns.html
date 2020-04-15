@@ -15,12 +15,18 @@ Count: {{ towns.count() }}
         <td width="90%">Name</td>
         {% if session['logged_in'] and session['user_level'] == 1 %}
             <td></td>
+            <td></td>
         {% endif %}
     </tr>
     {% for town in towns %}
         <tr>
             <td>{{ town.paikkakunta }}</a></td>
-            {% if session['logged_in'] and session['user_level'] == 1 %}   
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <td>
+                    <form action="{{ url_for('spots.update_town', town_id=town.id) }}" method="GET">
+                        <input type="submit" class="btn btn-primary" value="Update" />
+                    </form>
+                </td> 
                 <td>
                     <form action="{{ url_for('spots.delete_town') }}" method="POST">
                         <input type="hidden" name="id" value="{{ town.id }}" />

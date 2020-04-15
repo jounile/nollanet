@@ -15,6 +15,7 @@ Count: {{ countries.count() }}
         <td width="90%">Name</td>
         {% if session['logged_in'] and session['user_level'] == 1 %}
             <td></td>
+            <td></td>
         {% endif %}
     </tr>
     {% for country in countries %}
@@ -22,8 +23,13 @@ Count: {{ countries.count() }}
             <td>{{ country.maa }}</a></td>
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <td>
+                    <form action="{{ url_for('spots.update_country', country_id=country.id) }}" method="GET">
+                        <input type="submit" class="btn btn-primary" value="Update" />
+                    </form>
+                </td>
+                <td>
                     <form action="{{ url_for('spots.delete_country') }}" method="POST">
-                        <input type="hidden" name="id" value="{{ country.id }}" />
+                        <input type="hidden" name="country_id" value="{{ country.id }}" />
                         <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                     </form>
                 </td>

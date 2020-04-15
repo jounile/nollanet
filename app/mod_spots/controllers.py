@@ -7,7 +7,7 @@ from flask_googlemaps import Map
 from app import app, db, utils
 from app.models import User, MapSpot, MapCountry, MapTown, MapType
 
-from app.mod_spots.form import NewSpotForm, UpdateSpotForm, NewCountryForm, NewTownForm, NewTypeForm
+from app.mod_spots.form import NewSpotForm, UpdateSpotForm, CountryForm, TownForm, NewTypeForm
 
 mod_spots = Blueprint('spots', __name__, url_prefix='/spots')
 
@@ -230,7 +230,7 @@ def types():
 @mod_spots.route("/country/new", methods = ['POST', 'GET'])
 def new_country():
     if(session and session['logged_in']):
-        form = NewCountryForm()
+        form = CountryForm()
         if request.method == 'GET':
             return render_template("spots/new_country.html", form=form)
         if request.method == 'POST':
@@ -248,14 +248,35 @@ def new_country():
         flash("Please login first")
         return redirect(url_for("home"))
 
+@mod_spots.route("/country/update/<country_id>", methods = ['POST', 'GET'])
+def update_country(country_id):
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'GET':
+            country = MapCountry.query.filter_by(id=country_id).first()
+            return render_template("spots/update_country.html", country=country)
+        if request.method == 'POST':
+            country = { 
+                    'maa': request.form.get('maa'),
+                    'lat': request.form.get('lat'),
+                    'lon': request.form.get('lon'),
+                    'koodi': request.form.get('koodi')
+                }
+            MapCountry.query.filter_by(id=country_id).update(country)
+            db.session.commit()
+            flash("Country " + str(country_id) + " was edited succesfully by " + session['username'] + ".")
+            return redirect(url_for("spots.countries"))
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
 @mod_spots.route("/country/delete", methods = ['POST'])
 def delete_country():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
-            id = request.form.get('id')
-            MapCountry.query.filter_by(id=id).delete()
+            country_id = request.form.get('country_id')
+            MapCountry.query.filter_by(id=country_id).delete()
             db.session.commit()
-            flash("Country " + id + " was deleted succesfully by " + session['username'] + ".")
+            flash("Country " + country_id + " was deleted succesfully by " + session['username'] + ".")
             return redirect(url_for("spots.countries"))
     else:
         flash("Please login first")
@@ -264,7 +285,7 @@ def delete_country():
 @mod_spots.route("/town/new", methods = ['POST', 'GET'])
 def new_town():
     if(session and session['logged_in']):
-        form = NewTownForm()
+        form = TownForm()
         if request.method == 'GET':
             form.maa_id.choices = [(country.id, country.maa) for country in MapCountry.query.order_by(MapCountry.maa.asc())]
             return render_template("spots/new_town.html", form=form)
@@ -278,6 +299,27 @@ def new_town():
             db.session.add(town)
             db.session.commit()
             flash("New town created succesfully")
+            return redirect(url_for("spots.towns"))
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
+
+@mod_spots.route("/town/update/<town_id>", methods = ['POST', 'GET'])
+def update_town(town_id):
+    if(session and session['logged_in'] and session['user_level'] == 1):
+        if request.method == 'GET':
+            town = MapTown.query.filter_by(id=town_id).first()
+            return render_template("spots/update_town.html", town=town)
+        if request.method == 'POST':
+            town = { 
+                    'paikkakunta': request.form.get('paikkakunta'),
+                    'maa_id': request.form.get('maa_id'),
+                    'lat': request.form.get('lat'),
+                    'lon': request.form.get('lon')
+                }
+            MapTown.query.filter_by(id=town_id).update(town)
+            db.session.commit()
+            flash("Town " + str(town_id) + " was edited succesfully by " + session['username'] + ".")
             return redirect(url_for("spots.towns"))
     else:
         flash("Please login first")

@@ -22,14 +22,14 @@ class UpdateSpotForm(FlaskForm):
     link = StringField('Link')
     latlon = StringField('latlon')
 
-class NewCountryForm(FlaskForm):
+class CountryForm(FlaskForm):
     id = IntegerField('Id')
     maa = StringField('Name')
     lat = StringField('Latitude')
     lon = StringField('Longitude')
     koodi = StringField('Country code')
 
-class NewTownForm(FlaskForm):
+class TownForm(FlaskForm):
     id = IntegerField('Id')
     paikkakunta = StringField('Town')
     maa_id = SelectField('Country code', choices=[])
