@@ -387,6 +387,7 @@ def latest():
             MapType, MapSpot.tyyppi == MapType.id
         ).add_columns(
             (User.username).label("username"),
+            (MapSpot.kartta_id).label("kartta_id"),
             (MapSpot.nimi).label("name"),
             (MapSpot.user_id).label("user_id"),
             (MapCountry.maa).label("maa"),
