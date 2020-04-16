@@ -104,7 +104,7 @@ def spot(kartta_id):
             (MapSpot.latlon).label("latlon"),
         ).first()
 
-    return render_template('spots/spot.html', spot=spot)
+    return render_template('spots/spot.html', spot=spot, key=key)
 
 @mod_spots.route("/spot/new", methods = ['POST', 'GET'])
 def new_spot():
@@ -165,7 +165,7 @@ def update_spot(spot_id):
             form.link.default = spot.karttalinkki
             form.latlon.default = spot.latlon
             form.process()
-            return render_template("spots/update_spot.html", form=form, spot=spot)
+            return render_template("spots/update_spot.html", form=form, spot=spot, key=key)
         if request.method == 'POST':
 
             spot = {
@@ -254,7 +254,7 @@ def update_country(country_id):
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'GET':
             country = MapCountry.query.filter_by(id=country_id).first()
-            return render_template("spots/update_country.html", country=country)
+            return render_template("spots/update_country.html", country=country, key=key)
         if request.method == 'POST':
             country = { 
                     'maa': request.form.get('maa'),
@@ -310,7 +310,7 @@ def update_town(town_id):
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'GET':
             town = MapTown.query.filter_by(id=town_id).first()
-            return render_template("spots/update_town.html", town=town)
+            return render_template("spots/update_town.html", town=town, key=key)
         if request.method == 'POST':
             town = { 
                     'paikkakunta': request.form.get('paikkakunta'),
