@@ -24,7 +24,7 @@ Count: {{ countries.count() }}
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <td>
                     <form action="{{ url_for('spots.update_country', country_id=country.id) }}" method="GET">
-                        <input type="submit" class="btn btn-primary" value="Update" />
+                            <button type="submit" class="btn btn-primary">Edit</button>
                     </form>
                 </td>
                 <td>
