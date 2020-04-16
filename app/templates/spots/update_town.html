@@ -3,6 +3,7 @@
 
 {% block content %}
 
+<script src="https://maps.googleapis.com/maps/api/js?key={{ key }}"></script>
 
 <h1>Update town</h1>
 
@@ -29,9 +30,17 @@
         <label for="lon">Lon</label>
         <input type="text" name="lon" class="form-control" size="100" value="{{ town.lon }}" />
     </div>
+
+    <div class="form-group">
+        <input type="button" value="Drop marker" onclick="dropPin()" class="btn btn-primary"> and drag it to correct location.
+    </div>
+
+    <div id="map"></div>
     
     <button type="submit" class="btn btn-primary">Save</button>
     
 </form>
+
+<script type="text/javascript" src="{{ url_for('static', filename='js/mapdroppin.js') }}"></script>
 
 {% endblock %}
