@@ -248,3 +248,8 @@ footer {
 #image_preview {
     text-align: center;
 }
+
+#map {
+    height: 400px;
+    margin-bottom: 10px;
+}

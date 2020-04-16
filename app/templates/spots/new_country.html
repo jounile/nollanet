@@ -3,6 +3,7 @@
 
 {% block content %}
 
+<script src="https://maps.googleapis.com/maps/api/js?key={{ key }}"></script>
 
 <h1>New country</h1>
 
@@ -13,16 +14,28 @@
     <div class="form-group">
         <label for="maa">Name</label>
         {{ form.maa(class_="form-control") }}
+    </div>
 
-        <label for="lat">Lat</label>
-        {{ form.lat(class_="form-control") }}
-
-        <label for="lon">Lon</label>
-        {{ form.lon(class_="form-control") }}
-
+    <div class="form-group">
         <label for="koodi">Code</label>
         {{ form.koodi(class_="form-control") }}
     </div>
+
+    <div class="form-group">
+        <label for="lat">Lat</label>
+        {{ form.lat(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <label for="lon">Lon</label>
+        {{ form.lon(class_="form-control") }}
+    </div>
+
+    <div class="form-group">
+        <input type="button" value="Drop marker" onclick="dropPin()" class="btn btn-primary"> and drag it to correct location.
+    </div>
+    
+    <div id="map"></div>
 
     <button type="submit" class="btn btn-primary">Create</button>
     

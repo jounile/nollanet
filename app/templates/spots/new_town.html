@@ -3,6 +3,7 @@
 
 {% block content %}
 
+<script src="https://maps.googleapis.com/maps/api/js?key={{ key }}"></script>
 
 <h1>New town</h1>
 
@@ -29,6 +30,12 @@
         <label for="lon">Longitude</label>
         {{ form.lon(class_="form-control") }}
     </div>
+
+    <div class="form-group">
+        <input type="button" value="Drop marker" onclick="dropPin()" class="btn btn-primary"> and drag it to correct location.
+    </div>
+    
+    <div id="map"></div>
 
     <button type="submit" class="btn btn-primary">Create</button>
     

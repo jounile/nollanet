@@ -11,7 +11,8 @@ from app.mod_spots.form import NewSpotForm, UpdateSpotForm, CountryForm, TownFor
 
 mod_spots = Blueprint('spots', __name__, url_prefix='/spots')
 
-GoogleMaps(app, key=os.getenv('GOOGLE_API_KEY'))
+key = app.config.get('GOOGLE_API_KEY')
+GoogleMaps(app, key=key)
 
 @mod_spots.route('/all')
 def all():
@@ -33,9 +34,9 @@ def all():
     types = MapType.query.order_by(MapType.name.asc())
     spots = MapSpot.query.filter_by(maa_id=selected_maa_id).order_by(MapSpot.paivays.desc())
 
-    map_center_lat = None
-    map_center_lon = None
-    map_zoom_level = None
+    map_center_lat = 60.186427
+    map_center_lon = 24.934886
+    map_zoom_level = 5
 
     if selected_maa_id != 0:
         country = MapCountry.query.filter_by(id=selected_maa_id).first()
@@ -59,7 +60,7 @@ def all():
     for spot in spots:
         if(spot.latlon):
             lat_lon = (spot.latlon).split(",")
-            marker = (lat_lon[0], lat_lon[1])
+            marker = (lat_lon[0], lat_lon[1], spot.nimi)
             markers.append(marker)
 
     # creating a map in the view
@@ -113,7 +114,7 @@ def new_spot():
             form.country.choices = [(country.id, country.maa) for country in MapCountry.query.order_by(MapCountry.maa.asc())]
             form.town.choices = [(town.id, town.paikkakunta) for town in MapTown.query.filter_by(maa_id=1).order_by(MapTown.paikkakunta.asc())]
             form.tyyppi.choices = [(tyyppi.id, tyyppi.name) for tyyppi in MapType.query.order_by(MapType.name.asc())]
-            return render_template("spots/new_spot.html", form=form)
+            return render_template("spots/new_spot.html", form=form, key=key)
         if request.method == 'POST':
             spot = MapSpot(maa_id = request.form.get('country'),
                     paikkakunta_id = request.form.get('town'),
@@ -232,7 +233,7 @@ def new_country():
     if(session and session['logged_in']):
         form = CountryForm()
         if request.method == 'GET':
-            return render_template("spots/new_country.html", form=form)
+            return render_template("spots/new_country.html", form=form, key=key)
         if request.method == 'POST':
             country = MapCountry(id = request.form.get('id'),
                     maa = request.form.get('maa'),
@@ -288,7 +289,7 @@ def new_town():
         form = TownForm()
         if request.method == 'GET':
             form.maa_id.choices = [(country.id, country.maa) for country in MapCountry.query.order_by(MapCountry.maa.asc())]
-            return render_template("spots/new_town.html", form=form)
+            return render_template("spots/new_town.html", form=form, key=key)
         if request.method == 'POST':
             town = MapTown(id = request.form.get('id'),
                     paikkakunta = request.form.get('paikkakunta'),
