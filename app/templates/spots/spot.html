@@ -3,7 +3,7 @@
 
 {% block content %}
 
-<script src="https://maps.googleapis.com/maps/api/js?key={{ key }}"></script>
+{{mymap.js}}
 
 <div class="spot-title">
 
@@ -20,17 +20,15 @@
         <div>Map: {{ spot.latlon }}</div>
     {% endif %}
 
-    <div id="map"></div>
-
     <br />
     <div>Type: {{ spot.type }}</div>
     <div>Country: {{ spot.maa }}</div>
     <div>Town: {{ spot.paikkakunta }}</div>
 
+    {{mymap.html}}
+
 </div>
 
 {% include 'facebook-comments.html' %}
-
-<script type="text/javascript" src="{{ url_for('static', filename='js/mapdroppin.js') }}"></script>
 
 {% endblock %}

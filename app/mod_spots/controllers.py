@@ -104,7 +104,24 @@ def spot(kartta_id):
             (MapSpot.latlon).label("latlon"),
         ).first()
 
-    return render_template('spots/spot.html', spot=spot, key=key)
+    latlon = spot.latlon
+    lat = latlon.split(",")[0]
+    lon = latlon.split(",")[1]
+    markers = []
+    marker = (lat, lon, spot.name)
+    markers.append(marker)
+
+    # creating a map in the view
+    mymap = Map(
+        identifier="view-side",
+        style="height:400px;width:1170px;margin:0;",
+        zoom=15,
+        lat=lat,
+        lng=lon,
+        markers=markers
+    )
+
+    return render_template('spots/spot.html', spot=spot, mymap=mymap)
 
 @mod_spots.route("/spot/new", methods = ['POST', 'GET'])
 def new_spot():
