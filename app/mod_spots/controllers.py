@@ -104,18 +104,29 @@ def spot(kartta_id):
             (MapSpot.latlon).label("latlon"),
         ).first()
 
-    latlon = spot.latlon
-    lat = latlon.split(",")[0]
-    lon = latlon.split(",")[1]
+    # defaults
+    lat = 50.395346
+    lon = 8.667042
+    zoom = 3
     markers = []
-    marker = (lat, lon, spot.name)
-    markers.append(marker)
+
+    # Get latlon from spot data
+    latlon = spot.latlon
+    if(latlon):
+        latlon_splitted = latlon.split(",")
+        lat = latlon_splitted[0].strip()
+        lon = latlon_splitted[1].strip()
+        zoom = 15
+
+        # Create marker
+        marker = (lat, lon, spot.name)
+        markers.append(marker)
 
     # creating a map in the view
     mymap = Map(
         identifier="view-side",
-        style="height:400px;width:1170px;margin:0;",
-        zoom=15,
+        style="height:400px;width:100%;margin:0;",
+        zoom=zoom,
         lat=lat,
         lng=lon,
         markers=markers
