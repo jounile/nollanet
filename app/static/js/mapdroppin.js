@@ -8,6 +8,7 @@ function initialize() {
   var lat_input = document.getElementById("lat");
   var lon_input = document.getElementById("lon");
   var type_input = document.getElementById("tyyppi");
+  var maa_input = document.getElementById("maa_id");
 
   // Init vars
   var location = null;
@@ -62,13 +63,14 @@ function initialize() {
   // create map
   map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-  // create marker for spot. not country or town!
-  if(type_input != undefined){
+  // create marker for spot and country but not for town
+  if(type_input != undefined || maa_input != undefined){
     endMarker = new google.maps.Marker({
       position: new google.maps.LatLng(lat, lon),
       map: map
     });
   }
+  
   directionsDisplay.setMap(map);
 }
 
