@@ -23,7 +23,7 @@ def newest():
 @mod_users.route("/logins/latest")
 def latest_logins():
     if(session and session['logged_in'] and session['user_level'] == 1):
-        latest_logins = db.session.query(User).filter(User.last_login >= '2020-01-01').order_by(User.last_login.desc())
+        latest_logins = db.session.query(User).order_by(User.last_login.desc()).limit(20)
         return render_template("users/latest_logins.html", latest_logins=latest_logins)
     else:
         flash("Please login first")
