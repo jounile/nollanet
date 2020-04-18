@@ -46,12 +46,14 @@
     </div>
 </form>
 
-{% if towns.count() > 0 %}
-{{ towns.count() }} towns
+{% if selected_paikkakunta_id|int() == 0 %}
+    {% if selected_maa_id|int() !=0 or towns.count() > 0 %}
+        {{ towns.count() }} towns
+    {% endif %}
 {% endif %}
 
-{% if spots.count() > 0 %}
-, {{ spots.count() }} spots
+{% if selected_paikkakunta_id|int() != 0 or spots.count() > 0 %}
+    {{ spots.count() }} spots
 {% endif %}
 
 {{mymap.html}}
