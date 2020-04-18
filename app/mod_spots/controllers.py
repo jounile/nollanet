@@ -32,7 +32,7 @@ def all():
     countries = MapCountry.query.order_by(MapCountry.maa.asc())
     towns = MapTown.query.filter(MapTown.maa_id==selected_maa_id).order_by(MapTown.paikkakunta.asc())
     types = MapType.query.order_by(MapType.name.asc())
-    spots = MapSpot.query.filter_by(maa_id=selected_maa_id).order_by(MapSpot.paivays.desc())
+    spots = MapSpot.query.filter_by(maa_id=selected_maa_id).filter_by(paikkakunta_id=selected_paikkakunta_id).order_by(MapSpot.paivays.desc())
 
     lat = 50.395346
     lon = 8.667042
@@ -43,25 +43,34 @@ def all():
         lat = country.lat
         lon = country.lon
         zoom = 5
-        spots = spots.filter_by(maa_id=selected_maa_id)
 
-    if selected_paikkakunta_id != 0:
-        town = MapTown.query.filter_by(id=selected_paikkakunta_id).first()
-        lat = town.lat
-        lon = town.lon
-        zoom = 11
-        spots = spots.filter_by(paikkakunta_id=selected_paikkakunta_id)
+        # town markers
+        markers = []
+        for town in towns:
+            if(town.lat and town.lon):
+                lat = town.lat
+                lon = town.lon
+                marker = (lat, lon, town.paikkakunta)
+                markers.append(marker)
 
-    if selected_type_id != 0:
-        spots = spots.filter_by(tyyppi=selected_type_id)
+    if selected_paikkakunta_id != 0 or selected_type_id != 0:
 
-    # spot markers
-    markers = []
-    for spot in spots:
-        if(spot.latlon):
-            lat_lon = (spot.latlon).split(",")
-            marker = (lat_lon[0], lat_lon[1], spot.nimi)
-            markers.append(marker)
+        if selected_paikkakunta_id != 0:
+            town = MapTown.query.filter_by(id=selected_paikkakunta_id).first()
+            lat = town.lat
+            lon = town.lon
+            zoom = 11
+
+        if selected_type_id != 0:
+            spots = spots.filter_by(tyyppi=selected_type_id)
+
+        # spot markers
+        markers = []
+        for spot in spots:
+            if(spot.latlon):
+                lat_lon = (spot.latlon).split(",")
+                marker = (lat_lon[0], lat_lon[1], spot.nimi)
+                markers.append(marker)
 
     # creating a map in the view
     mymap = Map(
