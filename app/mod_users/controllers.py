@@ -14,7 +14,7 @@ def user(username):
 @mod_users.route("/newest")
 def newest():
     if(session and session['logged_in'] and session['user_level'] == 1):
-        newest_users = db.session.query(User).filter(User.date >= '2020-01-01').order_by(User.date.desc())
+        newest_users = db.session.query(User).order_by(User.date.desc()).limit(20)
         return render_template("users/newest_users.html", newest_users=newest_users)
     else:
         flash("Please login first")
