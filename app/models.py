@@ -87,7 +87,7 @@ class MapSpot(db.Model):
     info = db.Column(db.String(512), nullable=False)
     tyyppi = db.Column(db.SmallInteger, nullable=False, server_default=db.FetchedValue())
     temp = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
-    paivays = db.Column(db.Date, nullable=False, server_default=db.FetchedValue())
+    paivays = db.Column(db.DateTime, nullable=False, server_default=db.FetchedValue())
     karttalinkki = db.Column(db.String(200))
     maa_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     latlon = db.Column(db.String(512))
