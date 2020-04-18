@@ -16,9 +16,15 @@
         <div>Link: <a href="{{ spot.link }}" target="_blank">{{ spot.link }}</a></div>
     {% endif %}
 
-    {% if spot.latlon %}
-        <div>Map: {{ spot.latlon }}</div>
-    {% endif %}
+    <div>
+        Coordinates: 
+        {% if spot.latlon %}
+            {{ spot.latlon }}
+        {% else %}
+            <b>missing</b>
+        {% endif %}
+    </div>
+
 
     <br />
     <div>Type: {{ spot.type }}</div>

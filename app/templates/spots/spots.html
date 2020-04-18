@@ -46,8 +46,9 @@
     </div>
 </form>
 
-Results: 
+{% if towns.count() > 0 %}
 {{ towns.count() }} towns
+{% endif %}
 
 {% if spots.count() > 0 %}
 , {{ spots.count() }} spots
