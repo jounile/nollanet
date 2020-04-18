@@ -105,7 +105,7 @@ def login():
             # Increment login_count by one
             login_count = user.login_count + 1
             try:
-                result = db.session.query(User).filter(User.username == username).update(dict(login_count=login_count), synchronize_session=False)
+                result = db.session.query(User).filter(User.username == username).update(dict(login_count=login_count, last_login=datetime.now()), synchronize_session=False)
                 db.session.commit()
                 app.logger.info("Incrementing login_count by one was successful")
             except Exception as e:
