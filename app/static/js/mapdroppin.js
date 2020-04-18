@@ -38,7 +38,8 @@ function initialize() {
 
   // Get lat & lon from separate input fields
   if (lat_input != undefined && lon_input != undefined){
-    if(lat_input.value != '' || lon_input.value != ''){
+    if ((lat_input.value != '' || lon_input.value != '') 
+      && (lat_input.value != 'None' || lon_input.value != 'None')) {
       lat = lat_input.value;
       lon = lon_input.value;
       location = new google.maps.LatLng(lat, lon);
@@ -48,6 +49,7 @@ function initialize() {
       }
     }
   }
+
   // For countries and towns zoom out
   if(type_input == undefined){
     location = new google.maps.LatLng(lat, lon);
@@ -69,6 +71,7 @@ function initialize() {
   }
   directionsDisplay.setMap(map);
 }
+
 function dropPin() {
 
   // if any previous marker exists, let's first remove it from the map
@@ -93,11 +96,13 @@ function dropPin() {
 
 function copyMarkerpositionToInput() {
 
-  // get the position of the marker, and set it as the value of input
+  // get the position of the marker, and set it as the value of latlon input
   var latlon = document.getElementById("latlon");
   if (latlon != undefined){
     latlon.value = endMarker.getPosition().lat() + ',' +  endMarker.getPosition().lng();
   }
+
+  // get the position of the marker, and set it as the value of lat & lon input
   var lat = document.getElementById("lat");
   var lon = document.getElementById("lon");
   if (lat != undefined && lon != undefined){
