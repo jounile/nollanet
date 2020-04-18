@@ -42,7 +42,7 @@ def all():
         country = MapCountry.query.filter_by(id=selected_maa_id).first()
         lat = country.lat
         lon = country.lon
-        zoom = 3
+        zoom = 5
         spots = spots.filter_by(maa_id=selected_maa_id)
 
     if selected_paikkakunta_id != 0:

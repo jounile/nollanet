@@ -52,7 +52,7 @@ function initialize() {
   if(type_input == undefined){
     location = new google.maps.LatLng(lat, lon);
     mapOptions = {
-      zoom: 3,
+      zoom: 5,
       center: location
     }
   }
@@ -62,7 +62,7 @@ function initialize() {
 
   // create marker for spot. not country or town!
   if(type_input != undefined){
-    var marker = new google.maps.Marker({
+    endMarker = new google.maps.Marker({
       position: new google.maps.LatLng(lat, lon),
       map: map
     });
@@ -70,23 +70,29 @@ function initialize() {
   directionsDisplay.setMap(map);
 }
 function dropPin() {
+
   // if any previous marker exists, let's first remove it from the map
   if (endMarker) {
     endMarker.setMap(null);
   }
+
   // create the marker
   endMarker = new google.maps.Marker({
     position: map.getCenter(),
     map: map,
     draggable: true,
   });
+
   copyMarkerpositionToInput();
+
   // add an event "onDrag"
   google.maps.event.addListener(endMarker, 'dragend', function() {
     copyMarkerpositionToInput();
   });
 }
+
 function copyMarkerpositionToInput() {
+
   // get the position of the marker, and set it as the value of input
   var latlon = document.getElementById("latlon");
   if (latlon != undefined){
