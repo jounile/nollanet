@@ -16,12 +16,16 @@ Count: {{ countries.count() }}
         {% if session['logged_in'] and session['user_level'] == 1 %}
             <td></td>
             <td></td>
+            <td></td>
+            <td></td>
         {% endif %}
     </tr>
     {% for country in countries %}
         <tr>
             <td>{{ country.maa }}</a></td>
             {% if session['logged_in'] and session['user_level'] == 1 %}
+                <td>{{ country.lat }}</td>
+                <td>{{ country.lon }}</td>
                 <td>
                     <form action="{{ url_for('spots.update_country', country_id=country.id) }}" method="GET">
                             <button type="submit" class="btn btn-primary">Edit</button>
