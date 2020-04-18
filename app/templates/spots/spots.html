@@ -6,7 +6,7 @@
 {{mymap.js}}
 
 <h1>Spots</h1>
-Count: {{ spots.count() }}
+
 <form action="{{ url_for('spots.all') }}" method="GET">
     <div class="form-group">
         <label for="maa_id">Filter by country:</label>
@@ -45,6 +45,13 @@ Count: {{ spots.count() }}
         <input type="hidden" name="paikkakunta_id" value="{{ selected_paikkakunta_id }}" />
     </div>
 </form>
+
+Results: 
+{{ towns.count() }} towns
+
+{% if spots.count() > 0 %}
+, {{ spots.count() }} spots
+{% endif %}
 
 {{mymap.html}}
 <br />

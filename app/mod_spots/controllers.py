@@ -37,6 +37,7 @@ def all():
     lat = 50.395346
     lon = 8.667042
     zoom = 3
+    markers = []
 
     if selected_maa_id != 0:
         country = MapCountry.query.filter_by(id=selected_maa_id).first()
