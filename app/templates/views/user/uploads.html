@@ -12,8 +12,8 @@
     {% for blob in blobs %}
     <tr>
         <td>
-            <img src="{{ blob.path }}" /><br/>
-            <a href="{{ blob.path }}" target="_blank">{{ blob.path }}</a>
+            <img src="{{ url_for('media.filename', filename='uploads/' + blob.path) }}" /><br/>
+            <a href="{{ url_for('media.filename', filename='uploads/' + blob.path) }}" target="_blank">{{ blob.path }}</a>
         </td>
         <td>
             <form action="{{ url_for('delete_blob') }}" method="POST">

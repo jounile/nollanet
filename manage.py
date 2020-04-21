@@ -224,7 +224,7 @@ def seed_db():
         db.session.add(User(user_id=2, level=0, username="tester", password=bcrypt.generate_password_hash("tester"), name="User Tester", bornyear=2010, email="tester@example.com", email2="", info="", location="", date=datetime.now(), hobbies="", open=1, extrainfo="", sukupuoli=1, icq="", apulainen=1, last_login=datetime.now(), chat=1, oikeus=1, lang_id=1, login_count=1, lastloginip="", lastloginclient="", address="", postnumber="", emails=1, puhelin="", kantaasiakasnro="", lamina_lisatieto="", blogs=1, user_showid=1, blog_level=1, last_login2=datetime.now(), messenger="", myspace="", rss="", youtube="", ircgalleria="", last_profile_update=datetime.now(), avatar="", flickr_username=""))
 
         # Uploads
-        db.session.add(Uploads(id=1, user_id=2 ,create_time=datetime.now(), path="https://nollanet.blob.core.windows.net/uploads/21-04-2020_10-43-32_venice_skatepark_covid.png"))
+        db.session.add(Uploads(id=1, user_id=2 ,create_time=datetime.now(), path="21-04-2020_10-43-32_venice_skatepark_covid.png"))
 
         db.session.commit()
         print("Inserting example data finished")

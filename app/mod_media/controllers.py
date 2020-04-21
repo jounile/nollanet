@@ -163,14 +163,11 @@ def new_upload():
                 flash("Something went wrong while uploading the files %s"%filename)
                 pass
 
-            blob = app.config.get('AZURE_BLOB_URI')
-            path =  blob + '/' + container + '/' + filename
-
             # Create a record in database
             upload = Uploads(
                 user_id=session['user_id'],
                 create_time=datetime.datetime.now(),
-                path=path)
+                path=filename)
             db.session.add(upload)
             db.session.commit()
             #print("Upload was inserted to database by user " + session['username'])
