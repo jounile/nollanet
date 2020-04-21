@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 from app import app, db
-from app.models import Links, LinkCategories, StoryType, MediaType, Country, Genre, Media, MapType, MapCountry, MapTown, MapSpot, User
+from app.models import Links, LinkCategories, StoryType, MediaType, Country, Genre, Media, MapType, MapCountry, MapTown, MapSpot, User, Uploads
 from app.mod_auth import bcrypt
 
 def create_db():
@@ -220,7 +220,11 @@ def seed_db():
         db.session.add(MapSpot(kartta_id=64, paikkakunta_id=16, user_id=1, nimi="Country 4, Town 12, Type 4, Spot 64", info="desc", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=4, latlon=""))
 
         # Users
-        db.session.add(User(user_id=1, level=1, username="tester", password=bcrypt.generate_password_hash("tester"), name="Sir Tester", bornyear=2010, email="tester@example.com", email2="", info="", location="", date=datetime.now(), hobbies="", open=1, extrainfo="", sukupuoli=1, icq="", apulainen=1, last_login=datetime.now(), chat=1, oikeus=1, lang_id=1, login_count=1, lastloginip="", lastloginclient="", address="", postnumber="", emails=1, puhelin="", kantaasiakasnro="", lamina_lisatieto="", blogs=1, user_showid=1, blog_level=1, last_login2=datetime.now(), messenger="", myspace="", rss="", youtube="", ircgalleria="", last_profile_update=datetime.now(), avatar="", flickr_username=""))
+        db.session.add(User(user_id=1, level=1, username="admin", password=bcrypt.generate_password_hash("admin"), name="Admin Tester", bornyear=2010, email="admin@example.com", email2="", info="", location="", date=datetime.now(), hobbies="", open=1, extrainfo="", sukupuoli=1, icq="", apulainen=1, last_login=datetime.now(), chat=1, oikeus=1, lang_id=1, login_count=1, lastloginip="", lastloginclient="", address="", postnumber="", emails=1, puhelin="", kantaasiakasnro="", lamina_lisatieto="", blogs=1, user_showid=1, blog_level=1, last_login2=datetime.now(), messenger="", myspace="", rss="", youtube="", ircgalleria="", last_profile_update=datetime.now(), avatar="", flickr_username=""))
+        db.session.add(User(user_id=2, level=0, username="tester", password=bcrypt.generate_password_hash("tester"), name="User Tester", bornyear=2010, email="tester@example.com", email2="", info="", location="", date=datetime.now(), hobbies="", open=1, extrainfo="", sukupuoli=1, icq="", apulainen=1, last_login=datetime.now(), chat=1, oikeus=1, lang_id=1, login_count=1, lastloginip="", lastloginclient="", address="", postnumber="", emails=1, puhelin="", kantaasiakasnro="", lamina_lisatieto="", blogs=1, user_showid=1, blog_level=1, last_login2=datetime.now(), messenger="", myspace="", rss="", youtube="", ircgalleria="", last_profile_update=datetime.now(), avatar="", flickr_username=""))
+
+        # Uploads
+        db.session.add(Uploads(id=1, user_id=2 ,create_time=datetime.now(), path="https://nollanet.blob.core.windows.net/uploads/21-04-2020_10-43-32_venice_skatepark_covid.png"))
 
         db.session.commit()
         print("Inserting example data finished")

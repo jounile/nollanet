@@ -64,7 +64,7 @@ def support():
 
 @app.route("/newpost", methods = ['POST', 'GET'])
 def new_post():
-    if(session and session['logged_in'] and session['user_level'] == 1):
+    if(session and session['logged_in']):
         if request.method == 'POST':
 
             media = Media(mediatype_id = request.form.get('mediatype_id'),
@@ -157,7 +157,7 @@ def delete_blob():
         if request.method == 'POST':
             # Remove blob
             blob_service = utils.get_azure_blob_service()
-            container = session['username']
+            container = "uploads"
             blob_path = request.form.get('blob_path')
             blob_name = os.path.basename(blob_path)
             blob_service.delete_blob(container, blob_name)

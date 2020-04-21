@@ -141,45 +141,42 @@ def update(id):
             flash("Please login first")
             return redirect(url_for("home"))
 
-@app.route("/newupload", methods=['POST','GET'])
+@mod_media.route("/newupload", methods=['POST','GET'])
 def new_upload():
-    if request.method == 'POST':
+    if(session and session['logged_in']):
+        if request.method == 'GET':
+            return render_template("views/user/new_upload.html")
+        if request.method == 'POST':
 
-        # Crea a blob container with the users name
-        blob_service = utils.get_azure_blob_service()
-        container = ''
-        file_to_upload = request.files['file']
-        filename = secure_filename(file_to_upload.filename)
+            # Crea a blob container with the users name
+            blob_service = utils.get_azure_blob_service()
+            container = 'uploads'
+            file_to_upload = request.files['file']
+            filename = secure_filename(file_to_upload.filename)
+            filename = datetime.datetime.now().strftime("%d-%m-%Y_%I-%M-%S") + "_" + filename
 
-        if(session and session['logged_in']):
-            container = session['username']
-            if not blob_service.exists(container):
-                blob_service.create_container(container)
-                blob_service.set_container_acl(container, public_access=PublicAccess.Blob)
-        else:
-            flash("Please login first")
-            return redirect(url_for("home"))
+            # Create Blob from stream
+            try:
+                blob_service.create_blob_from_stream(container, filename, file_to_upload)
+                flash("File " + filename + " was uploaded successfully")
+            except:
+                flash("Something went wrong while uploading the files %s"%filename)
+                pass
 
-        # Create Blob from stream
-        try:
-            blob_service.create_blob_from_stream(container, filename, file_to_upload)
-            flash("File " + filename + " was uploaded successfully")
-        except:
-            print("Something went wrong while uploading the files %s"%filename)
-            flash("Something went wrong while uploading the files %s"%filename)
-            pass
+            blob = app.config.get('AZURE_BLOB_URI')
+            path =  blob + '/' + container + '/' + filename
 
-        blob = app.config.get('AZURE_BLOB_URI')
-        path =  blob + '/' + container + '/' + filename
+            # Create a record in database
+            upload = Uploads(
+                user_id=session['user_id'],
+                create_time=datetime.datetime.now(),
+                path=path)
+            db.session.add(upload)
+            db.session.commit()
+            #print("Upload was inserted to database by user " + session['username'])
 
-        # Create a record in database
-        upload = Uploads(
-            user_id=session['user_id'],
-            create_time=datetime.datetime.now(),
-            path=path)
-        db.session.add(upload)
-        db.session.commit()
-        #print("Upload was inserted to database by user " + session['username'])
+            return redirect(url_for("my_uploads"))
+    else:
+        flash("Please login first")
+        return redirect(url_for("home"))
 
-        return redirect(url_for("my_uploads"))
-    return render_template("views/user/new_upload.html")

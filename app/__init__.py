@@ -79,8 +79,10 @@ nav.Bar('user', [
     nav.Item('My', 'auth.profile', items=[
         nav.Item('Profile', 'auth.profile'),
         nav.Item('Password', 'auth.pwdreset'),
-        nav.Item('Uploads', 'my_uploads'),
-        nav.Item('Posts', 'my_posts'),
+        nav.Item('My Uploads', 'my_uploads'),
+        nav.Item('My Posts', 'my_posts'),
+        nav.Item('New upload', 'media.new_upload'),
+        nav.Item('New post', 'new_post'),
         nav.Item('New spot', 'spots.new_spot'),
         nav.Item('New link', 'links.new_link'),
     ])

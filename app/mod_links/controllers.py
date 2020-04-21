@@ -23,7 +23,7 @@ def edit_links():
 
 @mod_links.route("/new", methods = ['POST', 'GET'])
 def new_link():
-    if(session and session['logged_in'] and session['user_level'] == 1):
+    if(session and session['logged_in']):
         if request.method == 'GET':
             categories = LinkCategories.query.order_by(LinkCategories.create_time.desc())
             return render_template("links/new_link.html", categories=categories)
