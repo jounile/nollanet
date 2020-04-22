@@ -23,8 +23,10 @@
     <div class="form-group">
         <label for="mediatype_id">Media type</label>
         <select name="mediatype_id" class="form-control" id="mediatype_id_selector">
+            <!--
             <option value="1">Photo</option>
             <option value="6">Video</option>
+            -->
             <option value="5">Stories</option>
             <option value="0">None</option>
         </select>
@@ -36,7 +38,7 @@
             <option value="2">Review</option>
             <option value="3">Interview</option>
             <option value="4">News</option>
-            <option value="5">Spotcheck</option>
+            <!--<option value="5">Spotcheck</option>-->
             <option value="0">None</option>
         </select>
     </div>
@@ -65,7 +67,7 @@
 
     <div class="form-group">
         <label for="media_text">Text</label>
-        <textarea type="text" id="textArea" class="form-control" name="media_text" cols="100" rows="10"></textarea>
+        <textarea type="text" id="summernote" class="form-control" name="media_text" cols="100" rows="10"></textarea>
     </div>
 
     <div class="form-group">
@@ -73,36 +75,8 @@
         <input type="checkbox" name="hidden" />
     </div>
 
-    <button type="button" id="btnShowModal" class="btn btn-info btn-lg">Add image</button>
-
-    <br /><br />
-
     <button type="submit" class="btn btn-primary">Create</button>
 
 </form>
-
-<!-- Modal -->
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    Select image
-                </h4>
-            </div>
-            <div class="modal-body">
-                {% if blobs is not none %}
-                    {% for blob in blobs %}
-                        <img src="{{ url_for('media.filename', filename='uploads/' + blob.path) }}" onclick="addImageTagToTextarea(this)" width="100" height="100">
-                    {% endfor %}
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    
-    </div>
-</div> 
 
 {% endblock %}

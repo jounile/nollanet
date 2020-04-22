@@ -15,21 +15,12 @@ function filePreview(input) {
     }
 }
 
-function addImageTagToTextarea(param){
-    var imgSrc = $(param).attr("src");
-    var imgAlt = $(param).attr("alt");
-    var imgTag = '<img src="'+imgSrc+'" alt="'+imgAlt+'" />'; 
-    $('#textArea').empty();
-    $('#textArea').html(imgTag);
-    $('#myModal').modal('hide');
-}
-
 $(document).ready(function() {
 
     /* 
         Show file preview when a file is selected
     */
-    $("#file").change(function () {
+    $("#image").change(function () {
         filePreview(this);
     });
 
@@ -44,13 +35,6 @@ $(document).ready(function() {
         } else {
             $("#storytype_id_form_group").hide();
         }
-    });
-
-    /*
-        Modal window for image selections
-    */
-    $("#btnShowModal").click(function () {
-        $("#myModal").modal("show");
     });
 
 });

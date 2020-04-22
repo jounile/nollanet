@@ -39,7 +39,7 @@ class Media(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     media_topic = db.Column(db.String(50))
     media_desc = db.Column(db.String(50))
-    media_text = db.Column(db.String(50))
+    media_text = db.Column(db.String(500))
     mediatype_id = db.Column(db.Integer, db.ForeignKey('mediatype.id'))
     genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
     storytype_id = db.Column(db.Integer, db.ForeignKey('storytype.id'))

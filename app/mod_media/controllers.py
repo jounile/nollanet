@@ -125,7 +125,7 @@ def update(id):
                 'country_id': request.form.get('country_id'),
                 'hidden': request.form.get('hidden') }
 
-        if(session and session['logged_in'] and session['user_level'] == 1):
+        if(session and session['logged_in']):
             Media.query.filter_by(id=id).update(media)
             db.session.commit()
             flash("Record " + id + " was updated by user " + session['username'])
@@ -134,26 +134,26 @@ def update(id):
             flash("Please login first")
             return redirect(url_for("home"))
     else:
-        if(session and session['logged_in'] and session['user_level'] == 1):
+        if(session and session['logged_in']):
             result = Media.query.filter_by(id=id).first()
             return render_template("views/user/update_media.html", result=result)
         else:
             flash("Please login first")
             return redirect(url_for("home"))
 
-@mod_media.route("/newupload", methods=['POST','GET'])
-def new_upload():
-    if(session and session['logged_in']):
-        if request.method == 'GET':
-            return render_template("views/user/new_upload.html")
-        if request.method == 'POST':
-
-            # Crea a blob container with the users name
-            blob_service = utils.get_azure_blob_service()
-            container = 'uploads'
-            file_to_upload = request.files['file']
-            filename = secure_filename(file_to_upload.filename)
+@mod_media.route("/savefile", methods=['POST','GET'])
+def savefile():
+    if request.method == 'POST':
+        # Crea a blob container with the users name
+        blob_service = utils.get_azure_blob_service()
+        container = 'uploads'
+        file_to_upload = request.files['image']
+        filename = file_to_upload.filename
+        if filename == '':
+            return "error.png"
+        if file_to_upload and utils.allowed_file(filename):
             filename = datetime.datetime.now().strftime("%d-%m-%Y_%I-%M-%S") + "_" + filename
+            filename = secure_filename(filename)
 
             # Create Blob from stream
             try:
@@ -172,7 +172,23 @@ def new_upload():
             db.session.commit()
             #print("Upload was inserted to database by user " + session['username'])
 
-            return redirect(url_for("my_uploads"))
+            print("filename", filename)
+            return filename
+        else:
+            flash("File type is not allowed")
+    return None
+
+@mod_media.route("/newupload", methods=['POST','GET'])
+def new_upload():
+    if(session and session['logged_in']):
+        if request.method == 'GET':
+            return render_template("views/user/new_upload.html")
+        if request.method == 'POST':
+            result = savefile()
+            if result is not None:
+                return redirect(url_for("my_uploads"))
+            else:
+                return redirect(url_for("media.new_upload"))
     else:
         flash("Please login first")
         return redirect(url_for("home"))
