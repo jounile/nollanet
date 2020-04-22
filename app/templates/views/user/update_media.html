@@ -21,12 +21,12 @@
 
     <div class="form-group">
         <label for="media_text">Text</label>
-        <textarea type="text" name="media_text" class="form-control" cols="100" rows="10">{{ result.media_text }}</textarea>
+        <textarea type="text" id="summernote" class="form-control" name="media_text" cols="100" rows="10">{{ result.media_text }}</textarea>
     </div>
 
     <div class="form-group">
         <label for="hidden">Hidden</label>
-        <input type="checkbox" name="hidden" value="1"{% if result.hidden==1 %} checked {% endif %} />
+        <input type="checkbox" name="hidden" value=""{% if result.hidden==1 %} checked {% endif %} />
     </div>
 
     <div class="form-group">
@@ -50,34 +50,35 @@
             <option value="10"{% if result.genre_id==10 %} selected="selected" {% endif %}>Nollagang</option>
             <option value="11"{% if result.genre_id==11 %} selected="selected" {% endif %}>Snowskate</option>
             -->
-            <option value="0"{% if result.genre_id==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 
     <div class="form-group">
         <label for="mediatype_id">Media type</label>
         <select name="mediatype_id" class="form-control" id="mediatype_id_selector">
+            <!--
             <option value="1"{% if result.mediatype_id==1 %} selected="selected" {% endif %}>Photo</option>
             <option value="6"{% if result.mediatype_id==6 %} selected="selected" {% endif %}>Video</option>
+            -->
             <option value="5"{% if result.mediatype_id==5 %} selected="selected" {% endif %}>Stories</option>
-            <option value="0"{% if result.mediatype_id==0 %} selected="selected" {% endif %}>None</option>
         </select>
     </div>
 
     <div class="form-group" id="storytype_id_form_group">
         <label for="storytype_id">Story type</label>
         <select name="storytype_id" class="form-control">
-            <option value="5"{% if result.storytype_id==5 %} selected="selected" {% endif %}>Spotcheck</option>
-            <option value="4"{% if result.storytype_id==4 %} selected="selected" {% endif %}>News</option>
-            <option value="3"{% if result.storytype_id==3 %} selected="selected" {% endif %}>Interview</option>
             <option value="2"{% if result.storytype_id==2 %} selected="selected" {% endif %}>Review</option>
-            <option value="0"{% if result.storytype_id==0 %} selected="selected" {% endif %}>None</option>
+            <option value="3"{% if result.storytype_id==3 %} selected="selected" {% endif %}>Interview</option>
+            <option value="4"{% if result.storytype_id==4 %} selected="selected" {% endif %}>News</option>
+            <!--
+            <option value="5"{% if result.storytype_id==5 %} selected="selected" {% endif %}>Spotcheck</option>
+            -->
         </select>
     </div>
 
     <label for="owner">Owner</label>
     <div>{{ result.owner }}</div>
-    
+
     <label for="create_time">Created</label>
     <div>{{ result.create_time }}</div>
 

@@ -123,7 +123,7 @@ def update(id):
                 'media_text': request.form.get('media_text'),
                 'media_desc': request.form.get('media_desc'),
                 'country_id': request.form.get('country_id'),
-                'hidden': request.form.get('hidden') }
+                'hidden': request.form.get('hidden') != None }
 
         if(session and session['logged_in']):
             Media.query.filter_by(id=id).update(media)
@@ -172,7 +172,6 @@ def savefile():
             db.session.commit()
             #print("Upload was inserted to database by user " + session['username'])
 
-            print("filename", filename)
             return filename
         else:
             flash("File type is not allowed")

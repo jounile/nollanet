@@ -24,17 +24,4 @@ $(document).ready(function() {
         filePreview(this);
     });
 
-    /* 
-        Show storytype_id selection depending when mediatype_id is 5 (Stories)
-    */
-    $("#storytype_id_form_group").hide();
-    $("#mediatype_id_selector").change(function() {
-        var selectedMediaType = $("#mediatype_id_selector option:selected").val();
-        if(selectedMediaType == 5){
-            $("#storytype_id_form_group").show();
-        } else {
-            $("#storytype_id_form_group").hide();
-        }
-    });
-
 });
