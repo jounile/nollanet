@@ -4,6 +4,20 @@
 {% block content %}
 
 <h1>Reviews</h1>
+
+<form action="{{ url_for('reviews.all') }}" method="GET">
+    <div class="form-group">
+        <label for="genre_id">Filter by</label>
+        <select name="genre" class="form-control" onchange="this.form.submit()">
+            <option value="1"{% if selected_genre=='1' %} selected="selected" {% endif %}>Skateboarding</option>
+            <option value="2"{% if selected_genre=='2' %} selected="selected" {% endif %}>Snowboarding</option>
+            <option value="3"{% if selected_genre=='3' %} selected="selected" {% endif %}>Nollagang</option>
+        </select>
+    </div>
+</form>
+
+{{ pagination.info }}
+
 <div class="reviews-list">
     <table width="100%" class="table table-bordered">
         <thead class="thead-dark">
@@ -29,12 +43,12 @@
                 <td>{{ item.country_code }}</td>
                 {% if session['logged_in'] and session['user_level'] == 1 %}
                     <td>
-                        <form action="{{ url_for('media.update', id=item.id) }}" method="GET">
+                        <form action="{{ url_for('stories.update', id=item.id) }}" method="GET">
                             <button type="submit" class="btn btn-primary">Edit</button>
                         </form>
                     </td>
                     <td>
-                        <form action="{{ url_for('media.delete') }}" method="POST">
+                        <form action="{{ url_for('stories.delete') }}" method="POST">
                             <input type="hidden" name="id" value="{{ item.id }}" />
                             <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                         </form>
@@ -44,6 +58,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ pagination.links }}
 </div>
 
 {% endblock %}

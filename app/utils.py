@@ -44,20 +44,20 @@ def get_pagination(**kwargs):
                       )
 
 def get_genre_id(genre):
-    if(genre == "skateboarding"):
+    if(genre == "skateboarding"): # 691
         genre_id = 1
-    if(genre == "snowboarding"):
+    if(genre == "snowboarding"): # 320
         genre_id = 2
-    if(genre == "nollagang"):
+    if(genre == "nollagang"): # 43
         genre_id = 3
-    if(genre == "snowskate"):
+    if(genre == "snowskate"): # 5
         genre_id = 4
-    if(genre == "none"):
-        genre_id = 5
+    if(genre == "tuotekuvat"): # 423
+        genre_id = 9
     return genre_id
 
 def get_mediatype_id(mediatype):
-    if(mediatype == "photo"): # total 1883 skate 518 snow 280
+    if(mediatype == "photo"): # 1883
         mediatype_id = 1
     if(mediatype == "sound"): # 0
         mediatype_id = 2
@@ -84,6 +84,9 @@ def get_count_by_genre_and_type(selected_genre_id, selected_mediatype_id):
 
 def get_total_news_count(selected_genre):
     return Story.query.filter(Story.genre_id==selected_genre).filter(Story.storytype_id==4).filter_by(lang_id=2).filter_by(hidden=0).count()
+
+def get_total_reviews_count(selected_genre):
+    return Story.query.filter(Story.genre_id==selected_genre).filter(Story.storytype_id==2).filter_by(lang_id=2).filter_by(hidden=0).count()
 
 def write_file(data, filename):
     with open(filename, 'wb') as f:
