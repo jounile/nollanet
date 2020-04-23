@@ -1,11 +1,11 @@
-<!-- update_media.html -->
+<!-- update_story.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
 
-<h1>Update media</h1>
+<h1>Update story</h1>
 
-<form action = "{{ url_for('media.update', id=result.id) }}" method = "POST">
+<form action = "{{ url_for('stories.update', id=result.id) }}" method = "POST">
     
     <input type="hidden" name="id" value="{{ result.id  }}" />
 

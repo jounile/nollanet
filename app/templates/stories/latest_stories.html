@@ -1,0 +1,66 @@
+<!-- latest_stories.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>Latest stories</h1>
+<div class="stories-list">
+    <table width="100%" class="table table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Genre</th>
+            <th>Mediatype</th>
+            <th>Storytype</th>
+            <th>Topic</th>
+            <th>Description</th>
+            <th>Created</th>
+            <th>Owner</th>
+            <th>Country</th>
+            <th>Hidden</th>
+            {% if session['logged_in'] and session['user_level'] == 1 %}
+                <th></th>
+                <th></th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in latest %}
+            <tr>
+                <td>{{ item.id }}</td>
+                <td>{{ item.genre }}</td>
+                <td>{{ item.mediatype_name }}</td>
+                <td>{{ item.storytype_name }}</td>
+                <td>{{ item.media_topic }}</td>
+                <td>{{ item.media_desc[:80] }}</td>
+                <td>{{ item.create_time }}</td>
+                <td>{{ item.owner }}</td>
+                <td>{{ item.country_code }}</td>
+                <td>
+                    {% if item.hidden==1 %} 
+                        Yes
+                    {% else %}
+                        No
+                    {% endif %}
+                </td>
+                {% if session['logged_in'] and session['user_level'] == 1 %}
+                    <td>
+                        <form action="{{ url_for('stories.update', id=item.id) }}" method="GET">
+                            <button type="submit" class="btn btn-primary">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{{ url_for('stories.delete') }}" method="POST">
+                            <input type="hidden" name="id" value="{{ item.id }}" />
+                            <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                        </form>
+                    </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

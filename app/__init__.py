@@ -38,6 +38,7 @@ from app.mod_guides.controllers import mod_guides as guides_module
 from app.mod_interviews.controllers import mod_interviews as interviews_module
 from app.mod_reviews.controllers import mod_reviews as reviews_module
 from app.mod_news.controllers import mod_news as news_module
+from app.mod_stories.controllers import mod_stories as stories_module
 from app.mod_users.controllers import mod_users as users_module
 
 from app.mod_youtube.controllers import mod_youtube as youtube_module
@@ -53,6 +54,7 @@ app.register_blueprint(guides_module)
 app.register_blueprint(interviews_module)
 app.register_blueprint(reviews_module)
 app.register_blueprint(news_module)
+app.register_blueprint(stories_module)
 app.register_blueprint(users_module)
 
 app.register_blueprint(youtube_module)
@@ -80,9 +82,9 @@ nav.Bar('user', [
         nav.Item('Profile', 'auth.profile'),
         nav.Item('Password', 'auth.pwdreset'),
         nav.Item('My Uploads', 'my_uploads'),
-        nav.Item('My Posts', 'my_posts'),
+        nav.Item('My Stories', 'my_stories'),
         nav.Item('New upload', 'media.new_upload'),
-        nav.Item('New post', 'new_post'),
+        nav.Item('New story', 'stories.new_story'),
         nav.Item('New spot', 'spots.new_spot'),
         nav.Item('New link', 'links.new_link'),
     ])

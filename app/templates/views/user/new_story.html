@@ -1,11 +1,11 @@
-<!-- new_post.html -->
+<!-- new_story.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
 
-<h1>New post</h1>
+<h1>New story</h1>
 
-<form action="{{ url_for('new_post') }}" method = "POST">
+<form action="{{ url_for('stories.new_story') }}" method = "POST">
 
     <div class="form-group">
         <label for="genre_id">Genre</label>

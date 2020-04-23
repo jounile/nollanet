@@ -1,11 +1,11 @@
-<!-- posts.html -->
+<!-- stories.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
 
-<h1>My posts</h1>
+<h1>My stories</h1>
 
-<a class="btn btn-primary" role="button" href="{{ url_for('new_post') }}">New post</a>
+<a class="btn btn-primary" role="button" href="{{ url_for('stories.new_story') }}">New story</a>
 
 <table width="100%" class="table table-bordered">
     <thead class="thead-dark">
@@ -24,7 +24,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for item in posts %}
+    {% for item in stories %}
         <tr>
             <td>{{ item.id }}</td>
             <td>{{ item.genre }}</td>
@@ -42,12 +42,12 @@
                 {% endif %}
             </td>
             <td>
-                <form action="/media/update/{{ item.id }}" method="GET">
+                <form action="/stories/update/{{ item.id }}" method="GET">
                     <button type="submit" class="btn btn-primary">Edit</button>
                 </form>
             </td>
             <td>
-                <form action="/media/delete" method="POST">
+                <form action="/stories/delete" method="POST">
                     <input type="hidden" name="id" value="{{ item.id }}" />
                     <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                 </form>

@@ -63,7 +63,6 @@ def video(id):
     video = Media.query.filter_by(id=id).first()
     return render_template('media/video.html', video=video)
 
-
 @mod_media.route("/latest")
 def latest():
     if(session and session['logged_in'] and session['user_level'] == 1):

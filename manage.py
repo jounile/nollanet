@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 from app import app, db
-from app.models import Links, LinkCategories, StoryType, MediaType, Country, Genre, Media, MapType, MapCountry, MapTown, MapSpot, User, Uploads
+from app.models import Links, LinkCategories, StoryType, MediaType, Country, Genre, Media, MapType, MapCountry, MapTown, MapSpot, User, Uploads, Story
 from app.mod_auth import bcrypt
 
 def create_db():
@@ -47,46 +47,46 @@ def seed_db():
         db.session.add(MediaType(id=6, type_name='video'))
 
         # Photo (skateboarding)
-        db.session.add(Media(id=1, media_topic="Skateboading photo 1", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=2, media_topic="Skateboading photo 2", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=3, media_topic="Skateboading photo 3", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=4, media_topic="Skateboading photo 4", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
+        db.session.add(Media(id=1, media_topic="Skateboading photo 1", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=2, media_topic="Skateboading photo 2", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=3, media_topic="Skateboading photo 3", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=4, media_topic="Skateboading photo 4", media_desc="desc", media_text="text", mediatype_id=1, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # Photo (snowboarding)
-        db.session.add(Media(id=5, media_topic="Snowboading photo 1", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=6, media_topic="Snowboading photo 2", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=7, media_topic="Snowboading photo 3", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=8, media_topic="Snowboading photo 4", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
+        db.session.add(Media(id=5, media_topic="Snowboading photo 1", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=6, media_topic="Snowboading photo 2", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=7, media_topic="Snowboading photo 3", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=8, media_topic="Snowboading photo 4", media_desc="desc", media_text="text", mediatype_id=1, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # Video (skateboarding)
-        db.session.add(Media(id=9, media_topic="Skateboading video 1", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=10, media_topic="Skateboading video 2", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=11, media_topic="Skateboading video 3", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=12, media_topic="Skateboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
+        db.session.add(Media(id=9, media_topic="Skateboading video 1", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=10, media_topic="Skateboading video 2", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=11, media_topic="Skateboading video 3", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=12, media_topic="Skateboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # Video (snowboarding)
-        db.session.add(Media(id=13, media_topic="Snowboading video 1", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=14, media_topic="Snowboading video 2", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=15, media_topic="Snowboading video 3", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=16, media_topic="Snowboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
+        db.session.add(Media(id=13, media_topic="Snowboading video 1", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=14, media_topic="Snowboading video 2", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=15, media_topic="Snowboading video 3", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Media(id=16, media_topic="Snowboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # Reviews
-        db.session.add(Media(id=17, media_topic="Review 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=2, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=18, media_topic="Review 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=2, storytype_id=2, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=19, media_topic="Review 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=3, storytype_id=2, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=20, media_topic="Review 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=4, storytype_id=2, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
+        db.session.add(Story(id=17, media_topic="Review 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=18, media_topic="Review 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=2, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=19, media_topic="Review 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=3, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=20, media_topic="Review 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=4, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # Interviews
-        db.session.add(Media(id=21, media_topic="Interview 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=22, media_topic="Interview 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=23, media_topic="Interview 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=24, media_topic="Interview 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
+        db.session.add(Story(id=21, media_topic="Interview 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=22, media_topic="Interview 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=23, media_topic="Interview 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=24, media_topic="Interview 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # News
-        db.session.add(Media(id=25, media_topic="News 1", media_desc="desc", media_text="text", mediatype_id=4, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=26, media_topic="News 2", media_desc="desc", media_text="text", mediatype_id=4, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=27, media_topic="News 3", media_desc="desc", media_text="text", mediatype_id=4, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
-        db.session.add(Media(id=28, media_topic="News 4", media_desc="desc", media_text="text", mediatype_id=4, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=1, country_id=1, hidden=0))
+        db.session.add(Story(id=25, media_topic="News 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=26, media_topic="News 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=27, media_topic="News 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=28, media_topic="News 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # StoryType
         db.session.add(StoryType(id=1, type_name='general'))

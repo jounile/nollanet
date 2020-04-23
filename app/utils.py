@@ -8,7 +8,7 @@ import string, random
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Media
+from app.models import Media, Story
 
 from . import app
 
@@ -83,7 +83,7 @@ def get_count_by_genre_and_type(selected_genre_id, selected_mediatype_id):
         ).count()
 
 def get_total_news_count(selected_genre):
-    return Media.query.filter(Media.mediatype_id.in_((4,5,))).filter(Media.genre_id==selected_genre).filter_by(storytype_id=4).filter_by(lang_id=2).filter_by(hidden=0).count()
+    return Story.query.filter(Story.mediatype_id==5).filter(Story.genre_id==selected_genre).filter(Story.storytype_id==4).filter_by(lang_id=2).filter_by(hidden=0).count()
 
 def write_file(data, filename):
     with open(filename, 'wb') as f:

@@ -8,7 +8,7 @@ from flask_paginate import Pagination, get_page_args
 from azure.storage import CloudStorageAccount
 from azure.storage.blob import BlockBlobService, PublicAccess
 
-from app.models import Uploads, Media, Page, User, LoggedInUser, StoryType, Genre, MediaType, Country
+from app.models import Uploads, Media, Story, Page, User, LoggedInUser, StoryType, Genre, MediaType, Country
 from app.models import Links, LinkCategories
 from app.models import MapSpot, MapCountry, MapTown, MapType
 
@@ -21,9 +21,9 @@ def home():
     #app.logger.error('An error occurred')
     #app.logger.info('Navigated to home() route')
 
-    interviews = Media.query.filter(Media.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('interviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    news = Media.query.filter(Media.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('news')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
-    reviews = Media.query.filter(Media.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('reviews')).filter_by(hidden=0).order_by(Media.create_time.desc()).limit(10)
+    interviews = Story.query.filter(Story.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('interviews')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
+    news = Story.query.filter(Story.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('news')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
+    reviews = Story.query.filter(Story.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('reviews')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
     spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
     links = db.session.query(Links).join(
             LinkCategories, Links.category == LinkCategories.id
@@ -62,78 +62,32 @@ def online():
 def support():
     return render_template("views/support.html")
 
-@app.route("/newpost", methods = ['POST', 'GET'])
-def new_post():
-    if(session and session['logged_in']):
-        if request.method == 'POST':
-
-            media = Media(mediatype_id = request.form.get('mediatype_id'),
-                        genre_id = request.form.get('genre_id'),
-                        country_id = request.form.get('country_id'),
-                        storytype_id = request.form.get('storytype_id'),
-                        media_topic = request.form.get('media_topic'),
-                        media_text = request.form.get('media_text'),
-                        media_desc = request.form.get('media_desc'),
-                        hidden = request.form.get('hidden') != None,
-                        owner = session['username'],
-                        create_time = utils.get_now(),
-                        lang_id = 2)
-
-            db.session.add(media)
-            db.session.commit()
-
-            flash("New post created with ID " + str(media.id))
-
-            if(media.mediatype_id == "1"):
-                return redirect(url_for("photo", id=media.id))
-            elif(media.mediatype_id == "6"):
-                if(media.storytype_id == "0"):
-                    return redirect(url_for("video", id=media.id))
-            elif(media.mediatype_id == "5"):
-                if(media.storytype_id == "2"):
-                    return redirect(url_for("view_reviews_item", review_id=media.id))
-                elif(media.storytype_id == "3"):
-                    return redirect(url_for("view_interviews_item", interview_id=media.id))
-                elif(media.storytype_id == "4"):
-                    return redirect(url_for("view_news_item", news_id=media.id))
-            else:
-                return redirect(url_for("home"))
-        else:
-            my_uploads = db.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
-            blobs = []
-            for blob in my_uploads:
-                blobs.append(blob)
-            return render_template("views/user/new_post.html", blobs=blobs)
-    else:
-        flash("Please login first")
-        return redirect(url_for("home"))
-
-@app.route("/my/posts")
-def my_posts():
+@app.route("/my/stories")
+def my_stories():
     if(session and session['logged_in']):
         username = session['username']
-        posts = db.session.query(
-                Media
+        stories = db.session.query(
+                Story
             ).join(Genre
             ).join(MediaType
             ).join(StoryType
             ).join(Country
             ).add_columns(
-                Media.id,
+                Story.id,
                 (Genre.type_name).label("genre"),
                 (MediaType.type_name).label("mediatype_name"),
                 (StoryType.type_name).label("storytype_name"),
                 (Country.country_code).label("country_code"),
-                Media.media_topic,
-                Media.create_time,
-                Media.owner,
-                Media.hidden
+                Story.media_topic,
+                Story.create_time,
+                Story.owner,
+                Story.hidden
             ).filter(
-                Media.owner==username
+                Story.owner==username
             ).order_by(
-                Media.create_time.desc()
+                Story.create_time.desc()
             ).limit(10)
-        return render_template("views/user/posts.html", posts=posts)
+        return render_template("views/user/stories.html", stories=stories)
     else:
         flash("Please login first")
         return redirect(url_for("home"))
