@@ -8,9 +8,8 @@ mod_interviews = Blueprint('interviews', __name__, url_prefix='/interviews')
 
 @mod_interviews.route('/all')
 def all():
-    interviews = db.session.query(Story.mediatype_id==5).join(Genre).join(MediaType).join(StoryType).join(Country).add_columns(Story.id,
+    interviews = db.session.query(Story).join(Genre).join(StoryType).join(Country).add_columns(Story.id,
             (Genre.type_name).label("genre"),
-            (MediaType.type_name).label("mediatype_name"),
             (StoryType.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Story.media_topic,

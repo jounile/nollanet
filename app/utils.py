@@ -57,17 +57,17 @@ def get_genre_id(genre):
     return genre_id
 
 def get_mediatype_id(mediatype):
-    if(mediatype == "photo"):
+    if(mediatype == "photo"): # total 1883 skate 518 snow 280
         mediatype_id = 1
-    if(mediatype == "mediatype2"):
+    if(mediatype == "sound"): # 0
         mediatype_id = 2
-    if(mediatype == "music"):
+    if(mediatype == "music"): # 103
         mediatype_id = 3
-    if(mediatype == "movies"):
+    if(mediatype == "movies"): # 20
         mediatype_id = 4
-    if(mediatype == "stories"):
+    if(mediatype == "stories"): # 0
         mediatype_id = 5
-    if(mediatype == "video"):
+    if(mediatype == "video"): # 94
         mediatype_id = 6
     if(mediatype == "none"):
         mediatype_id = 7
@@ -83,7 +83,7 @@ def get_count_by_genre_and_type(selected_genre_id, selected_mediatype_id):
         ).count()
 
 def get_total_news_count(selected_genre):
-    return Story.query.filter(Story.mediatype_id==5).filter(Story.genre_id==selected_genre).filter(Story.storytype_id==4).filter_by(lang_id=2).filter_by(hidden=0).count()
+    return Story.query.filter(Story.genre_id==selected_genre).filter(Story.storytype_id==4).filter_by(lang_id=2).filter_by(hidden=0).count()
 
 def write_file(data, filename):
     with open(filename, 'wb') as f:

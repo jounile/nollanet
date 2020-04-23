@@ -71,22 +71,22 @@ def seed_db():
         db.session.add(Media(id=16, media_topic="Snowboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # Reviews
-        db.session.add(Story(id=17, media_topic="Review 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=18, media_topic="Review 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=2, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=19, media_topic="Review 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=3, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=20, media_topic="Review 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=4, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=17, media_topic="Review 1", media_desc="desc", media_text="text", genre_id=1, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=18, media_topic="Review 2", media_desc="desc", media_text="text", genre_id=2, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=19, media_topic="Review 3", media_desc="desc", media_text="text", genre_id=3, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=20, media_topic="Review 4", media_desc="desc", media_text="text", genre_id=4, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # Interviews
-        db.session.add(Story(id=21, media_topic="Interview 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=22, media_topic="Interview 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=23, media_topic="Interview 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=24, media_topic="Interview 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=21, media_topic="Interview 1", media_desc="desc", media_text="text", genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=22, media_topic="Interview 2", media_desc="desc", media_text="text", genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=23, media_topic="Interview 3", media_desc="desc", media_text="text", genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=24, media_topic="Interview 4", media_desc="desc", media_text="text", genre_id=1, storytype_id=3, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # News
-        db.session.add(Story(id=25, media_topic="News 1", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=26, media_topic="News 2", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=27, media_topic="News 3", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-        db.session.add(Story(id=28, media_topic="News 4", media_desc="desc", media_text="text", mediatype_id=5, genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=25, media_topic="News 1", media_desc="desc", media_text="text", genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=26, media_topic="News 2", media_desc="desc", media_text="text", genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=27, media_topic="News 3", media_desc="desc", media_text="text", genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        db.session.add(Story(id=28, media_topic="News 4", media_desc="desc", media_text="text", genre_id=1, storytype_id=4, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
 
         # StoryType
         db.session.add(StoryType(id=1, type_name='general'))

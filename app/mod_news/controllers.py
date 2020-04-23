@@ -15,14 +15,12 @@ def all():
     total = utils.get_total_news_count(selected_genre)
     page, per_page, offset = utils.get_page_args(page_parameter='page', per_page_parameter='per_page')
     news = db.session.query(
-            Story.mediatype_id==5
+            Story
         ).join(Genre
-        ).join(MediaType
         ).join(StoryType
         ).join(Country
         ).add_columns(
             Story.id,
-            (MediaType.type_name).label("mediatype_name"),
             (StoryType.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Story.hidden,
@@ -54,13 +52,11 @@ def latest():
         latest = db.session.query(
                 Story
             ).join(Genre
-            ).join(MediaType
             ).join(StoryType
             ).join(Country
             ).add_columns(
                 Story.id,
                 (Genre.type_name).label("genre"),
-                (MediaType.type_name).label("mediatype_name"),
                 (StoryType.type_name).label("storytype_name"),
                 (Country.country_code).label("country_code"),
                 Story.media_topic,

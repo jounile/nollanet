@@ -21,9 +21,9 @@ def home():
     #app.logger.error('An error occurred')
     #app.logger.info('Navigated to home() route')
 
-    interviews = Story.query.filter(Story.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('interviews')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
-    news = Story.query.filter(Story.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('news')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
-    reviews = Story.query.filter(Story.mediatype_id.in_((4,5,))).filter_by(storytype_id=utils.get_storytype_id('reviews')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
+    interviews = Story.query.filter_by(storytype_id=utils.get_storytype_id('interviews')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
+    news = Story.query.filter_by(storytype_id=utils.get_storytype_id('news')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
+    reviews = Story.query.filter_by(storytype_id=utils.get_storytype_id('reviews')).filter_by(hidden=0).order_by(Story.create_time.desc()).limit(10)
     spots = MapSpot.query.order_by(MapSpot.paivays.desc()).limit(10)
     links = db.session.query(Links).join(
             LinkCategories, Links.category == LinkCategories.id
@@ -69,13 +69,11 @@ def my_stories():
         stories = db.session.query(
                 Story
             ).join(Genre
-            ).join(MediaType
             ).join(StoryType
             ).join(Country
             ).add_columns(
                 Story.id,
                 (Genre.type_name).label("genre"),
-                (MediaType.type_name).label("mediatype_name"),
                 (StoryType.type_name).label("storytype_name"),
                 (Country.country_code).label("country_code"),
                 Story.media_topic,

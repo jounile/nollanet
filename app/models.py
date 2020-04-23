@@ -12,7 +12,6 @@ class MediaType(db.Model):
     #type_id = db.Column(db.Integer)
     type_name = db.Column(db.String(50))
     media_rel = relationship("Media", back_populates="mediatype_rel")
-    story_rel = relationship("Story", back_populates="mediatype_rel")
 
 class Genre(db.Model):
     __tablename__ = 'genre'
@@ -63,7 +62,6 @@ class Story(db.Model):
     media_topic = db.Column(db.String(50))
     media_desc = db.Column(db.String(50))
     media_text = db.Column(db.String(500))
-    mediatype_id = db.Column(db.Integer, db.ForeignKey('mediatype.id'))
     genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'))
     storytype_id = db.Column(db.Integer, db.ForeignKey('storytype.id'))
     create_time = db.Column(db.DateTime, nullable=False, server_default=db.FetchedValue())
@@ -72,7 +70,6 @@ class Story(db.Model):
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'), index=True)
     hidden = db.Column(db.Integer)
     country_rel = relationship("Country", back_populates="story_rel")
-    mediatype_rel = relationship("MediaType", back_populates="story_rel")
     genre_rel = relationship("Genre", back_populates="story_rel")
     storytype_rel = relationship("StoryType", back_populates="story_rel")
 

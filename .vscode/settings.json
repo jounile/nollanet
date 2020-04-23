@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "/usr/bin/python",
+    "python.pythonPath": "/usr/local/bin/python3",
     "azureFunctions.deploySubpath": "functions/functions.zip",
     "azureFunctions.projectLanguage": "Python",
     "azureFunctions.projectRuntime": "~2",

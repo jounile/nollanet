@@ -9,15 +9,13 @@ mod_reviews = Blueprint('reviews', __name__, url_prefix='/reviews')
 @mod_reviews.route('/all')
 def all():
     reviews = db.session.query(
-            Story.mediatype_id==5
+            Story
         ).join(Genre
-        ).join(MediaType
         ).join(StoryType
         ).join(Country
         ).add_columns(
             Story.id,
             (Genre.type_name).label("genre"),
-            (MediaType.type_name).label("mediatype_name"),
             (StoryType.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Story.media_topic,
