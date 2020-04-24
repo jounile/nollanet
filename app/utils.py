@@ -48,7 +48,7 @@ def get_genre_id(genre):
         genre_id = 1
     if(genre == "snowboarding"): # 320
         genre_id = 2
-    if(genre == "nollagang"): # 43
+    if(genre == "music"): # 43
         genre_id = 3
     if(genre == "snowskate"): # 5
         genre_id = 4
@@ -87,6 +87,9 @@ def get_total_news_count(selected_genre):
 
 def get_total_reviews_count(selected_genre):
     return Story.query.filter(Story.genre_id==selected_genre).filter(Story.storytype_id==2).filter_by(lang_id=2).filter_by(hidden=0).count()
+
+def get_total_interviews_count(selected_genre):
+    return Story.query.filter(Story.genre_id==selected_genre).filter(Story.storytype_id==3).filter_by(lang_id=2).filter_by(hidden=0).count()
 
 def write_file(data, filename):
     with open(filename, 'wb') as f:

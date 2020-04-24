@@ -3,6 +3,19 @@
 
 {% block content %}
 
+<form action="{{ url_for('interviews.all') }}" method="GET">
+    <div class="form-group">
+        <label for="genre_id">Filter by</label>
+        <select name="genre" class="form-control" onchange="this.form.submit()">
+            <option value="1"{% if selected_genre=='1' %} selected="selected" {% endif %}>Skateboarding</option>
+            <option value="2"{% if selected_genre=='2' %} selected="selected" {% endif %}>Snowboarding</option>
+            <option value="3"{% if selected_genre=='3' %} selected="selected" {% endif %}>Music</option>
+        </select>
+    </div>
+</form>
+
+{{ pagination.info }}
+
 <h1>Interviews</h1>
 <div class="interviews-list">
     <table width="100%" class="table table-bordered">
@@ -44,6 +57,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {{ pagination.links }}
 </div>
 
 {% endblock %}
