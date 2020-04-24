@@ -35,12 +35,12 @@ def seed_db():
         # Genre
         db.session.add(Genre(id=1, type_name='skateboarding'))
         db.session.add(Genre(id=2, type_name='snowboarding'))
-        db.session.add(Genre(id=3, type_name='nollagang'))
+        db.session.add(Genre(id=3, type_name='music'))
         db.session.add(Genre(id=4, type_name='snowskate'))
 
         # MediaType
         db.session.add(MediaType(id=1, type_name='photo'))
-        db.session.add(MediaType(id=2, type_name='mediatype2'))
+        db.session.add(MediaType(id=2, type_name='sound'))
         db.session.add(MediaType(id=3, type_name='music'))
         db.session.add(MediaType(id=4, type_name='movies'))
         db.session.add(MediaType(id=5, type_name='stories')) # interviews, reviews

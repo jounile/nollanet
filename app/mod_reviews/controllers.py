@@ -21,7 +21,6 @@ def all():
         ).join(Country
         ).add_columns(
             Story.id,
-            (Genre.type_name).label("genre"),
             (StoryType.type_name).label("storytype_name"),
             (Country.country_code).label("country_code"),
             Story.media_topic,
