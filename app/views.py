@@ -109,11 +109,14 @@ def delete_blob():
         if request.method == 'POST':
             # Remove blob
             blob_service = utils.get_azure_blob_service()
-            container = "uploads"
+            images_container = "images"
+            videos_container = "videos"
             blob_path = request.form.get('blob_path')
             blob_name = os.path.basename(blob_path)
-            blob_service.delete_blob(container, blob_name)
-
+            if utils.isImage(blob_name):
+                blob_service.delete_blob(images_container, blob_name)
+            if utils.isVideo(blob_name):
+                blob_service.delete_blob(videos_container, blob_name)
             # Delete a record from database
             upload_id = request.form.get('upload_id')
             Uploads.query.filter_by(id=upload_id).delete()

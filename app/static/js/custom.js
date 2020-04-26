@@ -20,7 +20,7 @@ $(document).ready(function() {
     /* 
         Show file preview when a file is selected
     */
-    $("#image").change(function () {
+    $("#file").change(function () {
         filePreview(this);
     });
 

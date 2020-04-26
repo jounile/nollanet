@@ -143,11 +143,12 @@ def update(id):
 @mod_media.route("/savefile", methods=['POST','GET'])
 def savefile():
     if request.method == 'POST':
-        # Crea a blob container with the users name
         blob_service = utils.get_azure_blob_service()
-        container = 'uploads'
-        file_to_upload = request.files['image']
+        images_container = 'images'
+        video_container = 'videos'
+        file_to_upload = request.files['file']
         filename = file_to_upload.filename
+        path = None
         if filename == '':
             return "error.png"
         if file_to_upload and utils.allowed_file(filename):
@@ -156,8 +157,14 @@ def savefile():
 
             # Create Blob from stream
             try:
-                blob_service.create_blob_from_stream(container, filename, file_to_upload)
-                flash("File " + filename + " was uploaded successfully")
+                if utils.isImage(filename):
+                    blob_service.create_blob_from_stream(images_container, filename, file_to_upload)
+                    path = 'images/' + filename
+                    flash("Image " + filename + " was uploaded successfully")
+                if utils.isVideo(filename):
+                    blob_service.create_blob_from_stream(video_container, filename, file_to_upload)
+                    path = 'videos/' + filename
+                    flash("Video " + filename + " was uploaded successfully")
             except:
                 flash("Something went wrong while uploading the files %s"%filename)
                 pass
@@ -166,7 +173,7 @@ def savefile():
             upload = Uploads(
                 user_id=session['user_id'],
                 create_time=datetime.datetime.now(),
-                path=filename)
+                path=path)
             db.session.add(upload)
             db.session.commit()
             #print("Upload was inserted to database by user " + session['username'])

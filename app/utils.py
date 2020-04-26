@@ -123,8 +123,15 @@ def get_now():
     return now
 
 def allowed_file(filename):
-	ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
-	return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+	return isImage(filename) or isVideo(filename)
+
+def isImage(filename):
+    VIDEO_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in VIDEO_EXTENSIONS
+
+def isVideo(filename):
+    VIDEO_EXTENSIONS = set(['avi', 'mpg', 'mpeg', 'flv'])
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in VIDEO_EXTENSIONS
 
 def id_generator(size=32, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
