@@ -22,7 +22,7 @@ $('#summernote').summernote({
 function uploadImage(image) {
     var data = new FormData();
     console.log("data", data)
-    data.append("image", image);
+    data.append("file", image);
     $.ajax({
         url: "/media/savefile",
         cache: false,
@@ -32,7 +32,7 @@ function uploadImage(image) {
         type: "POST",
         success: function(filename) {
             console.log("filename", filename)
-            var image = $('<img>').attr('src', '/media/uploads/' + filename).addClass("img-fluid");
+            var image = $('<img>').attr('src', '/media/images/' + filename).addClass("img-fluid");
             $('#summernote').summernote("insertNode", image[0]);
         },
         error: function(data) {
