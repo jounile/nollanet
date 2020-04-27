@@ -42,9 +42,9 @@
     {% for item in media %}
     <tr>
         <td>{{ loop.index + pagination.skip }}</td>
-        <td>
+        <td width="120">
             {% if selected_mediatype_id=='6' %}
-            <a href="{{ url_for('media.video', id=item.id) }}"><img src="{{ url_for('media.filename', filename='thumbs/' + item['id']|string + '_50.jpg') }}" /></a>
+            <a href="{{ url_for('media.video', id=item.id) }}"><img src="{{ url_for('media.filename', filename='mp4-thumbs/' + item['id']|string + '_100.jpg') }}" /></a>
             {% else %}
             <a href="{{ url_for('media.photo', id=item.id) }}"><img src="{{ url_for('media.filename', filename='thumbs/' + item['id']|string + '_50.jpg') }}" /></a>
             {% endif %}

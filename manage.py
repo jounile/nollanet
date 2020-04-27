@@ -63,13 +63,15 @@ def seed_db():
         db.session.add(Media(id=10, media_topic="Skateboading video 2", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
         db.session.add(Media(id=11, media_topic="Skateboading video 3", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
         db.session.add(Media(id=12, media_topic="Skateboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-
+        
         # Video (snowboarding)
         db.session.add(Media(id=13, media_topic="Snowboading video 1", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
         db.session.add(Media(id=14, media_topic="Snowboading video 2", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
         db.session.add(Media(id=15, media_topic="Snowboading video 3", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
         db.session.add(Media(id=16, media_topic="Snowboading video 4", media_desc="desc", media_text="text", mediatype_id=6, genre_id=2, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
-
+        
+        db.session.add(Media(id=49, media_topic="Skateboading video 49", media_desc="desc", media_text="text", mediatype_id=6, genre_id=1, storytype_id=1, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
+        
         # Reviews
         db.session.add(Story(id=17, media_topic="Review 1", media_desc="desc", media_text="text", genre_id=1, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
         db.session.add(Story(id=18, media_topic="Review 2", media_desc="desc", media_text="text", genre_id=1, storytype_id=2, create_time=datetime.now(), owner="", lang_id=2, country_id=1, hidden=0))
