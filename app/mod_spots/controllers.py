@@ -2,6 +2,7 @@ import os
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
+from sqlalchemy.sql import select, or_, and_
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 from app import app, db, utils
@@ -29,10 +30,19 @@ def all():
     if(request.args.get('type_id')):
         selected_type_id = int(request.args.get('type_id'))
 
+    selected_keyword = ""
+    if(request.args.get('keyword')):
+        selected_keyword = str(request.args.get('keyword'))
+
     countries = MapCountry.query.order_by(MapCountry.maa.asc())
     towns = MapTown.query.filter(MapTown.maa_id==selected_maa_id).order_by(MapTown.paikkakunta.asc())
     types = MapType.query.order_by(MapType.name.asc())
-    spots = MapSpot.query.filter_by(maa_id=selected_maa_id).filter_by(paikkakunta_id=selected_paikkakunta_id).order_by(MapSpot.paivays.desc())
+    if selected_keyword != "":
+        nimi_keyword_filter = and_(MapSpot.nimi.like("%"+selected_keyword+"%"))
+        info_keyword_filter = and_(MapSpot.info.like("%"+selected_keyword+"%"))
+        spots = MapSpot.query.filter(or_(nimi_keyword_filter, info_keyword_filter)).order_by(MapSpot.paivays.desc())
+    else:
+        spots = MapSpot.query.filter_by(maa_id=selected_maa_id).filter_by(paikkakunta_id=selected_paikkakunta_id).order_by(MapSpot.paivays.desc())
 
     lat = 50.395346
     lon = 8.667042
@@ -54,7 +64,7 @@ def all():
                 marker = (lat, lon, town.paikkakunta)
                 markers.append(marker)
 
-    if selected_paikkakunta_id != 0 or selected_type_id != 0:
+    if selected_paikkakunta_id != 0 or selected_type_id != 0 or selected_keyword != "":
 
         if selected_paikkakunta_id != 0:
             town = MapTown.query.filter_by(id=selected_paikkakunta_id).first()
@@ -83,7 +93,7 @@ def all():
         markers=markers
     )
 
-    return render_template("spots/spots.html", mymap=mymap, spots=spots, countries=countries, towns=towns, types=types, selected_maa_id=selected_maa_id, selected_paikkakunta_id=selected_paikkakunta_id, selected_type_id=selected_type_id)
+    return render_template("spots/spots.html", mymap=mymap, spots=spots, countries=countries, towns=towns, types=types, selected_maa_id=selected_maa_id, selected_paikkakunta_id=selected_paikkakunta_id, selected_type_id=selected_type_id, selected_keyword=selected_keyword)
 
 @mod_spots.route('/spot/<kartta_id>')
 def spot(kartta_id):

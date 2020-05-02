@@ -16,6 +16,7 @@
                 <option value="{{ country.id }}"{% if country.id|int() == selected_maa_id|int() %} selected="selected"{% endif %}>{{ country.maa }}</option>
             {% endfor %}
         </select>
+        <input type="hidden" name="keyword" value="{{ selected_keyword }}" />
     </div>
 </form>
 
@@ -29,6 +30,7 @@
             {% endfor %}
         </select>
         <input type="hidden" name="maa_id" value="{{ selected_maa_id }}" />
+        <input type="hidden" name="keyword" value="{{ selected_keyword }}" />
     </div>
 </form>
 
@@ -43,6 +45,18 @@
         </select>
         <input type="hidden" name="maa_id" value="{{ selected_maa_id }}" />
         <input type="hidden" name="paikkakunta_id" value="{{ selected_paikkakunta_id }}" />
+        <input type="hidden" name="keyword" value="{{ selected_keyword }}" />
+    </div>
+</form>
+
+<form action="{{ url_for('spots.all') }}" method="GET">
+    <div class="form-group">
+        <label for="keyword">Filter by keyword:</label><br />
+        <input type="text" name="keyword" value="{{ selected_keyword }}" class="form-control" /><br />
+        <input type="submit" value="Search" class="btn btn-primary" />
+        <input type="hidden" name="maa_id" value="{{ selected_maa_id }}" />
+        <input type="hidden" name="paikkakunta_id" value="{{ selected_paikkakunta_id }}" />
+        <input type="hidden" name="type_id" value="{{ selected_type_id }}" />
     </div>
 </form>
 

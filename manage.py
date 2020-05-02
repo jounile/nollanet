@@ -151,10 +151,10 @@ def seed_db():
         db.session.add(MapTown(id=16, paikkakunta="Paikkakunta 16", maa_id=4, lat="", lon=""))
 
         # Spots
-        db.session.add(MapSpot(kartta_id=1, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 1, Spot 1", info="Micropolis Skateboard Park", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.193521, 24.928171"))
-        db.session.add(MapSpot(kartta_id=2, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 2, Spot 2", info="Kontulan skeittihalli", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.236949, 25.086057"))
-        db.session.add(MapSpot(kartta_id=3, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 3, Spot 3", info="Kaivopuiston hänkkä", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.156616, 24.957480"))
-        db.session.add(MapSpot(kartta_id=4, paikkakunta_id=1, user_id=1, nimi="Country 1, Town 1, Type 4, Spot 4", info="Ponke's The Shop", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.169810, 24.937334"))
+        db.session.add(MapSpot(kartta_id=1, paikkakunta_id=1, user_id=1, nimi="Micropolis", info="Micropolis Skateboard Park", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.193521, 24.928171"))
+        db.session.add(MapSpot(kartta_id=2, paikkakunta_id=1, user_id=1, nimi="Kontula", info="Kontulan skeittihalli hänkkä", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.236949, 25.086057"))
+        db.session.add(MapSpot(kartta_id=3, paikkakunta_id=1, user_id=1, nimi="Kaivari", info="Kaivopuiston hänkkä", tyyppi=3, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.156616, 24.957480"))
+        db.session.add(MapSpot(kartta_id=4, paikkakunta_id=1, user_id=1, nimi="Ponke's", info="Ponke's The Shop", tyyppi=4, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon="60.169810, 24.937334"))
 
         db.session.add(MapSpot(kartta_id=5, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 1, Spot 5", info="desc", tyyppi=1, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
         db.session.add(MapSpot(kartta_id=6, paikkakunta_id=2, user_id=1, nimi="Country 1, Town 2, Type 2, Spot 6", info="desc", tyyppi=2, temp=0, paivays=datetime.now(), karttalinkki="", maa_id=1, latlon=""))
