@@ -86,20 +86,20 @@
     </tr>
     {% for spot in spots %}
         <tr>
-            <td><a href="{{ url_for('spots.spot', kartta_id=spot.kartta_id) }}">{{ spot.nimi }}</a></td>
+            <td><a href="{{ url_for('spots.spot', spot_id=spot.id) }}">{{ spot.nimi }}</a></td>
             <td>
                 {{ spot.info }}<br />
             </td>
             <td>{{ spot.paivays }}</td>
             {% if session['logged_in'] and session['user_level'] == 1 %}
                 <td>
-                    <form action="{{ url_for('spots.update_spot', spot_id=spot.kartta_id) }}" method="GET">
+                    <form action="{{ url_for('spots.update_spot', spot_id=spot.id) }}" method="GET">
                         <button type="submit" class="btn btn-primary">Edit</button>
                     </form>
                 </td>
                 <td>
                     <form action="{{ url_for('spots.delete_spot') }}" method="POST">
-                        <input type="hidden" name="spot_id" value="{{ spot.kartta_id }}" />
+                        <input type="hidden" name="spot_id" value="{{ spot.id }}" />
                         <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
                     </form>
                 </td>

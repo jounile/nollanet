@@ -100,7 +100,7 @@ class MapTown(db.Model):
 
 class MapSpot(db.Model):
     __tablename__ = 'map_spot'
-    kartta_id = db.Column(db.Integer, primary_key=True, unique=True)
+    id = db.Column(db.Integer, primary_key=True)
     paikkakunta_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     user_id = db.Column(db.Integer, nullable=False, index=True, server_default=db.FetchedValue())
     nimi = db.Column(db.String(200), nullable=False, server_default=db.FetchedValue())
@@ -111,6 +111,12 @@ class MapSpot(db.Model):
     karttalinkki = db.Column(db.String(200))
     maa_id = db.Column(db.Integer, nullable=False, server_default=db.FetchedValue())
     latlon = db.Column(db.String(512))
+
+class MapSpotRating(db.Model):
+    __tablename__ = 'map_spot_rating'
+    id = db.Column(db.Integer, primary_key=True)
+    spot_id = db.Column(db.Integer, db.ForeignKey('map_spot.id'))
+    rating = db.Column(db.Integer)
 
 class MapType(db.Model):
     __tablename__ = 'map_type'

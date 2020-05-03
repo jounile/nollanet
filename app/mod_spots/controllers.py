@@ -2,11 +2,11 @@ import os
 from datetime import datetime
 
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for, jsonify
-from sqlalchemy.sql import select, or_, and_
+from sqlalchemy.sql import select, or_, and_, func
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 from app import app, db, utils
-from app.models import User, MapSpot, MapCountry, MapTown, MapType
+from app.models import User, MapCountry, MapTown, MapType, MapSpot, MapSpotRating
 
 from app.mod_spots.form import NewSpotForm, UpdateSpotForm, CountryForm, TownForm, NewTypeForm
 
@@ -95,13 +95,13 @@ def all():
 
     return render_template("spots/spots.html", mymap=mymap, spots=spots, countries=countries, towns=towns, types=types, selected_maa_id=selected_maa_id, selected_paikkakunta_id=selected_paikkakunta_id, selected_type_id=selected_type_id, selected_keyword=selected_keyword)
 
-@mod_spots.route('/spot/<kartta_id>')
-def spot(kartta_id):
+@mod_spots.route('/spot/<spot_id>')
+def spot(spot_id):
 
     spot = db.session.query(
             MapSpot
         ).filter_by(
-            kartta_id=kartta_id
+            id=spot_id
         ).join(
             User, MapSpot.user_id == User.user_id
         ).join(
@@ -152,7 +152,22 @@ def spot(kartta_id):
         markers=markers
     )
 
-    return render_template('spots/spot.html', spot=spot, mymap=mymap)
+    # Rating
+    rating = db.session.query(
+        MapSpotRating.spot_id,
+        func.count(MapSpotRating.rating).label('unique_ratings'),
+        func.sum(MapSpotRating.rating).label('sum_ratings')
+    ).filter_by(
+        spot_id=spot_id
+    )
+
+    stars = 0
+    if rating[0][1] > 0:
+        unique_ratings = rating[0][1]
+        sum_ratings = rating[0][2]
+        stars = round(unique_ratings/sum_ratings, 1)
+
+    return render_template('spots/spot.html', spot=spot, mymap=mymap, stars=stars)
 
 @mod_spots.route("/spot/new", methods = ['POST', 'GET'])
 def new_spot():
@@ -203,7 +218,7 @@ def update_spot(spot_id):
             form.country.choices = [(country.id, country.maa) for country in MapCountry.query.order_by(MapCountry.maa.asc())]
             form.town.choices = [(town.id, town.paikkakunta) for town in MapTown.query.filter_by(maa_id=MapCountry.id).order_by(MapTown.paikkakunta.asc())]
             form.tyyppi.choices = [(tyyppi.id, tyyppi.name) for tyyppi in MapType.query.order_by(MapType.name.asc())]
-            spot = MapSpot.query.filter_by(kartta_id=spot_id).first()
+            spot = MapSpot.query.filter_by(id=spot_id).first()
             form.country.default = spot.maa_id
             form.town.default = spot.paikkakunta_id
             form.tyyppi.default = spot.tyyppi
@@ -227,7 +242,7 @@ def update_spot(spot_id):
                     'latlon': request.form.get('latlon'),
                     }
 
-            MapSpot.query.filter_by(kartta_id=spot_id).update(spot)
+            MapSpot.query.filter_by(id=spot_id).update(spot)
             db.session.commit()
 
             flash("Updated spot with ID " + str(spot_id))
@@ -241,7 +256,7 @@ def delete_spot():
     if(session and session['logged_in'] and session['user_level'] == 1):
         if request.method == 'POST':
             spot_id = request.form.get('spot_id')
-            MapSpot.query.filter_by(kartta_id=spot_id).delete()
+            MapSpot.query.filter_by(id=spot_id).delete()
             db.session.commit()
             flash("Spot " + spot_id + " was deleted succesfully by " + session['username'] + ".")
             return redirect(url_for("spots.all"))
@@ -435,7 +450,7 @@ def latest():
             MapType, MapSpot.tyyppi == MapType.id
         ).add_columns(
             (User.username).label("username"),
-            (MapSpot.kartta_id).label("kartta_id"),
+            (MapSpot.id).label("id"),
             (MapSpot.nimi).label("name"),
             (MapSpot.user_id).label("user_id"),
             (MapCountry.maa).label("maa"),

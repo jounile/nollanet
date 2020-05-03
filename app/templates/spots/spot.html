@@ -16,12 +16,20 @@
         <div>Link: <a href="{{ spot.link }}" target="_blank">{{ spot.link }}</a></div>
     {% endif %}
 
-    <div>
+    <div id="stars">
+        Stars: 
+        {% if stars != 0 %}
+            {{ stars }}
+        {% else %}
+            no rating
+        {% endif %}
+    </div>
+    <div id="coordinates">
         Coordinates: 
         {% if spot.latlon %}
             {{ spot.latlon }}
         {% else %}
-            <b>missing</b>
+            missing
         {% endif %}
     </div>
 
