@@ -7,11 +7,11 @@
 
 <h1>Update spot</h1>
 
-<form action = "{{ url_for('spots.update_spot', spot_id=spot.kartta_id) }}" method = "POST">
+<form action = "{{ url_for('spots.update_spot', spot_id=spot.id) }}" method = "POST">
     
     {{ form.csrf_token }}
 
-    <input type="hidden" name="spot_id" value="{{ spot.kartta_id  }}" />
+    <input type="hidden" name="spot_id" value="{{ spot.id  }}" />
 
     <div class="form-group">
         <label for="country">Country</label>

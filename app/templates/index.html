@@ -81,7 +81,7 @@
             <div class="module-title-wrap"><h4 class="module-title"><span>Spots</span></h4></div>
             <ul>
                 {% for spot in spots %}
-                    <li><a href="{{ url_for('spots.spot', kartta_id=spot.kartta_id) }}">{{ spot.nimi }}</a></li>
+                    <li><a href="{{ url_for('spots.spot', spot_id=spot.id) }}">{{ spot.nimi }}</a></li>
                 {% endfor %}
             </ul>
         </div>
