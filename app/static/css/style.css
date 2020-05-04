@@ -253,3 +253,10 @@ footer {
     height: 400px;
     margin-bottom: 10px;
 }
+
+.rating_feedback_success {
+    color: green;
+}
+.rating_feedback_error {
+    color: red;
+}

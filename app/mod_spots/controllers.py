@@ -111,6 +111,7 @@ def spot(spot_id):
         ).join(
             MapType, MapSpot.tyyppi == MapType.id
         ).add_columns(
+            (MapSpot.id).label("id"),
             (User.username).label("username"),
             (MapSpot.nimi).label("name"),
             (MapSpot.user_id).label("user_id"),
@@ -161,13 +162,30 @@ def spot(spot_id):
         spot_id=spot_id
     )
 
-    stars = 0
+    rating_average = 0
     if rating[0][1] > 0:
+        spot_id = rating[0][0]
         unique_ratings = rating[0][1]
         sum_ratings = rating[0][2]
-        stars = round(unique_ratings/sum_ratings, 1)
+        rating_average = round(sum_ratings/unique_ratings, 1)
 
-    return render_template('spots/spot.html', spot=spot, mymap=mymap, stars=stars)
+    return render_template('spots/spot.html', spot=spot, mymap=mymap, rating_average=rating_average)
+
+@mod_spots.route("/saverating", methods=['POST'])
+def saverating():
+    if request.method == 'POST':
+        spot_id = None
+        rating = None
+        spot_id = request.form['spotid']
+        rating = request.form['rating']
+        if spot_id is not None and rating is not None:
+            mapspotrating = MapSpotRating(
+                spot_id=spot_id,
+                rating=rating)
+            db.session.add(mapspotrating)
+            db.session.commit()
+            return "<span class='rating_feedback_success'>Thanks for rating</span>"
+    return "<span class='rating_feedback_error'>Something went wrong</span>"
 
 @mod_spots.route("/spot/new", methods = ['POST', 'GET'])
 def new_spot():

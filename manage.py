@@ -239,17 +239,23 @@ def seed_db():
         db.session.add(Uploads(id=1, user_id=2 ,create_time=datetime.now(), path="images/21-04-2020_10-43-32_venice_skatepark_covid.png"))
 
         # MapSpotRating
-        db.session.add(MapSpotRating(id=1, spot_id=1, rating=5))
-        db.session.add(MapSpotRating(id=2, spot_id=1, rating=6))
-        db.session.add(MapSpotRating(id=3, spot_id=1, rating=5))
-        db.session.add(MapSpotRating(id=4, spot_id=1, rating=3))
-        db.session.add(MapSpotRating(id=5, spot_id=1, rating=5))
+        db.session.add(MapSpotRating(id=1, spot_id=1, rating=1))
+        db.session.add(MapSpotRating(id=2, spot_id=1, rating=1))
+        db.session.add(MapSpotRating(id=3, spot_id=1, rating=1))
+        db.session.add(MapSpotRating(id=4, spot_id=1, rating=1))
+        db.session.add(MapSpotRating(id=5, spot_id=1, rating=1))
 
-        db.session.add(MapSpotRating(id=6, spot_id=2, rating=2))
-        db.session.add(MapSpotRating(id=7, spot_id=2, rating=3))
-        db.session.add(MapSpotRating(id=8, spot_id=2, rating=2))
-        db.session.add(MapSpotRating(id=9, spot_id=2, rating=4))
+        db.session.add(MapSpotRating(id=6, spot_id=2, rating=5))
+        db.session.add(MapSpotRating(id=7, spot_id=2, rating=5))
+        db.session.add(MapSpotRating(id=8, spot_id=2, rating=5))
+        db.session.add(MapSpotRating(id=9, spot_id=2, rating=5))
         db.session.add(MapSpotRating(id=10, spot_id=2, rating=5))
+
+        db.session.add(MapSpotRating(id=11, spot_id=3, rating=2))
+        db.session.add(MapSpotRating(id=12, spot_id=3, rating=3))
+        db.session.add(MapSpotRating(id=13, spot_id=3, rating=4))
+        db.session.add(MapSpotRating(id=14, spot_id=3, rating=4))
+        db.session.add(MapSpotRating(id=15, spot_id=3, rating=5))
 
         db.session.commit()
         print("Inserting example data finished")

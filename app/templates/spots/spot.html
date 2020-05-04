@@ -11,19 +11,23 @@
     <div>Published: {{ spot.paivays }} by <a href="{{ url_for('users.user', username=spot.username) }}">{{ spot.username }}</a></div>
     
     <br />
-    <div>{{ spot.info|safe }}</div>
+    <div>Description: {{ spot.info|safe }}</div>
     {% if spot.link %}
         <div>Link: <a href="{{ spot.link }}" target="_blank">{{ spot.link }}</a></div>
     {% endif %}
 
     <div id="stars">
-        Stars: 
-        {% if stars != 0 %}
-            {{ stars }}
-        {% else %}
-            no rating
-        {% endif %}
+        <meta id="spotid" data-spotid="{{ spot.id }}">
+        <meta id="rating" data-rating="{{ rating_average }}">
+        Rating:
+        <div id="rateYo"></div>
+        <div id="rating_feedback"></div>
     </div>
+
+    <div>Type: {{ spot.type }}</div>
+    <div>Country: {{ spot.maa }}</div>
+    <div>Town: {{ spot.paikkakunta }}</div>
+
     <div id="coordinates">
         Coordinates: 
         {% if spot.latlon %}
@@ -34,10 +38,8 @@
     </div>
 
 
-    <br />
-    <div>Type: {{ spot.type }}</div>
-    <div>Country: {{ spot.maa }}</div>
-    <div>Town: {{ spot.paikkakunta }}</div>
+
+
 
     {{mymap.html}}
 

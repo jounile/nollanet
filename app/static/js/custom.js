@@ -17,9 +17,7 @@ function filePreview(input) {
 
 $(document).ready(function() {
 
-    /* 
-        Show file preview when a file is selected
-    */
+    /* Show file preview when a file is selected */
     $("#file").change(function () {
         filePreview(this);
     });
