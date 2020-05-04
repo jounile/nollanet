@@ -2,6 +2,14 @@
 
 This document describes some useful things for developers.
 
+## Running tests
+
+
+```bash
+$ pip install pytest-docker-compose
+$ pytest
+```
+
 ## Environment vars
 
 ```bash

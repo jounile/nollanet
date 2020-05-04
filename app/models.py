@@ -115,7 +115,7 @@ class MapSpot(db.Model):
 class MapSpotRating(db.Model):
     __tablename__ = 'map_spot_rating'
     id = db.Column(db.Integer, primary_key=True)
-    spot_id = db.Column(db.Integer, db.ForeignKey('map_spot.id'))
+    spot_id = db.Column(db.Integer, db.ForeignKey('map_spot.id'), index=True)
     rating = db.Column(db.Integer)
 
 class MapType(db.Model):
