@@ -76,9 +76,10 @@ def register():
                     db.session.commit()
                     app.logger.info("User " + username + " was registered successfully")
                     flash("User " + username + " has been registered.")
+                    return redirect(url_for("auth.login"))
                 except Exception as e:
                     app.logger.error('Registering user ' + username + ' failed. ' + str(e))
-                return redirect(url_for("auth.register"))
+                    return redirect(url_for("auth.register"))
         else:
             flash("Registration failed")
             return redirect(url_for("auth.register"))
