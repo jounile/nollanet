@@ -55,7 +55,7 @@ def photo(id):
         Media.media_text,
         Media.create_time,
         Media.owner).filter(Media.id==id).first()
-    comments = Comment.query.filter_by(media_id=id).filter(Comment.user_id == User.user_id).order_by(Comment.id.desc()).limit(100)
+    comments = Comment.query.filter_by(media_id=id).filter(Comment.user_id == User.id).order_by(Comment.id.desc()).limit(100)
     return render_template('media/photo.html', photo=photo, comments=comments)
 
 @mod_media.route('/video/<string:id>')

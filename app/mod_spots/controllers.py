@@ -103,7 +103,7 @@ def spot(spot_id):
         ).filter_by(
             id=spot_id
         ).join(
-            User, MapSpot.user_id == User.user_id
+            User, MapSpot.user_id == User.id
         ).join(
             MapCountry, MapSpot.maa_id == MapCountry.id
         ).join(
@@ -459,7 +459,7 @@ def latest():
         ).filter(
             MapSpot.paivays >= '2020-01-01'
         ).join(
-            User, MapSpot.user_id == User.user_id
+            User, MapSpot.user_id == User.id
         ).join(
             MapCountry, MapSpot.maa_id == MapCountry.id
         ).join(

@@ -17,9 +17,9 @@
         {{ form.csrf_token }}
 
         <div class="form-group">
-            {{ form.user_id.label }}:
-            {{ form.user_id.data }}
-            {{ form.user_id }}
+            {{ form.id.label }}:
+            {{ form.id.data }}
+            {{ form.id }}
         </div>
 
         <div class="form-group">
@@ -47,9 +47,9 @@
         </div>
 
         <div class="form-group">
-            {{ form.last_profile_update.label }}:
-            {{ form.last_profile_update.data }}
-            {{ form.last_profile_update }}
+            {{ form.last_update.label }}:
+            {{ form.last_update.data }}
+            {{ form.last_update }}
         </div>
 
         <div class="form-group">
@@ -85,16 +85,6 @@
         </div>
 
         <div class="form-group">
-            {{ form.location.label }}
-            {{ form.location(class_="form-control") }}
-            <ul>
-                {% for error in form.location.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
             {{ form.address.label }}
             {{ form.address(class_="form-control") }}
             <ul>
@@ -115,20 +105,20 @@
         </div>
 
         <div class="form-group">
-            {{ form.bornyear.label }}
-            {{ form.bornyear(class_="form-control") }}
+            {{ form.location.label }}
+            {{ form.location(class_="form-control") }}
             <ul>
-                {% for error in form.bornyear.error %}
+                {% for error in form.location.error %}
                     <li style="color:red;">{{ error }}</li>
                 {% endfor %}
             </ul>
         </div>
 
         <div class="form-group">
-            {{ form.email2.label }}
-            {{ form.email2(class_="form-control") }}
+            {{ form.bornyear.label }}
+            {{ form.bornyear(class_="form-control") }}
             <ul>
-                {% for error in form.email2.error %}
+                {% for error in form.bornyear.error %}
                     <li style="color:red;">{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -165,60 +155,10 @@
         </div>
 
         <div class="form-group">
-            {{ form.extrainfo.label }}
-            {{ form.extrainfo(class_="form-control") }}
+            {{ form.gender.label }}
+            {{ form.gender(class_="form-control") }}
             <ul>
-                {% for error in form.extrainfo.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.sukupuoli.label }}
-            {{ form.sukupuoli(class_="form-control") }}
-            <ul>
-                {% for error in form.sukupuoli.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.icq.label }}
-            {{ form.icq(class_="form-control") }}
-            <ul>
-                {% for error in form.icq.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.apulainen.label }}
-            {{ form.apulainen(class_="form-control") }}
-            <ul>
-                {% for error in form.apulainen.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.chat.label }}
-            {{ form.chat(class_="form-control") }}
-            <ul>
-                {% for error in form.chat.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.oikeus.label }}
-            {{ form.oikeus(class_="form-control") }}
-            <ul>
-                {% for error in form.oikeus.error %}
+                {% for error in form.gender.error %}
                     <li style="color:red;">{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -235,60 +175,10 @@
         </div>
 
         <div class="form-group">
-            {{ form.emails.label }}
-            {{ form.emails(class_="form-control") }}
+            {{ form.telephone.label }}
+            {{ form.telephone(class_="form-control") }}
             <ul>
-                {% for error in form.emails.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.puhelin.label }}
-            {{ form.puhelin(class_="form-control") }}
-            <ul>
-                {% for error in form.puhelin.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.blogs.label }}
-            {{ form.blogs(class_="form-control") }}
-            <ul>
-                {% for error in form.blogs.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.messenger.label }}
-            {{ form.messenger(class_="form-control") }}
-            <ul>
-                {% for error in form.messenger.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.myspace.label }}
-            {{ form.myspace(class_="form-control") }}
-            <ul>
-                {% for error in form.myspace.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.rss.label }}
-            {{ form.rss(class_="form-control") }}
-            <ul>
-                {% for error in form.rss.error %}
+                {% for error in form.telephone.error %}
                     <li style="color:red;">{{ error }}</li>
                 {% endfor %}
             </ul>
@@ -305,30 +195,10 @@
         </div>
 
         <div class="form-group">
-            {{ form.ircgalleria.label }}
-            {{ form.ircgalleria(class_="form-control") }}
-            <ul>
-                {% for error in form.ircgalleria.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
             {{ form.avatar.label }}
             {{ form.avatar(class_="form-control") }}
             <ul>
                 {% for error in form.avatar.error %}
-                    <li style="color:red;">{{ error }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <div class="form-group">
-            {{ form.flickr_username.label }}
-            {{ form.flickr_username(class_="form-control") }}
-            <ul>
-                {% for error in form.flickr_username.error %}
                     <li style="color:red;">{{ error }}</li>
                 {% endfor %}
             </ul>

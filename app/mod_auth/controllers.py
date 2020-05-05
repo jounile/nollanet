@@ -43,33 +43,16 @@ def register():
                         username=form.username.data,
                         password=crypted_password,
                         location=form.location.data,
-                        hobbies="",
-                        open=1,
                         address=form.address.data,
                         postnumber=form.postnumber.data,
                         level=5,
                         bornyear=form.bornyear.data,
-                        sukupuoli=1,
-                        oikeus=1,
+                        gender=form.gender.data,
                         lang_id=1,
-                        lastloginip='',
-                        lastloginclient='',
-                        emails=1,
-                        puhelin='',
-                        kantaasiakasnro='',
-                        lamina_lisatieto='',
-                        blogs=1,
-                        user_showid=1,
-                        blog_level=1,
-                        last_login2=datetime.now(),
-                        messenger='',
-                        myspace='',
-                        rss='',
+                        telephone='',
                         youtube='',
-                        ircgalleria='',
-                        last_profile_update=datetime.now(),
-                        avatar='',
-                        flickr_username=''
+                        last_update=datetime.now(),
+                        avatar=''
                         )
 
                     db.session.add(newUser)
@@ -103,7 +86,7 @@ def login():
             flash("Welcome " + user.username + "!")
             session['logged_in'] = True
             session['username'] = user.username
-            session['user_id'] = user.user_id
+            session['user_id'] = user.id
             session['user_level'] = user.level
             app.logger.info('User ' + user.username + ' logged in.')
 
@@ -118,7 +101,7 @@ def login():
 
             # Add user to user_online table
             try:
-                loggedInUser = LoggedInUser(user_id=user.user_id,
+                loggedInUser = LoggedInUser(user_id=user.id,
                             username=user.username,
                             created_time=datetime.now()
                         )
@@ -164,95 +147,52 @@ def profile():
             username = session.get('username')
             user = User.query.filter_by(username=username).first()
 
-            form.user_id.data = user.user_id
+            form.id.data = user.id
             form.level.data = user.level
             form.username.data = user.username
             form.name.data = user.name
             form.bornyear.data = user.bornyear
             form.email.data = user.email
-            form.email2.data = user.email2
             form.homepage.data = user.homepage
             form.info.data = user.info
             form.location.data = user.location
             form.date.data = user.date
             form.hobbies.data = user.hobbies
-            # open
-            form.extrainfo.data = user.extrainfo
-            form.sukupuoli.process_data(user.sukupuoli) #selected
-            form.icq.data = user.icq
-            form.apulainen.data = user.apulainen
+            form.gender.process_data(user.gender) #selected
             form.last_login.data = user.last_login
-            form.chat.data = user.chat
-            form.oikeus.data = user.oikeus
             form.lang_id.process_data(user.lang_id) #selected
             form.login_count.data = user.login_count
-            # lastloginip
-            # lastloginclient
             form.address.data = user.address
             form.postnumber.data = user.postnumber
-            form.emails.data = user.emails
-            form.puhelin.data = user.puhelin
-            # kantaasiakasnro
-            # lamina_lisatieto
-            form.blogs.data = user.blogs
-            # user_showid
-            # blog_level
-            # last_login2
-            form.messenger.data = user.messenger
-            form.myspace.data = user.myspace
-            form.rss.data = user.rss
+            form.telephone.data = user.telephone
             form.youtube.data = user.youtube
-            form.ircgalleria.data = user.ircgalleria
-            form.last_profile_update.data = user.last_profile_update
+            form.last_update.data = user.last_update
             form.avatar.data = user.avatar
-            form.flickr_username.data = user.flickr_username
 
             return render_template('auth/profile.html', form=form)
 
         if request.method == 'POST':
             if form.validate_on_submit():
                 user = {
-                    'user_id': form.user_id.data,
+                    'id': form.id.data,
                     'username': form.username.data,
                     'name': form.name.data,
                     'bornyear': form.bornyear.data,
                     'email': form.email.data,
-                    'email2': form.email2.data,
                     'homepage': form.homepage.data,
                     'info': form.info.data,
                     'location': form.location.data,
                     'date': form.date.data,
-                    'hobbies': form.hobbies.data,
-                    # open
-                    'extrainfo': form.extrainfo.data,
-                    'sukupuoli': form.sukupuoli.data,
-                    'icq': form.icq.data,
-                    'apulainen': form.apulainen.data,
+                    'gender': form.gender.data,
                     'last_login': form.last_login.data,
-                    'chat': form.chat.data,
-                    'oikeus': form.oikeus.data,
                     'lang_id': form.lang_id.data,
                     'login_count': form.login_count.data,
-                    # lastloginip
-                    # lastloginclient
                     'address': form.address.data,
                     'postnumber': form.postnumber.data,
-                    'emails': form.emails.data,
-                    'puhelin': form.puhelin.data,
-                    # kantaasiakasnro
-                    # lamina_lisatieto
-                    'blogs': form.blogs.data,
-                    # user_showid
-                    # blog_level
-                    # last_login2
-                    'messenger': form.messenger.data,
-                    'myspace': form.myspace.data,
-                    'rss': form.rss.data,
+                    'telephone': form.telephone.data,
                     'youtube': form.youtube.data,
-                    'ircgalleria': form.ircgalleria.data,
-                    'last_profile_update': datetime.now(),
-                    'avatar': form.avatar.data,
-                    'flickr_username': form.flickr_username.data
+                    'last_update': datetime.now(),
+                    'avatar': form.avatar.data
                 }
                 form.update_details(user)
                 app.logger.info('Updated user profile')
@@ -359,10 +299,6 @@ def pwdrecover():
             try:
                 sg = SendGridAPIClient(app.config.get('SENDGRID_API_KEY'))
                 response = sg.send(message)
-                #print(response.status_code)
-                #print(response.body)
-                #print(response.headers)
-                #print('Password reset email was sent succesfully.')
                 flash('We have sent a temporary link to the email address defined in your user profile. Please follow the link and change your password.')
             except Exception as e:
                 app.logger.error("Failed to send a temporary link via email")

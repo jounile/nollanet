@@ -7,13 +7,13 @@
     <h1>Users:</h1>
     <table class="table">  
         <tr>
-            <th scope="col">user_id</th>
+            <th scope="col">id</th>
             <th scope="col">username</th>
             <th scope="col">password</th>
         </tr>
         {% for user in users %}
         <tr>
-            <th scope="row">{{ user.user_id }}</th>
+            <th scope="row">{{ user.id }}</th>
             <td>{{ user.username }}</td>
             <td>{{ user.password }}</td>
         </tr>

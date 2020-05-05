@@ -49,10 +49,10 @@
             {% endfor %}
         </ul>
 
-        {{ form.location.label }}
-        {{ form.location(class="form-control") }}
+        {{ form.gender.label }}
+        {{ form.gender(class="form-control") }}
         <ul>
-            {% for error in form.location.error %}
+            {% for error in form.gender.error %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>
@@ -69,6 +69,14 @@
         {{ form.postnumber(class="form-control") }}
         <ul>
             {% for error in form.postnumber.error %}
+                <li style="color:red;">{{ error }}</li>
+            {% endfor %}
+        </ul>
+
+        {{ form.location.label }}
+        {{ form.location(class="form-control") }}
+        <ul>
+            {% for error in form.location.error %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
         </ul>

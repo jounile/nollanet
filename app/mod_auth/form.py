@@ -13,55 +13,35 @@ class RegisterForm(FlaskForm):
     password = PasswordField('Password', [DataRequired()])
     email = StringField('Email', [DataRequired()])
     bornyear = IntegerField('Born (year)', [DataRequired()])
-    location = StringField('Location', [DataRequired()])
-    address = StringField('Address', [DataRequired()])
-    postnumber = StringField('Postnumber', [DataRequired()])
-    recaptcha = RecaptchaField()
+    gender = SelectField('Gender', choices=[('1', 'Male'), ('2', 'Female')])
+    address = StringField('Address')
+    postnumber = StringField('Postnumber')
+    location = StringField('City', [DataRequired()])
+    #recaptcha = RecaptchaField()
     submit = SubmitField('Signup')
 
 class ProfileForm(FlaskForm):
-    user_id = HiddenField('User ID')
+    id = HiddenField('User ID')
     level = HiddenField('Level')
     username = HiddenField('Username')
     name = StringField('Name', [DataRequired(), Length(min=4)])
     bornyear = IntegerField('Born (year)', [DataRequired()])
     email = StringField('Email', [DataRequired()])
-    email2 = StringField('Email 2')
     homepage = StringField('Homepage')
     info = StringField('Info')
     location = StringField('Location', [DataRequired()])
     date = HiddenField('Registered')
     hobbies = StringField('Hobbies')
-    # open
-    extrainfo = StringField('Extra info')
-    sukupuoli = SelectField('Sex', choices=[('1', 'Male'), ('2', 'Female')])
-    icq = StringField('ICQ')
-    apulainen = IntegerField('Helper', [Optional(strip_whitespace=True)])
+    gender = SelectField('Gender', choices=[('1', 'Male'), ('2', 'Female')])
     last_login = HiddenField('Last login')
-    chat = IntegerField('Chat', [Optional(strip_whitespace=True)])
-    oikeus = IntegerField('Rights')
     lang_id = SelectField('Language ID', choices=[('1', 'English'), ('2', 'Finnish'), ('3', 'Swedish')])
     login_count = HiddenField('Login count', [Optional(strip_whitespace=True)])
-    # lastloginip
-    # lastloginclient
-    address = StringField('Address', [DataRequired()])
-    postnumber = StringField('Postnumber', [DataRequired()])
-    emails = IntegerField('Emails', [Optional(strip_whitespace=True)])
-    puhelin = StringField('Telephone')
-    # kantaasiakasnro
-    # lamina_lisatieto
-    blogs = IntegerField('Blogs', [Optional(strip_whitespace=True)])
-    # user_showid
-    # blog_level
-    # last_login2
-    messenger = StringField('Messenger')
-    myspace = StringField('Myspace')
-    rss = StringField('RSS')
+    address = StringField('Address')
+    postnumber = StringField('Postnumber')
+    telephone = StringField('Telephone')
     youtube = StringField('Youtube')
-    ircgalleria = StringField('IRC galleria')
-    last_profile_update = HiddenField('Last profile update')
+    last_update = HiddenField('Last update')
     avatar = StringField('Avatar')
-    flickr_username = StringField('Flickr username')
     submit = SubmitField('Save')
 
     def update_details(self, user):

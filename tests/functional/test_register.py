@@ -9,9 +9,9 @@ def test_register_page(wait_for_api):
 
 def test_valid_registration(wait_for_api):
     """
-    GIVEN a Flask application
-    WHEN the '/auth/register' page is posted to (POST)
-    THEN check the response is valid and the user is logged in
+    GIVEN a running site container
+    WHEN the '/auth/register' page is posted a new user (POST)
+    THEN check the response is valid and the new user is registered
     """
     request_session, api_url = wait_for_api
     response = request_session.post(urljoin(api_url, '/auth/register'),
@@ -20,6 +20,7 @@ def test_valid_registration(wait_for_api):
                                         password='secretpassword',
                                         email='patkennedy79@yahoo.com',
                                         bornyear='1979',
+                                        gender=1,
                                         location='asdf',
                                         address='asdf',
                                         postnumber='20200')
