@@ -43,27 +43,31 @@ def register():
                         username=form.username.data,
                         password=crypted_password,
                         location=form.location.data,
+                        hobbies="",
+                        open=1,
                         address=form.address.data,
                         postnumber=form.postnumber.data,
                         level=5,
                         bornyear=form.bornyear.data,
-                        sukupuoli='',
-                        oikeus='',
-                        lang_id='',
+                        sukupuoli=1,
+                        oikeus=1,
+                        lang_id=1,
                         lastloginip='',
                         lastloginclient='',
-                        emails='',
+                        emails=1,
                         puhelin='',
                         kantaasiakasnro='',
                         lamina_lisatieto='',
-                        blogs='',
-                        user_showid='',
+                        blogs=1,
+                        user_showid=1,
+                        blog_level=1,
+                        last_login2=datetime.now(),
                         messenger='',
                         myspace='',
                         rss='',
                         youtube='',
                         ircgalleria='',
-                        last_profile_update='',
+                        last_profile_update=datetime.now(),
                         avatar='',
                         flickr_username=''
                         )
@@ -73,11 +77,11 @@ def register():
                     app.logger.info("User " + username + " was registered successfully")
                     flash("User " + username + " has been registered.")
                 except Exception as e:
-                    app.logger.error('Registering user ' + username + ' failed')
-                return redirect(url_for("home"))
+                    app.logger.error('Registering user ' + username + ' failed. ' + str(e))
+                return redirect(url_for("auth.register"))
         else:
             flash("Registration failed")
-            return redirect(url_for("home"))
+            return redirect(url_for("auth.register"))
 
 @mod_auth.route('/login',methods=['GET','POST'])
 def login():
