@@ -17,7 +17,7 @@ class RegisterForm(FlaskForm):
     address = StringField('Address')
     postnumber = StringField('Postnumber')
     location = StringField('City', [DataRequired()])
-    #recaptcha = RecaptchaField()
+    recaptcha = RecaptchaField()
     submit = SubmitField('Signup')
 
 class ProfileForm(FlaskForm):
