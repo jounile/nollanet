@@ -4,8 +4,9 @@ import os
 
 class DefaultConfig(object):
 
-    DEBUG = True
+    DEBUG = False
     TESTING = False
+    WTF_CSRF_ENABLED = True
 
     TITLE = 'nolla.net'
 
@@ -23,10 +24,6 @@ class DefaultConfig(object):
 
     # Bcrypt algorithm hashing rounds
     BCRYPT_LOG_ROUNDS = 5
-
-    # File upload
-    UPLOAD_FOLDER = '/Users/jouni.leino/Git/jounile/nollanet/app/static/media'
-    MAX_CONTENT_LENGTH = 16 * 1024 * 1024
 
     # DB connection params
     MYSQL_HOST = os.getenv('MYSQL_HOST')
@@ -75,3 +72,21 @@ class DefaultConfig(object):
     NOLLANET_EMAIL = os.getenv("NOLLANET_EMAIL")
 
     APPINSIGHTS_INSTRUMENTATIONKEY = os.getenv("APPINSIGHTS_INSTRUMENTATIONKEY")
+
+class DevelopmentConfig(DefaultConfig):
+
+    DEBUG = True
+    TESTING = False
+    WTF_CSRF_ENABLED = False
+
+class TestingConfig(DefaultConfig):
+
+    DEBUG = False
+    TESTING = True
+    WTF_CSRF_ENABLED = False
+
+class ProductionConfig(DefaultConfig):
+
+    DEBUG = False
+    TESTING = False
+    WTF_CSRF_ENABLED = True
