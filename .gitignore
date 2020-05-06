@@ -78,4 +78,5 @@ db_dumps/*
 .pytest_cache
 
 # environment vars
+.env.test
 .env.prod

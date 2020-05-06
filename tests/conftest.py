@@ -11,7 +11,7 @@ pytest_plugins = ["docker_compose"]
 def wait_for_api(function_scoped_container_getter):
     """Wait for the api from site to become responsive"""
     request_session = requests.Session()
-    retries = Retry(total=15,
+    retries = Retry(total=5,
                     backoff_factor=0.1,
                     status_forcelist=[500, 502, 503, 504])
     request_session.mount('http://', HTTPAdapter(max_retries=retries))
