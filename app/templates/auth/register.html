@@ -5,81 +5,100 @@
 <div class="col">
         
     <h2>Register</h2>
+
     <form action="{{ url_for('auth.register') }}" method="POST">
-        
+
         {{ form.csrf_token }}
 
         {{ form.name.label }}
         {{ form.name(class="form-control") }}
-        <ul>
-            {% for error in form.name.error %}
+        {% if form.name.errors %}
+            <ul class="errors">
+            {% for error in form.name.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
         
         {{ form.username.label }}
         {{ form.username(class="form-control") }}
-        <ul>
-            {% for error in form.username.error %}
+        {% if form.username.errors %}
+            <ul class="errors">
+            {% for error in form.username.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.password.label }} 
         {{ form.password(class="form-control") }}
-        <ul>
-            {% for error in form.password.error %}
+        {% if form.password.errors %}
+            <ul class="errors">
+            {% for error in form.password.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.email.label }}
         {{ form.email(class="form-control") }}
-        <ul>
-            {% for error in form.email.error %}
+        {% if form.email.errors %}
+            <ul class="errors">
+            {% for error in form.email.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.bornyear.label }}
         {{ form.bornyear(class="form-control") }}
-        <ul>
-            {% for error in form.bornyear.error %}
+        {% if form.bornyear.errors %}
+            <ul class="errors">
+            {% for error in form.bornyear.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.gender.label }}
         {{ form.gender(class="form-control") }}
-        <ul>
-            {% for error in form.gender.error %}
+        {% if form.gender.errors %}
+            <ul class="errors">
+            {% for error in form.gender.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.address.label }}
         {{ form.address(class="form-control") }}
-        <ul>
-            {% for error in form.address.error %}
+        {% if form.address.errors %}
+            <ul class="errors">
+            {% for error in form.address.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.postnumber.label }}
         {{ form.postnumber(class="form-control") }}
-        <ul>
-            {% for error in form.postnumber.error %}
+        {% if form.postnumber.errors %}
+            <ul class="errors">
+            {% for error in form.postnumber.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.location.label }}
         {{ form.location(class="form-control") }}
-        <ul>
-            {% for error in form.location.error %}
+        {% if form.location.errors %}
+            <ul class="errors">
+            {% for error in form.location.errors %}
                 <li style="color:red;">{{ error }}</li>
             {% endfor %}
-        </ul>
+            </ul>
+        {% endif %}
 
         {{ form.recaptcha }}
 

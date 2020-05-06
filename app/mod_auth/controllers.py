@@ -16,56 +16,56 @@ mod_auth = Blueprint('auth', __name__, url_prefix='/auth')
 
 @mod_auth.route('/register' , methods=['GET','POST'])
 def register():
-    form = RegisterForm()
+    form = RegisterForm(request.form)
     if request.method == 'GET':
         return render_template('auth/register.html', form=form)
-    if request.method == 'POST':
-        if form.validate_on_submit():
+    if request.method == 'POST' and form.validate():
 
-            username = form.username.data
-            password = form.password.data
+        username = form.username.data
+        password = form.password.data
 
-            # Check if user exists
-            user = User.query.filter_by(username=form.username.data).first()
+        # Check if user exists
+        user = User.query.filter_by(username=form.username.data).first()
 
-            if user:
-                flash("Username " + username + " exists already.")
-                return render_template('auth/register.html', form=form)
-            else:
-                crypted_password = bcrypt.generate_password_hash(password)
-                date = datetime.today().strftime('%Y-%m-%d')
-                login_count = 0
-                try:
-                    newUser = User(date=date,
-                        login_count=login_count,
-                        name=form.name.data,
-                        email=form.email.data,
-                        username=form.username.data,
-                        password=crypted_password,
-                        location=form.location.data,
-                        address=form.address.data,
-                        postnumber=form.postnumber.data,
-                        level=5,
-                        bornyear=form.bornyear.data,
-                        gender=form.gender.data,
-                        lang_id=1,
-                        telephone='',
-                        youtube='',
-                        last_update=datetime.now(),
-                        avatar=''
-                        )
-
-                    db.session.add(newUser)
-                    db.session.commit()
-                    app.logger.info("User " + username + " was registered successfully")
-                    flash("User " + username + " has been registered.")
-                    return redirect(url_for("auth.login"))
-                except Exception as e:
-                    app.logger.error('Registering user ' + username + ' failed. ' + str(e))
-                    return redirect(url_for("auth.register"))
+        if user:
+            flash("Username " + username + " exists already.")
+            return render_template('auth/register.html', form=form)
         else:
-            flash("Registration failed")
-            return redirect(url_for("auth.register"))
+            crypted_password = bcrypt.generate_password_hash(password)
+            date = datetime.today().strftime('%Y-%m-%d')
+            login_count = 0
+            try:
+                newUser = User(date=date,
+                    login_count=login_count,
+                    name=form.name.data,
+                    email=form.email.data,
+                    username=form.username.data,
+                    password=crypted_password,
+                    location=form.location.data,
+                    address=form.address.data,
+                    postnumber=form.postnumber.data,
+                    level=5,
+                    bornyear=form.bornyear.data,
+                    gender=form.gender.data,
+                    lang_id=1,
+                    telephone='',
+                    youtube='',
+                    last_update=datetime.now(),
+                    avatar=''
+                    )
+
+                db.session.add(newUser)
+                db.session.commit()
+                app.logger.info("User " + username + " was registered successfully")
+                flash("User " + username + " has been registered.")
+                return redirect(url_for("auth.login"))
+            except Exception as e:
+                app.logger.error('Registering user ' + username + ' failed. ' + str(e))
+                return redirect(url_for("auth.register"))
+    else:
+        print("Errors: ", form.errors)
+        flash("Registration failed")
+        return render_template("auth/register.html", form=form)
 
 @mod_auth.route('/login',methods=['GET','POST'])
 def login():

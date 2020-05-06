@@ -2,21 +2,21 @@ from flask import flash
 from flask_wtf import FlaskForm
 from flask_wtf import RecaptchaField
 from wtforms import TextField, PasswordField, TextAreaField, StringField, IntegerField, DateField, SelectField, HiddenField, SubmitField
-from wtforms.validators import DataRequired, Length, Email, Optional
+from wtforms.validators import DataRequired, Length, Email, Optional, NumberRange
 
 from app import app, db
 from app.models import User
 
 class RegisterForm(FlaskForm):
     name = StringField('Name', [DataRequired(), Length(min=4)])
-    username = StringField('Username', [DataRequired(), Length(max=255)])
+    username = StringField('Username', [DataRequired(), Length(min=4)])
     password = PasswordField('Password', [DataRequired()])
     email = StringField('Email', [DataRequired()])
     bornyear = IntegerField('Born (year)', [DataRequired()])
     gender = SelectField('Gender', choices=[('1', 'Male'), ('2', 'Female')])
     address = StringField('Address')
-    postnumber = StringField('Postnumber')
-    location = StringField('City', [DataRequired()])
+    postnumber = IntegerField('Postnumber', [DataRequired()])
+    location = StringField('City')
     recaptcha = RecaptchaField()
     submit = SubmitField('Signup')
 
