@@ -2,17 +2,10 @@
 
 This document describes some useful things for developers.
 
-## Running tests
-
-
-```bash
-$ pip install pytest-docker-compose
-$ pytest
-```
-
 ## Environment vars
 
 ```bash
+FLASK_CONFIGURATION = "development"
 MYSQL_HOST = '127.0.0.1'
 MYSQL_USER = ''
 MYSQL_PASSWORD = ''
@@ -27,17 +20,6 @@ AZURE_BLOB_URI = ""
 AZURE_ACCOUNT = ""
 AZURE_CONTAINER = ""
 AZURE_STORAGE_KEY = ""
-FLASK_DEBUG = "1"
-```
-
-
-## Database usage
-```bash
-$ mysql -u root -p
-mysql>SHOW DATABASES;
-mysql>USE nolla;
-mysql>SHOW TABLES;
-mysql>SELECT * FROM users;
 ```
 
 ## Store new packages in requirements.txt
@@ -45,22 +27,11 @@ mysql>SELECT * FROM users;
 $ pip freeze > requirements.txt
 ```
 
-## Flask sqlacodegen
-```bash
-$ flask-sqlacodegen  mysql://nolla:nolla@localhost:3306/nollatest --flask
-```
 
-## Flask CLI
-```bash
-$ export FLASK_APP=app/cli.py
-```
-```bash
-$ flask alter_database
-```
+## Install test utility
 
-## Unit tests
 ```bash
-$ python -m unittest -v tests/unit/tests.py
+$ pip install pytest-docker-compose
 ```
 
 ## Functional tests
@@ -71,7 +42,7 @@ $ pytest
 or more specifically
 
 ```bash
-$ pytest --setup-show tests/functional/test_users.py::test_home_page
+$ pytest --setup-show -v tests/functional/test_frontpage.py::test_frontpage
 ```
 
 
