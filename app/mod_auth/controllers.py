@@ -63,7 +63,7 @@ def register():
                 app.logger.error('Registering user ' + username + ' failed. ' + str(e))
                 return redirect(url_for("auth.register"))
     else:
-        print("Errors: ", form.errors)
+        app.logger.info('Registration failed ' + str(form.errors))
         flash("Registration failed")
         return render_template("auth/register.html", form=form)
 
