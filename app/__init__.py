@@ -8,20 +8,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from applicationinsights.flask.ext import AppInsights
 
-from .config import DefaultConfig, DevelopmentConfig, TestingConfig, ProductionConfig
+from .config import DefaultConfig, DevelopmentConfig
 
 # Define the WSGI application object
 app = Flask(__name__, instance_relative_config=True)
 
 # Define Configuration
 FLASK_CONFIGURATION = os.getenv('FLASK_CONFIGURATION', 'DefaultConfig')
-
 if FLASK_CONFIGURATION == "development":
     app.config.from_object(DevelopmentConfig)
-elif FLASK_CONFIGURATION == "testing":
-    app.config.from_object(TestingConfig)
-elif FLASK_CONFIGURATION == "production":
-    app.config.from_object(ProductionConfig)
 else:
     app.config.from_object(DefaultConfig)
 

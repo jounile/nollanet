@@ -76,17 +76,6 @@ class DefaultConfig(object):
 class DevelopmentConfig(DefaultConfig):
 
     DEBUG = True
-    TESTING = False
+    TESTING = True # Disables Recaptcha
     WTF_CSRF_ENABLED = False
 
-class TestingConfig(DefaultConfig):
-
-    DEBUG = False
-    TESTING = True
-    WTF_CSRF_ENABLED = False
-
-class ProductionConfig(DefaultConfig):
-
-    DEBUG = False
-    TESTING = False
-    WTF_CSRF_ENABLED = True
