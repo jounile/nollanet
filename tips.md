@@ -22,6 +22,11 @@ AZURE_CONTAINER = ""
 AZURE_STORAGE_KEY = ""
 ```
 
+# Use development configuration
+```bash
+$ source ./env.dev
+```
+
 ## Store new packages in requirements.txt
 ```bash
 $ pip freeze > requirements.txt
