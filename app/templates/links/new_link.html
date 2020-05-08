@@ -3,9 +3,11 @@
 
 {% block content %}
 
-<div class="float-right">
-    <a class="btn btn-primary" role="button" href="{{ url_for('links.categories') }}">Categories</a>
-</div>
+{% if session['logged_in'] %}
+    <div class="float-right">
+        <a class="btn btn-primary" role="button" href="{{ url_for('links.categories') }}">Categories</a>
+    </div>
+{% endif %}
 
 <h1>New link</h1>
 

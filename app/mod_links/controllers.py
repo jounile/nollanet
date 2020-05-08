@@ -15,7 +15,7 @@ def all():
 
 @mod_links.route('/edit')
 def edit_links():
-    if session.get('logged_in') and session.get('user_level') == 1:
+    if session.get('logged_in'):
         categories = LinkCategories.query.order_by(LinkCategories.create_time.desc())
         links = Links.query.order_by(Links.create_time.desc())
         return render_template("links/edit_links.html", categories=categories, links=links)
@@ -47,7 +47,7 @@ def new_link():
 
 @mod_links.route("/link/update/<link_id>", methods = ['POST', 'GET'])
 def update_link(link_id):
-    if(session and session['logged_in'] and session['user_level'] == 1):
+    if(session and session['logged_in']):
         if request.method == 'GET':
             link = Links.query.filter_by(id=link_id).first()
             return render_template("links/update_link.html", link=link)
@@ -106,7 +106,7 @@ def delete_category():
 
 @mod_links.route("/category/new", methods = ['POST', 'GET'])
 def new_category():
-    if(session and session['logged_in'] and session['user_level'] == 1):
+    if(session and session['logged_in']):
         if request.method == 'POST':
 
             category = LinkCategories(name = request.form.get('category_name'),
@@ -136,7 +136,7 @@ def latest():
 
 @mod_links.route("/categories")
 def categories():
-    if(session and session['logged_in'] and session['user_level'] == 1):
+    if(session and session['logged_in']):
         categories = db.session.query(LinkCategories).order_by(LinkCategories.create_time.desc())
         return render_template("links/categories.html", categories=categories)
     else:
