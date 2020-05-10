@@ -146,9 +146,10 @@ def savefile():
         blob_service = utils.get_azure_blob_service()
         images_container = 'images'
         video_container = 'videos'
-        file_to_upload = request.files['file']
-        filename = file_to_upload.filename
-        path = None
+        if request and request.files and request.files.get('file'):
+            file_to_upload = request.files.get('file')
+            filename = file_to_upload.filename
+        path = ''
         if filename == '':
             return "error.png"
         if file_to_upload and utils.allowed_file(filename):
