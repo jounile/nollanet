@@ -50,9 +50,7 @@ def new_story():
 
             db.session.add(story)
             db.session.commit()
-
-            flash("New story created with ID " + str(story.id))
-
+            flash("New story created")
             return redirect(url_for("home"))
         else:
             my_uploads = db.session.query(Uploads).filter(Uploads.user_id==session['user_id']).order_by(Uploads.create_time.desc())
