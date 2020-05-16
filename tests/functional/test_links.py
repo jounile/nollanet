@@ -78,7 +78,7 @@ def test_valid_new_link(wait_for_api, login_user):
     request_session, api_url = wait_for_api
     response = request_session.post(urljoin(api_url, '/links/new'), data=new_link, allow_redirects=True)
     assert response.status_code == 200
-    assert '<div class="flash">New link created with ID 10</div>' in response.text
+    assert '<div class="flash">New link created</div>' in response.text
 
 def test_valid_new_link_category(wait_for_api, login_user):
     """
@@ -90,4 +90,4 @@ def test_valid_new_link_category(wait_for_api, login_user):
     request_session, api_url = wait_for_api
     response = request_session.post(urljoin(api_url, '/links/category/new'), data=new_category, allow_redirects=True)
     assert response.status_code == 200
-    assert '<div class="flash">New link category created with ID 4</div>' in response.text
+    assert '<div class="flash">New link category created</div>' in response.text

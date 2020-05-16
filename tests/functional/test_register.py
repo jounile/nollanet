@@ -1,5 +1,7 @@
+import uuid
 from requests import get
 from urllib.parse import urljoin
+
 
 def test_register_page(wait_for_api):
     """
@@ -18,8 +20,10 @@ def test_valid_registration(wait_for_api):
     WHEN the '/auth/register' page is posted a new user (POST)
     THEN check the response is valid and the new user is registered
     """
+    random = uuid.uuid4()
+    random_username = str(random)[:8]
     valid_user = dict(name='Test User',
-                    username='testuser',
+                    username=random_username,
                     password='secretpassword',
                     email='testuser@example.com',
                     bornyear='1979',
@@ -31,7 +35,7 @@ def test_valid_registration(wait_for_api):
     request_session, api_url = wait_for_api
     response = request_session.post(urljoin(api_url, '/auth/register'), data=valid_user, allow_redirects=True)
     assert response.status_code == 200
-    assert "User testuser has been registered." in response.text
+    assert "User " + str(random_username) + " has been registered." in response.text
 
 def test_missing_name(wait_for_api):
     """

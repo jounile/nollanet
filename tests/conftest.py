@@ -6,6 +6,28 @@ from requests.adapters import HTTPAdapter
 
 pytest_plugins = ["docker_compose"]
 
+from selenium import webdriver
+
+###################################
+######## Selenium fixtures ########
+###################################
+
+@pytest.fixture(scope="class")
+def setup_chromedriver(request):
+    # Setup ChromeDriver
+    print("initiating chrome driver")
+    driver = webdriver.Chrome("/Users/jouni.leino/chromedriver") #if not added in PATH
+    driver.get("http://localhost:8000")
+    driver.maximize_window()
+    request.cls.driver = driver
+    yield driver
+    driver.close()
+
+
+###################################
+###### Non-selenium fixtures ######
+###################################
+
 # Invoking this fixture: 'function_scoped_container_getter' starts all services
 @pytest.fixture(scope="function")
 def wait_for_api(function_scoped_container_getter):
@@ -28,8 +50,7 @@ def login_user(wait_for_api):
     WHEN the '/auth/login' page is posted user credentials (POST)
     THEN check the response is valid and the user is logged in and the Logout link is available
     """
-    valid_user = dict(username='tester',
-                    password='tester')
+    valid_user = dict(username='tester', password='tester')
 
     request_session, api_url = wait_for_api
     response = request_session.post(urljoin(api_url, '/auth/login'), data=valid_user, allow_redirects=True)
@@ -44,8 +65,7 @@ def login_admin(wait_for_api):
     WHEN the '/auth/login' page is posted admin credentials (POST)
     THEN check the response is valid and the user is logged in and the Logout link is available
     """
-    valid_user = dict(username='admin',
-                    password='admin')
+    valid_user = dict(username='admin', password='admin')
 
     request_session, api_url = wait_for_api
     response = request_session.post(urljoin(api_url, '/auth/login'), data=valid_user, allow_redirects=True)
@@ -53,3 +73,4 @@ def login_admin(wait_for_api):
     assert '<div class="flash">Welcome admin!</div>' in response.text
     assert '<a class="nav-link" href="/auth/admin">Admin</a>' in response.text
     assert '<a class="nav-link" href="/auth/logout">Logout</a>' in response.text
+

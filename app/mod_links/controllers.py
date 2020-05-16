@@ -39,7 +39,7 @@ def new_link():
             db.session.add(link)
             db.session.commit()
 
-            flash("New link created with ID " + str(link.id))
+            flash("New link created")
             return redirect(url_for("links.all"))
     else:
         flash("Please login first")
@@ -117,7 +117,7 @@ def new_category():
             db.session.add(category)
             db.session.commit()
 
-            flash("New link category created with ID " + str(category.id))
+            flash("New link category created")
             return redirect(url_for("links.all"))
         if request.method == 'GET':
             return render_template("links/new_category.html")
