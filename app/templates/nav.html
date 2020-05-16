@@ -51,10 +51,32 @@
 
 				</li>
 				{% endfor %}
+			{% endif %}
+			
+			{% if session['logged_in'] and session['user_level'] == 1 %}
+				{% for item in nav.admin %}
+				<li class="nav-item dropdown {{ 'active' if item.is_active else '' }}">
+					<a href="{{ item.url }}" 
+						class="nav-link {% if item.items %}dropdown-toggle{% endif %}" 
+						data-toggle="{% if item.items %}dropdown{% endif %}">
+						{{ item.label }}
+					</a>
 
-				{% if session['logged_in'] and session['user_level'] == 1 %}
-					<li class="nav-item"><a class="nav-link" href="{{ url_for('auth.admin') }}">Admin</a></li>
-				{% endif %}
+					{% if item.items %}
+					<ul class="dropdown-menu" role="menu">
+						{% for child in item.items %}
+						<li class="{{ 'active' if child.is_active else '' }}">
+							<a href="{{ child.url }}" class="nav-link" >{{ child.label }}</a>
+						</li>
+						{% endfor %}
+					</ul>
+					{% endif %}
+
+				</li>
+				{% endfor %}
+			{% endif %}
+			
+			{% if session['logged_in'] %}
 				<li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
 			{% else %}
 				<li class="nav-item"><a class="nav-link" href="{{ url_for('auth.login') }}">Login</a></li>

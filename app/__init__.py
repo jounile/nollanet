@@ -45,8 +45,9 @@ from app.mod_reviews.controllers import mod_reviews as reviews_module
 from app.mod_news.controllers import mod_news as news_module
 from app.mod_stories.controllers import mod_stories as stories_module
 from app.mod_users.controllers import mod_users as users_module
-
+from app.mod_admin.controllers import mod_admin as admin_module
 from app.mod_youtube.controllers import mod_youtube as youtube_module
+
 from app.mod_facebook.controllers import mod_facebook as facebook_module
 
 # Register blueprint(s)
@@ -61,8 +62,9 @@ app.register_blueprint(reviews_module)
 app.register_blueprint(news_module)
 app.register_blueprint(stories_module)
 app.register_blueprint(users_module)
-
+app.register_blueprint(admin_module)
 app.register_blueprint(youtube_module)
+
 app.register_blueprint(facebook_module)
 
 # Flask-Selfdoc
@@ -87,11 +89,23 @@ nav.Bar('user', [
         nav.Item('Profile', 'auth.profile'),
         nav.Item('Password', 'auth.pwdreset'),
         nav.Item('My Uploads', 'my_uploads'),
-        nav.Item('My Stories', 'my_stories'),
+        nav.Item('My Stories', 'my_stories')
+    ]),
+    nav.Item('New', 'auth.profile', items=[
         nav.Item('New upload', 'media.new_upload'),
         nav.Item('New story', 'stories.new_story'),
         nav.Item('New spot', 'spots.new_spot'),
-        nav.Item('New link', 'links.new_link'),
+        nav.Item('New link', 'links.new_link')
+    ])
+])
+
+nav.Bar('admin', [
+    nav.Item('Admin', 'admin.stories', items=[
+        nav.Item('Stories', 'admin.stories'),
+        nav.Item('Media', 'admin.media'),
+        nav.Item('Users', 'admin.users'),
+        nav.Item('Spots', 'admin.spots'),
+        nav.Item('Links', 'admin.links')
     ])
 ])
 

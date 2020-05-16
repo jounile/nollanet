@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="col">
+
+    <h2>Media</h2>
+    
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary" role="button" href="{{ url_for('media.latest') }}">Latest media</a><br /><br />
+            <a class="btn btn-primary" role="button" href="{{ url_for('media.new_upload') }}">New upload</a><br /><br />
+        </div>
+    </div>
+</div>
+
+{% endblock %}

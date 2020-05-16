@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<div class="col">
+
+    <h2>Stories</h2>
+    
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-primary" role="button" href="{{ url_for('stories.latest') }}">Latest stories</a><br /><br />
+            <a class="btn btn-primary" role="button" href="{{ url_for('stories.new_story') }}">New story</a><br /><br />
+        </div>
+    </div>
+</div>
+
+{% endblock %}

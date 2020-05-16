@@ -71,6 +71,5 @@ def login_admin(wait_for_api):
     response = request_session.post(urljoin(api_url, '/auth/login'), data=valid_user, allow_redirects=True)
     assert response.status_code == 200
     assert '<div class="flash">Welcome admin!</div>' in response.text
-    assert '<a class="nav-link" href="/auth/admin">Admin</a>' in response.text
     assert '<a class="nav-link" href="/auth/logout">Logout</a>' in response.text
 

@@ -200,30 +200,6 @@ def profile():
                 app.logger.error("Form validation error")
             return redirect(url_for('auth.profile'))
 
-@mod_auth.route('/admin')
-def admin():
-    if session.get('logged_in') and session.get('user_level') == 1:    
-        return render_template('auth/admin.html')
-    else:
-        flash('You are not logged in as administrator')
-        return redirect(url_for('home'))
-
-@mod_auth.route('/promote', methods=['GET','POST'])
-def promote():
-    if session.get('logged_in') and session.get('user_level') == 1:
-        if request.method == 'GET':
-            return render_template('auth/promote.html')
-        if request.method == 'POST':
-            username = request.form.get('username')
-            level = request.form.get('level')
-            User.query.filter_by(username=username).update({"level": level})
-            db.session.commit()
-            flash('User '+ username + ' is now updated to level ' + level + '.')
-            return redirect(url_for('home'))
-    else:
-        flash('You are not logged in as administrator')
-        return redirect(url_for('home'))
-
 @mod_auth.route('/pwdreset', methods=['GET','POST'])
 def pwdreset():
     if request.method == 'GET':
