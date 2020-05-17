@@ -1,0 +1,58 @@
+<!-- my_media.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>My media</h1>
+
+<a class="btn btn-primary" role="button" href="{{ url_for('media.new_media') }}">New media</a>
+
+<table width="100%" class="table table-bordered">
+    <thead class="thead-dark">
+    <tr>
+        <th>Media id</th>
+        <th>Genre</th>
+        <th>Media type</th>
+        <th>Media topic</th>
+        <th>Created</th>
+        <th>Creator</th>
+        <th>Country</th>
+        <th>Hidden</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in media %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.genre }}</td>
+            <td>{{ item.mediatype }}</td>
+            <td>{{ item.media_topic }}</td>
+            <td>{{ item.create_time }}</td>
+            <td>{{ item.owner }}</td>
+            <td>{{ item.country_code }}</td>
+            <td>
+                {% if item.hidden==1 %} 
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+            </td>
+            <td>
+                <form action="/media/update/{{ item.id }}" method="GET">
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </form>
+            </td>
+            <td>
+                <form action="/media/delete" method="POST">
+                    <input type="hidden" name="id" value="{{ item.id }}" />
+                    <input type="button" class="btn btn-primary" onClick="confirmDelete(this.form);" value="Delete" />
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

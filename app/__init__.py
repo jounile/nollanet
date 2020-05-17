@@ -45,6 +45,7 @@ from app.mod_reviews.controllers import mod_reviews as reviews_module
 from app.mod_news.controllers import mod_news as news_module
 from app.mod_stories.controllers import mod_stories as stories_module
 from app.mod_users.controllers import mod_users as users_module
+from app.mod_user.controllers import mod_user as user_module
 from app.mod_admin.controllers import mod_admin as admin_module
 from app.mod_youtube.controllers import mod_youtube as youtube_module
 
@@ -62,6 +63,7 @@ app.register_blueprint(reviews_module)
 app.register_blueprint(news_module)
 app.register_blueprint(stories_module)
 app.register_blueprint(users_module)
+app.register_blueprint(user_module)
 app.register_blueprint(admin_module)
 app.register_blueprint(youtube_module)
 
@@ -89,6 +91,7 @@ nav.Bar('user', [
         nav.Item('Profile', 'auth.profile'),
         nav.Item('Password', 'auth.pwdreset'),
         nav.Item('My Uploads', 'my_uploads'),
+        nav.Item('My Media', 'user.my_media'),
         nav.Item('My Stories', 'my_stories')
     ]),
     nav.Item('New', 'auth.profile', items=[

@@ -223,4 +223,3 @@ def new_media():
     else:
         flash("Please login first")
         return redirect(url_for("home"))
-
