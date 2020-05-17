@@ -1,0 +1,54 @@
+<!-- new_photo.html -->
+{% extends 'layout.html' %}
+
+{% block content %}
+
+<h1>New photo</h1>
+
+<form action="{{ url_for('media.new_photo') }}" method = "POST">
+
+    <div class="form-group">
+        <label for="genre_id">Genre</label>
+        <select name="genre_id" class="form-control">
+            <option value="1">Skateboarding</option>
+            <option value="2">Snowboarding</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="country_id">Country</label>
+        <select name="country_id" class="form-control">
+            <option value="1">Finland</option>
+            <option value="2">Sweden</option>
+            <option value="3">Estonia</option>
+            <option value="4">Denmark</option>
+            <option value="5">Germany</option>
+            <option value="">Other</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="media_topic">Title</label>
+        <input type="text" class="form-control" size="100" name="media_topic" />
+    </div>
+
+    <div class="form-group">
+        <label for="media_desc">Description</label>
+        <textarea type="text" class="form-control" name="media_desc" cols="100" rows="1"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="media_text">Text</label>
+        <textarea type="text" id="summernote" class="form-control" name="media_text" cols="100" rows="10"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="hidden">Hidden</label>
+        <input type="checkbox" name="hidden" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+
+</form>
+
+{% endblock %}

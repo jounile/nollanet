@@ -94,6 +94,7 @@ nav.Bar('user', [
     nav.Item('New', 'auth.profile', items=[
         nav.Item('New upload', 'media.new_upload'),
         nav.Item('New story', 'stories.new_story'),
+        nav.Item('New photo', 'media.new_photo'),
         nav.Item('New spot', 'spots.new_spot'),
         nav.Item('New link', 'links.new_link')
     ])
