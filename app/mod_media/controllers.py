@@ -199,14 +199,14 @@ def new_upload():
         flash("Please login first")
         return redirect(url_for("home"))
 
-@mod_media.route("/newphoto", methods=['POST','GET'])
-def new_photo():
+@mod_media.route("/newmedia", methods=['POST','GET'])
+def new_media():
     if(session and session['logged_in']):
         if request.method == 'GET':
-            return render_template("views/user/new_photo.html")
+            return render_template("views/user/new_media.html")
         if request.method == 'POST':
-            media = Media(genre_id = request.form.get('genre_id'),
-                        mediatype_id = 1,
+            media = Media(mediatype_id = request.form.get('mediatype_id'),
+                        genre_id = request.form.get('genre_id'),
                         country_id = request.form.get('country_id'),
                         media_topic = request.form.get('media_topic'),
                         media_text = request.form.get('media_text'),
@@ -218,7 +218,7 @@ def new_photo():
 
             db.session.add(media)
             db.session.commit()
-            flash("New photo added")
+            flash("New media added")
             return redirect(url_for("home"))
     else:
         flash("Please login first")

@@ -1,11 +1,19 @@
-<!-- new_photo.html -->
+<!-- new_media.html -->
 {% extends 'layout.html' %}
 
 {% block content %}
 
-<h1>New photo</h1>
+<h1>New media</h1>
 
-<form action="{{ url_for('media.new_photo') }}" method = "POST">
+<form action="{{ url_for('media.new_media') }}" method = "POST">
+
+    <div class="form-group">
+        <label for="mediatype_id">Media type</label>
+        <select name="mediatype_id" class="form-control">
+            <option value="1">Photo</option>
+            <option value="6">Video</option>
+        </select>
+    </div>
 
     <div class="form-group">
         <label for="genre_id">Genre</label>
