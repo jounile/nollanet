@@ -6,17 +6,19 @@
 <div class="row">
     <div class="col">
         <h1>{{ photo.media_topic }}</h1>
-        {{ photo.media_text|safe }}<br>
+        {% if photo.media_text!='' %}
+            {{ photo.media_text|safe }}<br>
+        {% endif %}
         <div class="photo">
             <img src="{{ url_for('media.filename', filename='photos/' + photo['id']|string + '_400.jpg') }}" />
         </div>
-        Description: {{ photo.media_desc }}<br>
     </div>
     <div class="col">
         ID: {{ photo.id }}<br>
         Owner: <a href="{{ url_for('users.user', username=photo.owner) }}">{{ photo.owner }}</a><br>
         Country: {{ photo.country_code }}<br>
         Created: {{ photo.create_time }}<br>
+        Description: {{ photo.media_desc }}<br>
         <div class="comments">
             {% for comment in comments %}
                 <div class="comment">
