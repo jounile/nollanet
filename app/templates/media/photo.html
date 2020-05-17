@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col">
         <h1>{{ photo.media_topic }}</h1>
-        {% if photo.media_text!='' %}
+        {% if photo.media_text!='' and photo.media_text != 'None' %}
             {{ photo.media_text|safe }}<br>
         {% endif %}
         <div class="photo">
@@ -19,14 +19,6 @@
         Country: {{ photo.country_code }}<br>
         Created: {{ photo.create_time }}<br>
         Description: {{ photo.media_desc }}<br>
-        <div class="comments">
-            {% for comment in comments %}
-                <div class="comment">
-                    <div class="comment-time">{{ comment.timestamp }} {{ comment.username }}</div>
-                    <div class="comment-text">{{ comment.comment }}</div>
-                </div>
-            {% endfor %}
-        </div>
     </div>
 </div>
 
