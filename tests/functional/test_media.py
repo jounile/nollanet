@@ -2,7 +2,7 @@ import pytest
 from requests import get
 from urllib.parse import urljoin
 
-def test_new_photo_page(wait_for_api, login_user):
+def test_new_media_page(wait_for_api, login_user):
     """
     GIVEN a user has logged in (login_user)
     WHEN the '/media/newmedia' page is navigated to (GET)
@@ -12,6 +12,17 @@ def test_new_photo_page(wait_for_api, login_user):
     response = request_session.get(urljoin(api_url, '/media/newmedia'))
     assert response.status_code == 200
     assert '<h1>New media</h1>' in response.text
+
+def test_update_media_page(wait_for_api, login_user):
+    """
+    GIVEN a user has logged in (login_user)
+    WHEN the '/media/update/1' page is navigated to (GET)
+    THEN check the response is valid and page title is correct
+    """
+    request_session, api_url = wait_for_api
+    response = request_session.get(urljoin(api_url, '/media/update/1'))
+    assert response.status_code == 200
+    assert '<h1>Update media</h1>' in response.text
 
 def test_hidden_photo(wait_for_api, login_user):
     """
@@ -36,3 +47,14 @@ def test_valid_photo(wait_for_api, login_user):
     response = request_session.post(urljoin(api_url, '/media/newmedia'), data=new_media, allow_redirects=True)
     assert response.status_code == 200
     assert '<div class="flash">New media added</div>' in response.text
+
+def test_new_media_page(wait_for_api, login_user):
+    """
+    GIVEN a user has logged in (login_user)
+    WHEN the '/media/newmedia' page is navigated to (GET)
+    THEN check the response is valid and page title is correct
+    """
+    request_session, api_url = wait_for_api
+    response = request_session.get(urljoin(api_url, '/media/newmedia'))
+    assert response.status_code == 200
+    assert '<h1>New media</h1>' in response.text

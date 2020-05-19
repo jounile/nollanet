@@ -57,7 +57,7 @@ def new_story():
             blobs = []
             for blob in my_uploads:
                 blobs.append(blob)
-            return render_template("views/user/new_story.html", blobs=blobs)
+            return render_template("user/new_story.html", blobs=blobs)
     else:
         flash("Please login first")
         return redirect(url_for("home"))
@@ -98,7 +98,7 @@ def update(id):
     else:
         if(session and session['logged_in']):
             result = Story.query.filter_by(id=id).first()
-            return render_template("views/user/update_story.html", result=result)
+            return render_template("user/update_story.html", result=result)
         else:
             flash("Please login first")
             return redirect(url_for("home"))

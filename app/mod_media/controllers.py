@@ -135,7 +135,7 @@ def update(id):
     else:
         if(session and session['logged_in']):
             result = Media.query.filter_by(id=id).first()
-            return render_template("views/user/update_media.html", result=result)
+            return render_template("user/update_media.html", result=result)
         else:
             flash("Please login first")
             return redirect(url_for("home"))
@@ -188,7 +188,7 @@ def savefile():
 def new_upload():
     if(session and session['logged_in']):
         if request.method == 'GET':
-            return render_template("views/user/new_upload.html")
+            return render_template("user/new_upload.html")
         if request.method == 'POST':
             result = savefile()
             if result is not None:
@@ -203,7 +203,7 @@ def new_upload():
 def new_media():
     if(session and session['logged_in']):
         if request.method == 'GET':
-            return render_template("views/user/new_media.html")
+            return render_template("user/new_media.html")
         if request.method == 'POST':
             media = Media(mediatype_id = request.form.get('mediatype_id'),
                         genre_id = request.form.get('genre_id'),

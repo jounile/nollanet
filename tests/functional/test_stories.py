@@ -13,6 +13,16 @@ def test_new_story_page(wait_for_api, login_user):
     assert response.status_code == 200
     assert '<h1>New story</h1>' in response.text
 
+def test_update_story_page(wait_for_api, login_user):
+    """
+    GIVEN a user has logged in (login_user)
+    WHEN the '/stories/update/1' page is navigated to (GET)
+    THEN check the response is valid and page title is correct
+    """
+    request_session, api_url = wait_for_api
+    response = request_session.get(urljoin(api_url, '/stories/update/1'))
+    assert response.status_code == 200
+    assert '<h1>Update story</h1>' in response.text
 
 def test_hidden_story_news(wait_for_api, login_user):
     """

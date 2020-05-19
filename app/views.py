@@ -85,7 +85,7 @@ def my_stories():
             ).order_by(
                 Story.create_time.desc()
             ).limit(10)
-        return render_template("views/user/stories.html", stories=stories)
+        return render_template("user/my_stories.html", stories=stories)
     else:
         flash("Please login first")
         return redirect(url_for("home"))
@@ -98,7 +98,7 @@ def my_uploads():
         blobs = []
         for blob in my_uploads:
             blobs.append(blob)
-        return render_template("views/user/uploads.html", blobs=blobs)
+        return render_template("user/my_uploads.html", blobs=blobs)
     else:
         flash("Please login first")
         return redirect(url_for("home"))
