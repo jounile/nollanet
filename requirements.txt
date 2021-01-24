@@ -14,7 +14,7 @@ chardet==3.0.4
 Click==7.0
 colorama==0.4.1
 configparser==3.7.4
-cryptography==2.8
+cryptography==3.2
 facebook-sdk==3.1.0
 Flask==1.1.1
 Flask-Bcrypt==0.7.1
@@ -40,7 +40,7 @@ google-auth-httplib2==0.0.3
 google-auth-oauthlib==0.4.0
 html5lib==1.0.1
 HTMLParser==0.0.2
-httplib2==0.13.1
+httplib2==0.18.0
 idna==2.8
 ipaddress==1.0.23
 isodate==0.6.0
